@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Lock-In 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--navy:#1B2A4A;--navy2:#243560;--gold:#B8962E;--gold-l:#F5EDD6;--cream:#FAF8F3;--white:#fff;--gray:#6B7280;--gray-l:#F3F4F6;--green:#2D6A2D;--green-l:#EAF4EA;--warn:#FFF3CD;--warn-fg:#7D5A00;--r:16px;--rs:10px;--sh:0 4px 24px rgba(27,42,74,.10)}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);min-height:100vh}
+/* HEADER */
+.hdr{background:var(--navy);padding:18px 20px 14px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between}
+.hdr-title{font-family:'Playfair Display',serif;color:var(--gold);font-size:21px;font-weight:700}
+.hdr-date{color:rgba(255,255,255,.45);font-size:12px;margin-top:2px}
+.hdr-streak{background:var(--gold);color:var(--navy);border-radius:20px;padding:5px 13px;font-size:13px;font-weight:600}
+/* NAV */
+.nav{background:var(--white);border-bottom:1px solid rgba(27,42,74,.08);display:flex;overflow-x:auto;scrollbar-width:none;position:sticky;top:62px;z-index:99}
+.nav::-webkit-scrollbar{display:none}
+.nb{padding:13px 16px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:var(--gray);border:none;background:none;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s}
+.nb.active{color:var(--navy);border-bottom-color:var(--gold);font-weight:600}
+/* MAIN */
+.main{padding:18px 16px 120px;max-width:600px;margin:0 auto}
+/* CARD */
+.card{background:var(--white);border-radius:var(--r);padding:20px;margin-bottom:14px;box-shadow:var(--sh)}
+.card-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.card-sub{font-size:12px;color:var(--gray);margin-bottom:14px}
+/* CHECKIN */
+.slbl{font-size:11px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin:16px 0 8px}
+.energy-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:4px}
+.ebtn{width:40px;height:40px;border-radius:50%;border:2px solid var(--gray-l);background:var(--white);font-size:13px;font-weight:600;color:var(--gray);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
+.ebtn.active{background:var(--navy);border-color:var(--navy);color:var(--white)}
+.ci{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--gray-l);cursor:pointer}
+.ci:last-child{border-bottom:none}
+.cb{width:22px;height:22px;min-width:22px;border:2px solid var(--gray-l);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;transition:all .2s}
+.cb.done{background:var(--green);border-color:var(--green);color:#fff}
+.cl{font-size:14px;flex:1}
+.cl.done{color:var(--gray);text-decoration:line-through}
+/* BUTTONS */
+.btn{padding:13px 20px;border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s;display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%}
+.btn-gold{background:var(--gold);color:var(--navy)}
+.btn-navy{background:var(--navy);color:#fff}
+.btn-ghost{background:var(--gray-l);color:var(--navy)}
+.btn-sm{padding:8px 14px;font-size:13px;border-radius:8px;width:auto}
+.btn-danger{background:var(--warn);color:var(--warn-fg);width:auto}
+/* TODAY TASKS */
+.tt{display:flex;align-items:center;gap:12px;padding:13px;background:var(--cream);border-radius:var(--rs);margin-bottom:9px;cursor:pointer;border:1.5px solid transparent;transition:all .2s}
+.tt:hover{border-color:var(--gold-l)}
+.tt.done{opacity:.55}
+.ttc{width:24px;height:24px;min-width:24px;border:2px solid var(--gray-l);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .2s}
+.ttc.done{background:var(--green);border-color:var(--green);color:#fff}
+.ttin{flex:1}
+.tttl{font-size:14px;font-weight:500}
+.ttcat{font-size:12px;color:var(--gray);margin-top:2px}
+.badge{font-size:11px;font-weight:600;padding:3px 8px;border-radius:99px}
+.bp{background:var(--gray-l);color:var(--gray)}
+.bd{background:var(--green-l);color:var(--green)}
+.bpa{background:var(--warn);color:var(--warn-fg)}
+/* PROGRESS */
+.pbw{background:var(--gray-l);border-radius:99px;height:7px;overflow:hidden;margin:8px 0 3px}
+.pbf{height:100%;background:linear-gradient(90deg,var(--gold),var(--navy));border-radius:99px;transition:width .5s}
+.plbl{font-size:12px;color:var(--gray);display:flex;justify-content:space-between}
+/* WBS */
+.cat-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 0 8px;cursor:pointer}
+.cat-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;display:flex;align-items:center;gap:7px}
+.cat-prog{font-size:12px;color:var(--gray);background:var(--gray-l);padding:3px 9px;border-radius:20px}
+.tg{border-left:3px solid var(--gold-l);margin:0 0 10px 6px;padding-left:14px}
+.tt-wbs{font-size:14px;font-weight:600;color:var(--navy);padding:9px 0 5px;display:flex;align-items:center;gap:7px}
+.tt-wbs.done{color:var(--gray)}
+.mt-item{display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid rgba(27,42,74,.05);cursor:pointer}
+.mt-item:last-child{border-bottom:none}
+.mtc{width:17px;height:17px;min-width:17px;border:2px solid var(--gray-l);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .2s}
+.mtc.done{background:var(--gold);border-color:var(--gold);color:#fff}
+.mtl{font-size:13px;color:var(--navy);flex:1}
+.mtl.done{color:var(--gray);text-decoration:line-through}
+/* SUPPLEMENT */
+.sday{background:var(--navy);color:#fff;border-radius:var(--rs);padding:11px 15px;margin-bottom:11px;font-size:14px;font-weight:600}
+.srow{display:flex;align-items:flex-start;gap:11px;padding:9px 0;border-bottom:1px solid var(--gray-l)}
+.srow:last-child{border-bottom:none}
+.stime{font-size:12px;font-weight:600;color:var(--gold);min-width:68px}
+.sitems{font-size:13px;flex:1}
+.snote{font-size:11px;color:var(--gray);margin-top:2px}
+.wbox{background:var(--warn);border-left:4px solid var(--gold);border-radius:var(--rs);padding:11px 14px;margin-bottom:14px;font-size:13px;color:var(--warn-fg)}
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.kpi-card{background:var(--cream);border-radius:var(--rs);padding:14px;border:1px solid rgba(27,42,74,.08)}
+.kpi-val{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--navy)}
+.kpi-lbl{font-size:12px;color:var(--gray);margin-top:3px}
+.kpi-tgt{font-size:11px;color:var(--gold);font-weight:600;margin-top:2px}
+/* ZINCIR */
+.zincir-hero{background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:var(--r);padding:24px 20px;margin-bottom:14px;display:flex;align-items:center;gap:20px}
+.zh-num{font-family:'Playfair Display',serif;font-size:64px;font-weight:700;color:var(--gold);line-height:1}
+.zh-info{flex:1}
+.zh-label{color:#fff;font-size:17px;font-weight:600}
+.zh-sub{color:rgba(255,255,255,.5);font-size:13px;margin-top:4px}
+.zh-record{color:var(--gold-l);font-size:13px;margin-top:8px;font-weight:500}
+.habit-card{background:var(--white);border-radius:var(--r);padding:18px;margin-bottom:12px;box-shadow:var(--sh)}
+.hc-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.hc-icon{font-size:26px;width:40px;text-align:center}
+.hc-info{flex:1}
+.hc-name{font-size:15px;font-weight:600}
+.hc-sub{font-size:12px;color:var(--gray);margin-top:2px}
+.hc-right{text-align:right}
+.hc-streak{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--gold);line-height:1}
+.hc-slbl{font-size:10px;color:var(--gray);margin-top:1px}
+.tick-btn{width:40px;height:40px;min-width:40px;border-radius:50%;border:2px solid var(--gray-l);background:var(--white);font-size:19px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;margin-left:8px}
+.tick-btn.done{background:var(--green);border-color:var(--green);color:#fff}
+/* CALENDAR CHAIN */
+.cal-wrap{overflow-x:auto;padding-bottom:4px}
+.cal-row{display:flex;gap:4px;min-width:max-content}
+.cal-day{width:34px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:3px}
+.cal-box{width:34px;height:34px;border-radius:8px;border:1.5px solid var(--gray-l);display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;background:var(--white)}
+.cal-box.done{background:var(--gold);border-color:var(--gold)}
+.cal-box.today{border-color:var(--navy);border-width:2px}
+.cal-box.today.done{background:var(--navy);border-color:var(--navy)}
+.cal-box.future{background:var(--gray-l);border-color:var(--gray-l)}
+.cal-lbl{font-size:9px;color:var(--gray);font-weight:600}
+.cal-lbl.today{color:var(--navy);font-weight:700}
+.hc-best{font-size:11px;color:var(--gold);font-weight:600;margin-top:10px}
+/* ADD HABIT MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:flex-end;justify-content:center}
+.modal{background:var(--white);border-radius:var(--r) var(--r) 0 0;padding:24px;width:100%;max-width:600px;max-height:80vh;overflow-y:auto}
+.modal-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:16px}
+.ifield{width:100%;padding:12px;border:1.5px solid var(--gray-l);border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--navy);outline:none;transition:border-color .2s;background:var(--cream);margin-top:0}
+.ifield:focus{border-color:var(--gold)}
+.emoji-grid{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.eg-btn{width:40px;height:40px;border-radius:8px;border:1.5px solid var(--gray-l);background:var(--white);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.eg-btn.active{border-color:var(--gold);background:var(--gold-l)}
+/* MISC */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;padding:11px 22px;border-radius:99px;font-size:14px;font-weight:500;box-shadow:0 8px 32px rgba(27,42,74,.2);opacity:0;transition:all .3s;z-index:300;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.spin{width:30px;height:30px;border:3px solid var(--gray-l);border-top-color:var(--gold);border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.loading{display:flex;flex-direction:column;align-items:center;gap:10px;padding:36px;color:var(--gray);font-size:13px}
+.empty{text-align:center;padding:36px 16px;color:var(--gray);font-size:14px}
+.empty-icon{font-size:36px;margin-bottom:10px}
+.slbl2{font-size:11px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin:0 0 8px}
+.setup-step{display:flex;gap:13px;padding:11px 0;border-bottom:1px solid var(--gray-l);align-items:flex-start}
+.setup-step:last-child{border-bottom:none}
+.snum{width:27px;height:27px;min-width:27px;background:var(--navy);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.stxt{font-size:13px;line-height:1.6;flex:1}
+.stxt code{background:var(--gray-l);padding:2px 6px;border-radius:4px;font-size:12px}
+.ifield2{width:100%;padding:11px;border:1.5px solid var(--gray-l);border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--navy);outline:none;background:var(--cream);margin-top:8px}
+.ifield2:focus{border-color:var(--gold)}
+.celebrate{background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:var(--r);padding:22px;text-align:center;color:#fff;margin-bottom:14px}
+.cel-icon{font-size:38px;margin-bottom:8px}
+.cel-title{font-family:'Playfair Display',serif;font-size:19px;color:var(--gold);margin-bottom:4px;font-weight:700}
+.cel-txt{font-size:13px;opacity:.75}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div>
+    <div class="hdr-title">Lock-In 2025</div>
+    <div class="hdr-date" id="hdr-date"></div>
+  </div>
+  <div class="hdr-streak" id="hdr-streak">🔥 0 gün</div>
+</div>
+
+<nav class="nav">
+  <button class="nb active" onclick="showTab('bugun')">☀️ Bugün</button>
+  <button class="nb" onclick="showTab('zincir')">🔗 Zinciri Kırma</button>
+  <button class="nb" onclick="showTab('wbs')">📋 WBS</button>
+  <button class="nb" onclick="showTab('supplement')">💊 Supplement</button>
+  <button class="nb" onclick="showTab('kpi')">📊 KPI</button>
+  <button class="nb" onclick="showTab('ayarlar')">⚙️ Ayarlar</button>
+</nav>
+
+<div class="main">
+
+<!-- BUGÜN -->
+<div id="tab-bugun">
+  <div id="cel-morning" class="celebrate" style="display:none">
+    <div class="cel-icon">☀️</div>
+    <div class="cel-title">Sabah check-in tamamlandı!</div>
+    <div class="cel-txt">Harika bir gün olsun.</div>
+  </div>
+  <div class="card" id="morning-card">
+    <div class="card-title">☀️ Sabah Check-In</div>
+    <div class="slbl">Enerji Seviyeni Seç</div>
+    <div class="energy-row" id="energy-btns"></div>
+    <div class="slbl" style="margin-top:16px">Rutin Kontrol</div>
+    <div class="ci" onclick="toggleCI(this,'water')"><div class="cb" data-key="water"></div><span class="cl">💧 1 bardak su içtim</span></div>
+    <div class="ci" onclick="toggleCI(this,'affirmations')"><div class="cb" data-key="affirmations"></div><span class="cl">✨ Affirmationlarımı okudum</span></div>
+    <div class="ci" onclick="toggleCI(this,'journaling')"><div class="cb" data-key="journaling"></div><span class="cl">📓 Journaling yaptım</span></div>
+    <div class="ci" onclick="toggleCI(this,'reading')"><div class="cb" data-key="reading"></div><span class="cl">📖 Hollandaca okuma (15 dk)</span></div>
+    <div class="ci" onclick="toggleCI(this,'supplement')"><div class="cb" data-key="supplement"></div><span class="cl">💊 Sabah supplementlerimi aldım</span></div>
+    <div style="margin-top:16px"><button class="btn btn-gold" onclick="saveMorning()">Sabah Check-In Kaydet</button></div>
+  </div>
+  <div class="card">
+    <div class="card-title">📌 Bugünün Task'ları</div>
+    <div class="card-sub">Enerji skoruna göre WBS'den seçildi</div>
+    <div id="today-tasks"><div class="loading"><div class="spin"></div></div></div>
+    <div style="margin-top:10px"><button class="btn btn-ghost btn-sm" onclick="refreshTasks()">🔄 Yeni Task Öner</button></div>
+  </div>
+  <div class="card">
+    <div class="card-title">🌙 Akşam Check-In</div>
+    <div class="slbl">Öz Bakım</div>
+    <div class="ci" onclick="toggleCI(this,'teeth')"><div class="cb" data-key="teeth"></div><span class="cl">🦷 Diş fırçaladım</span></div>
+    <div class="ci" onclick="toggleCI(this,'shower')"><div class="cb" data-key="shower"></div><span class="cl">🚿 Duş aldım</span></div>
+    <div style="margin-top:14px">
+      <div class="slbl">Bugünün En İyi Şeyi</div>
+      <textarea class="ifield" id="win-of-day" rows="2" placeholder="Bugün iyi giden 1 şey..."></textarea>
+    </div>
+    <div style="margin-top:12px"><button class="btn btn-navy" onclick="saveEvening()">Akşam Check-In Kaydet</button></div>
+  </div>
+</div>
+
+<!-- ZİNCİRİ KIRMA -->
+<div id="tab-zincir" style="display:none">
+  <div class="zincir-hero">
+    <div class="zh-num" id="zh-streak">0</div>
+    <div class="zh-info">
+      <div class="zh-label">🔥 Aktif Streak</div>
+      <div class="zh-sub">Üst üste yapılan gün</div>
+      <div class="zh-record" id="zh-record">En uzun: 0 gün</div>
+    </div>
+  </div>
+  <div id="habit-list"><div class="loading"><div class="spin"></div></div></div>
+  <button class="btn btn-gold" onclick="showAddHabit()" style="margin-top:4px">+ Yeni Alışkanlık Ekle</button>
+</div>
+
+<!-- WBS -->
+<div id="tab-wbs" style="display:none">
+  <div class="card">
+    <div class="card-title">📋 WBS — Proje Task'ları</div>
+    <div id="overall-prog"></div>
+  </div>
+  <div id="wbs-content"><div class="loading"><div class="spin"></div></div></div>
+</div>
+
+<!-- SUPPLEMENT -->
+<div id="tab-supplement" style="display:none">
+  <div class="card">
+    <div class="card-title">💊 Supplement Protokolü</div>
+    <div class="wbox">⚠️ Yağlı kapsülleri (Omega-3, D3+K2, Resveratrol) asla aç karna alma. Mide bulantısında o dozu atla.</div>
+    <div id="suppl-content"></div>
+  </div>
+</div>
+
+<!-- KPI -->
+<div id="tab-kpi" style="display:none">
+  <div class="card">
+    <div class="card-title">📊 Haftalık KPI</div>
+    <div class="card-sub">%70 ve üzeri = başarılı hafta 🎉</div>
+    <div id="kpi-content"><div class="loading"><div class="spin"></div></div></div>
+  </div>
+  <div class="card">
+    <div class="card-title">📝 KPI Güncelle</div>
+    <div id="kpi-form"></div>
+    <button class="btn btn-navy" style="margin-top:14px" onclick="saveKPI()">KPI Kaydet</button>
+  </div>
+</div>
+
+<!-- AYARLAR -->
+<div id="tab-ayarlar" style="display:none">
+  <div class="card">
+    <div class="card-title">📱 Telegram Bildirimleri</div>
+    <div class="setup-step"><div class="snum">1</div><div class="stxt">Telegram'da <code>@BotFather</code> ara → tıkla.</div></div>
+    <div class="setup-step"><div class="snum">2</div><div class="stxt"><code>/newbot</code> yaz → isim ver → token al.</div></div>
+    <div class="setup-step"><div class="snum">3</div><div class="stxt">Bota mesaj at. Tarayıcıda şu URL'i aç: <code>https://api.telegram.org/bot[TOKEN]/getUpdates</code> → <code>"id"</code> değerini bul = Chat ID.</div></div>
+    <input class="ifield2" id="tg-token" placeholder="Bot Token">
+    <input class="ifield2" id="tg-chatid" placeholder="Chat ID">
+    <div style="display:flex;gap:10px;margin-top:12px">
+      <button class="btn btn-navy btn-sm" onclick="saveTG()" style="flex:1">Kaydet</button>
+      <button class="btn btn-ghost btn-sm" onclick="testTG()" style="flex:1">📨 Test</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">📅 40 Günlük Takvim</div>
+    <div style="font-size:13px;color:var(--gray);line-height:2">
+      🟢 <b>Faz 1:</b> 20 Şub – 2 Mar<br>
+      🟡 <b>Faz 2:</b> 3 – 17 Mar<br>
+      ✈️ <b>Türkiye:</b> 18 – 24 Mar<br>
+      🔵 <b>Faz 3:</b> 25 – 31 Mar
+    </div>
+    <div style="margin-top:12px;padding:10px;background:var(--gold-l);border-radius:8px;font-size:13px;color:var(--navy);font-weight:500">🎯 Hedef: Haftalık task'ların %70'ini tamamla.</div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<!-- ADD HABIT MODAL -->
+<div class="modal-bg" id="modal-bg" style="display:none" onclick="hideModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-title" id="modal-title">Yeni Alışkanlık</div>
+    <div class="slbl2">İkon Seç</div>
+    <div class="emoji-grid" id="emoji-grid"></div>
+    <div class="slbl2" style="margin-top:12px">Alışkanlık Adı</div>
+    <input class="ifield" id="habit-name" placeholder="örn: Meditasyon" style="margin-top:6px">
+    <div class="slbl2" style="margin-top:12px">Açıklama (isteğe bağlı)</div>
+    <input class="ifield" id="habit-desc" placeholder="örn: 10 dk sabah meditasyonu" style="margin-top:6px">
+    <div style="display:flex;gap:10px;margin-top:18px">
+      <button class="btn btn-gold" onclick="saveHabit()" style="flex:1" id="habit-save-btn">Kaydet</button>
+      <button class="btn btn-ghost btn-sm" onclick="hideModal()" style="flex:0.5">İptal</button>
+    </div>
+    <button class="btn btn-danger btn-sm" id="habit-delete-btn" style="margin-top:8px;display:none;width:100%" onclick="deleteHabit()">Alışkanlığı Sil</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SURL='https://ucwgkduvpnklfggleupb.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjd2drZHV2cG5rbGZnZ2xldXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MDE1NzcsImV4cCI6MjA4NzE3NzU3N30.AKBjKoYp2xie6qd19crJVMIJDFzmXPTqU2BTtFHnypw';
+const sb=supabase.createClient(SURL,SKEY);
+
+const TABS=['bugun','zincir','wbs','supplement','kpi','ayarlar'];
+const EMOJIS=['💧','💊','📖','📓','✨','🚿','🦷','🏃','🧘','🥗','🌿','💪','☕','🎯','📚','✍️','🎸','🖥️','🧹','💤'];
+const TODAY=new Date().toISOString().split('T')[0];
+
+let state={energy:0,mChecks:{water:0,affirmations:0,journaling:0,reading:0,supplement:0},eChecks:{teeth:0,shower:0}};
+let editingHabitId=null;
+let selectedEmoji=EMOJIS[0];
+
+// ── INIT ──
+window.addEventListener('DOMContentLoaded',async()=>{
+  setHeaderDate();
+  renderEnergyBtns();
+  renderSupplement();
+  renderKPIForm();
+  await loadTodayCheckin();
+  await loadTodayTasks();
+  await calcOverallStreak();
+});
+
+function setHeaderDate(){
+  const D=['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+  const M=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+  const n=new Date();
+  document.getElementById('hdr-date').textContent=D[n.getDay()]+', '+n.getDate()+' '+M[n.getMonth()];
+}
+
+function showTab(name){
+  TABS.forEach(t=>{
+    document.getElementById('tab-'+t).style.display=t===name?'block':'none';
+  });
+  document.querySelectorAll('.nb').forEach((b,i)=>b.classList.toggle('active',TABS[i]===name));
+  if(name==='zincir') loadHabits();
+  if(name==='wbs') loadWBS();
+  if(name==='supplement') renderSupplement();
+  if(name==='kpi') loadKPI();
+  if(name==='ayarlar') loadTGSettings();
+}
+
+// ── ENERGY ──
+function renderEnergyBtns(){
+  const w=document.getElementById('energy-btns');
+  for(let i=1;i<=10;i++){
+    const b=document.createElement('button');
+    b.className='ebtn';b.textContent=i;
+    b.onclick=()=>setEnergy(i);
+    w.appendChild(b);
+  }
+}
+function setEnergy(s){
+  state.energy=s;
+  document.querySelectorAll('.ebtn').forEach((b,i)=>b.classList.toggle('active',i+1===s));
+}
+
+// ── CHECKIN ITEMS ──
+function toggleCI(el,key){
+  const box=el.querySelector('.cb');
+  const lbl=el.querySelector('.cl');
+  const done=box.classList.contains('done');
+  if(done){box.classList.remove('done');box.textContent='';lbl.classList.remove('done');
+    if(key in state.mChecks)state.mChecks[key]=0;else state.eChecks[key]=0;
+  }else{box.classList.add('done');box.textContent='✓';lbl.classList.add('done');
+    if(key in state.mChecks)state.mChecks[key]=1;else state.eChecks[key]=1;
+  }
+}
+
+// ── LOAD TODAY ──
+async function loadTodayCheckin(){
+  const{data}=await sb.from('daily_checkins').select('*').eq('date',TODAY);
+  if(!data||!data.length)return;
+  const m=data.find(d=>d.type==='morning');
+  if(m){
+    document.getElementById('morning-card').style.display='none';
+    document.getElementById('cel-morning').style.display='block';
+    state.energy=m.energy_score||0;
+  }
+  const e=data.find(d=>d.type==='evening');
+  if(e&&e.win_of_day)document.getElementById('win-of-day').value=e.win_of_day;
+}
+
+// ── SAVE MORNING ──
+async function saveMorning(){
+  if(!state.energy){toast('Enerji skorunu seç!');return;}
+  const{error}=await sb.from('daily_checkins').upsert({
+    date:TODAY,type:'morning',energy_score:state.energy,
+    water_done:state.mChecks.water,affirmations_done:state.mChecks.affirmations,
+    journaling_done:state.mChecks.journaling,reading_done:state.mChecks.reading,
+    supplement_done:state.mChecks.supplement
+  },{onConflict:'date,type'});
+  if(error){toast('Hata: '+error.message);return;}
+  toast('Sabah check-in kaydedildi!');
+  document.getElementById('morning-card').style.display='none';
+  document.getElementById('cel-morning').style.display='block';
+  await loadTodayTasks(state.energy);
+  await calcOverallStreak();
+  sendTG('Sabah check-in tamam! Enerji: '+state.energy+'/10');
+}
+
+// ── SAVE EVENING ──
+async function saveEvening(){
+  const win=document.getElementById('win-of-day').value;
+  const{error}=await sb.from('daily_checkins').upsert({
+    date:TODAY,type:'evening',
+    teeth_done:state.eChecks.teeth,shower_done:state.eChecks.shower,win_of_day:win
+  },{onConflict:'date,type'});
+  if(error){toast('Hata: '+error.message);return;}
+  toast('Aksam check-in kaydedildi!');
+  sendTG('Aksam check-in tamam! Bugunun iyi seyi: '+(win||'—'));
+}
+
+// ── TODAY TASKS ──
+async function loadTodayTasks(energyScore){
+  const score=energyScore||state.energy||5;
+  const{data:ex}=await sb.from('daily_tasks').select('*, wbs_microtasks(title, wbs_tasks(title, wbs_categories(label)))').eq('date',TODAY);
+  if(ex&&ex.length){renderTasks(ex);return;}
+  const count=score<=4?1:2;
+  const{data:mts}=await sb.from('wbs_microtasks').select('*, wbs_tasks(title, wbs_categories(label))').eq('is_completed',false).limit(count*3);
+  if(!mts||!mts.length){document.getElementById('today-tasks').innerHTML='<div class="empty"><div class="empty-icon">🎉</div>Tüm tasklar tamamlandi!</div>';return;}
+  for(const mt of mts.slice(0,count)) await sb.from('daily_tasks').insert({date:TODAY,microtask_id:mt.id,status:'pending'});
+  const{data:newT}=await sb.from('daily_tasks').select('*, wbs_microtasks(title, wbs_tasks(title, wbs_categories(label)))').eq('date',TODAY);
+  renderTasks(newT||[]);
+}
+
+async function refreshTasks(){
+  await sb.from('daily_tasks').delete().eq('date',TODAY);
+  await loadTodayTasks(state.energy);
+}
+
+function renderTasks(tasks){
+  const el=document.getElementById('today-tasks');
+  if(!tasks.length){el.innerHTML='<div class="empty"><div class="empty-icon">📌</div>Önce sabah check-in yap</div>';return;}
+  let h='';
+  tasks.forEach(t=>{
+    const done=t.status==='done';
+    const partial=t.status==='partial';
+    const badgeCls=done?'badge bd':partial?'badge bpa':'badge bp';
+    const badgeTxt=done?'✓ Bitti':partial?'~ Kısmen':'Bekliyor';
+    const title=(t.wbs_microtasks&&t.wbs_microtasks.title)||'—';
+    const cat=((t.wbs_microtasks&&t.wbs_microtasks.wbs_tasks&&t.wbs_microtasks.wbs_tasks.wbs_categories&&t.wbs_microtasks.wbs_tasks.wbs_categories.label)||'');
+    h+='<div class="tt'+(done?' done':'')+'" onclick="cycleTask(\''+t.id+'\',\''+t.status+'\')">'
+      +'<div class="ttc'+(done?' done':'')+'">'+( done?'✓':'')+'</div>'
+      +'<div class="ttin"><div class="tttl">'+title+'</div><div class="ttcat">'+cat+'</div></div>'
+      +'<span class="'+badgeCls+'">'+badgeTxt+'</span></div>';
+  });
+  el.innerHTML=h;
+}
+
+async function cycleTask(id,status){
+  const next=status==='pending'?'done':status==='done'?'partial':'pending';
+  await sb.from('daily_tasks').update({status:next}).eq('id',id);
+  if(next==='done'){
+    const t=await sb.from('daily_tasks').select('microtask_id').eq('id',id).single();
+    if(t.data&&t.data.microtask_id) await sb.from('wbs_microtasks').update({is_completed:true,completed_at:new Date().toISOString()}).eq('id',t.data.microtask_id);
+    toast('Task tamamlandi!');
+  }
+  const{data}=await sb.from('daily_tasks').select('*, wbs_microtasks(title, wbs_tasks(title, wbs_categories(label)))').eq('date',TODAY);
+  renderTasks(data||[]);
+}
+
+// ── ZİNCİRİ KIRMA ──
+async function loadHabits(){
+  document.getElementById('habit-list').innerHTML='<div class="loading"><div class="spin"></div></div>';
+  
+  // Ensure default habits exist
+  await ensureDefaultHabits();
+  
+  const{data:habits}=await sb.from('habits').select('*').order('sort_order');
+  if(!habits||!habits.length){
+    document.getElementById('habit-list').innerHTML='<div class="empty"><div class="empty-icon">🌱</div>Henüz aliskanlik yok.<br>Yukardaki butona tıkla!</div>';
+    return;
+  }
+
+  // Load last 21 days of completions for all habits
+  const start=new Date();start.setDate(start.getDate()-20);
+  const startStr=start.toISOString().split('T')[0];
+  const{data:logs}=await sb.from('habit_logs').select('*').gte('date',startStr);
+
+  let html='';
+  let totalStreak=0;
+  let longestOverall=0;
+
+  for(const h of habits){
+    const hLogs=(logs||[]).filter(l=>l.habit_id===h.id);
+    const{streak,longest,days}=calcHabitStats(hLogs);
+    totalStreak+=streak;
+    if(longest>longestOverall)longestOverall=longest;
+    const todayDone=days[TODAY]||false;
+    html+=renderHabitCard(h,streak,longest,days,todayDone);
+  }
+
+  document.getElementById('habit-list').innerHTML=html;
+  
+  const avg=habits.length>0?Math.round(totalStreak/habits.length):0;
+  document.getElementById('zh-streak').textContent=avg;
+  document.getElementById('zh-record').textContent='En uzun: '+longestOverall+' gün';
+  document.getElementById('hdr-streak').textContent='🔥 '+avg+' gün';
+}
+
+async function ensureDefaultHabits(){
+  const{data}=await sb.from('habits').select('id').limit(1);
+  if(data&&data.length)return;
+  const defaults=[
+    {icon:'💧',name:'Su — 2.5L',description:'Günlük hedef',sort_order:1},
+    {icon:'💊',name:'Supplement',description:'Sabah protokolü',sort_order:2},
+    {icon:'✨',name:'Affirmations',description:'Sesli okuma',sort_order:3},
+    {icon:'📓',name:'Journaling',description:'3 şükran + niyet',sort_order:4},
+    {icon:'📖',name:'Hollandaca Okuma',description:'15 dk',sort_order:5},
+    {icon:'🦷',name:'Diş Fırçalama',description:'Sabah + akşam',sort_order:6},
+    {icon:'🚿',name:'Duş',description:'Haftada min 3',sort_order:7},
+  ];
+  for(const d of defaults) await sb.from('habits').insert(d);
+}
+
+function calcHabitStats(logs){
+  const days={};
+  logs.forEach(l=>days[l.date]=true);
+  
+  // Current streak
+  let streak=0;
+  const d=new Date();
+  while(true){
+    const ds=d.toISOString().split('T')[0];
+    if(days[ds]){streak++;d.setDate(d.getDate()-1);}
+    else break;
+  }
+  
+  // Longest streak
+  const allDates=Object.keys(days).sort();
+  let longest=0,cur=0,prev=null;
+  allDates.forEach(ds=>{
+    if(prev){
+      const diff=(new Date(ds)-new Date(prev))/(1000*86400);
+      if(diff===1){cur++;}else{cur=1;}
+    }else{cur=1;}
+    if(cur>longest)longest=cur;
+    prev=ds;
+  });
+  
+  return{streak,longest,days};
+}
+
+function renderHabitCard(h,streak,longest,days,todayDone){
+  // Generate last 21 days
+  const calDays=[];
+  const DAY_LABELS=['Pz','Pt','Sa','Ça','Pe','Cu','Ct'];
+  for(let i=20;i>=0;i--){
+    const d=new Date();d.setDate(d.getDate()-i);
+    const ds=d.toISOString().split('T')[0];
+    const isToday=ds===TODAY;
+    const isFuture=ds>TODAY;
+    const done=days[ds]||false;
+    let cls='cal-box';
+    if(done)cls+=' done';
+    if(isToday)cls+=' today';
+    if(isFuture)cls+=' future';
+    const icon=done?'✓':(isFuture?'':'');
+    calDays.push('<div class="cal-day"><div class="'+cls+'" style="font-size:'+(done?'14':'12')+'px">'+icon+'</div><div class="cal-lbl'+(isToday?' today':'')+'">'+DAY_LABELS[d.getDay()]+'</div></div>');
+  }
+  
+  const tickCls='tick-btn'+(todayDone?' done':'');
+  const tickIcon=todayDone?'✓':'○';
+  
+  return '<div class="habit-card">'
+    +'<div class="hc-top">'
+    +'<div class="hc-icon">'+h.icon+'</div>'
+    +'<div class="hc-info"><div class="hc-name">'+h.name+'</div><div class="hc-sub">'+(h.description||'')+'</div></div>'
+    +'<div class="hc-right"><div class="hc-streak">'+streak+'</div><div class="hc-slbl">streak</div></div>'
+    +'<button class="'+tickCls+'" onclick="tickHabit(\''+h.id+'\','+todayDone+')">'+tickIcon+'</button>'
+    +'<button class="tick-btn" style="border-color:var(--gray-l);color:var(--gray);font-size:13px;width:32px;height:32px" onclick="editHabit(\''+h.id+'\',\''+h.icon+'\',\''+h.name+'\',\''+( h.description||'')+'\')">✏️</button>'
+    +'</div>'
+    +'<div class="cal-wrap"><div class="cal-row">'+calDays.join('')+'</div></div>'
+    +'<div class="hc-best">🏆 En uzun streak: '+longest+' gün</div>'
+    +'</div>';
+}
+
+async function tickHabit(habitId,isDone){
+  if(isDone){
+    await sb.from('habit_logs').delete().eq('habit_id',habitId).eq('date',TODAY);
+    toast('Gün iptal edildi');
+  }else{
+    await sb.from('habit_logs').upsert({habit_id:habitId,date:TODAY},{onConflict:'habit_id,date'});
+    toast('Harika! Zincir devam ediyor 🔥');
+  }
+  await loadHabits();
+}
+
+// ── ADD/EDIT HABIT ──
+function showAddHabit(){
+  editingHabitId=null;
+  selectedEmoji=EMOJIS[0];
+  document.getElementById('modal-title').textContent='Yeni Alışkanlık';
+  document.getElementById('habit-name').value='';
+  document.getElementById('habit-desc').value='';
+  document.getElementById('habit-delete-btn').style.display='none';
+  document.getElementById('habit-save-btn').textContent='Kaydet';
+  renderEmojiGrid();
+  document.getElementById('modal-bg').style.display='flex';
+}
+
+function editHabit(id,icon,name,desc){
+  editingHabitId=id;
+  selectedEmoji=icon;
+  document.getElementById('modal-title').textContent='Alışkanlığı Düzenle';
+  document.getElementById('habit-name').value=name;
+  document.getElementById('habit-desc').value=desc;
+  document.getElementById('habit-delete-btn').style.display='block';
+  document.getElementById('habit-save-btn').textContent='Güncelle';
+  renderEmojiGrid();
+  document.getElementById('modal-bg').style.display='flex';
+}
+
+function renderEmojiGrid(){
+  const g=document.getElementById('emoji-grid');
+  g.innerHTML=EMOJIS.map(e=>'<button class="eg-btn'+(e===selectedEmoji?' active':'')+'" onclick="selectEmoji(\''+e+'\')">'+e+'</button>').join('');
+}
+
+function selectEmoji(e){
+  selectedEmoji=e;
+  renderEmojiGrid();
+}
+
+function hideModal(ev){
+  if(ev&&ev.target!==document.getElementById('modal-bg'))return;
+  document.getElementById('modal-bg').style.display='none';
+}
+
+async function saveHabit(){
+  const name=document.getElementById('habit-name').value.trim();
+  if(!name){toast('Alışkanlık adı gir!');return;}
+  const desc=document.getElementById('habit-desc').value.trim();
+  if(editingHabitId){
+    await sb.from('habits').update({icon:selectedEmoji,name,description:desc}).eq('id',editingHabitId);
+    toast('Güncellendi!');
+  }else{
+    const{data:existing}=await sb.from('habits').select('sort_order').order('sort_order',{ascending:false}).limit(1);
+    const nextOrder=(existing&&existing.length?existing[0].sort_order:0)+1;
+    await sb.from('habits').insert({icon:selectedEmoji,name,description:desc,sort_order:nextOrder});
+    toast('Yeni alışkanlık eklendi!');
+  }
+  document.getElementById('modal-bg').style.display='none';
+  await loadHabits();
+}
+
+async function deleteHabit(){
+  if(!editingHabitId)return;
+  if(!confirm('Bu alışkanlığı silmek istediğine emin misin? Tüm geçmiş veriler de silinir.'))return;
+  await sb.from('habit_logs').delete().eq('habit_id',editingHabitId);
+  await sb.from('habits').delete().eq('id',editingHabitId);
+  document.getElementById('modal-bg').style.display='none';
+  toast('Alışkanlık silindi');
+  await loadHabits();
+}
+
+// ── OVERALL STREAK ──
+async function calcOverallStreak(){
+  const{data}=await sb.from('daily_checkins').select('date').eq('type','morning').order('date',{ascending:false}).limit(60);
+  if(!data||!data.length){document.getElementById('hdr-streak').textContent='🔥 0 gün';return;}
+  let streak=0;
+  const base=new Date();base.setHours(0,0,0,0);
+  const dates=data.map(d=>d.date);
+  for(let i=0;i<dates.length;i++){
+    const exp=new Date(base);exp.setDate(base.getDate()-i);
+    if(dates[i]===exp.toISOString().split('T')[0])streak++;
+    else break;
+  }
+  document.getElementById('hdr-streak').textContent='🔥 '+streak+' gün';
+}
+
+// ── WBS ──
+async function loadWBS(){
+  const{data:cats}=await sb.from('wbs_categories').select('*, wbs_tasks(*, wbs_microtasks(*))').order('sort_order');
+  if(!cats)return;
+  let total=0,done=0;
+  cats.forEach(c=>c.wbs_tasks.forEach(t=>(t.wbs_microtasks||[]).forEach(m=>{total++;if(m.is_completed)done++;})));
+  const pct=total?Math.round(done/total*100):0;
+  document.getElementById('overall-prog').innerHTML='<div class="pbw"><div class="pbf" style="width:'+pct+'%"></div></div><div class="plbl"><span>Genel ilerleme</span><span>'+done+'/'+total+' (%'+pct+')</span></div>';
+  
+  let html='';
+  cats.forEach(cat=>{
+    const tasks=cat.wbs_tasks||[];
+    let ct=0,cd=0;
+    tasks.forEach(t=>(t.wbs_microtasks||[]).forEach(m=>{ct++;if(m.is_completed)cd++;}));
+    const cp=ct?Math.round(cd/ct*100):0;
+    let tasksH='';
+    tasks.forEach(task=>{
+      const micros=task.wbs_microtasks||[];
+      const allDone=micros.length>0&&micros.every(m=>m.is_completed);
+      let mtH='';
+      micros.forEach(m=>{
+        mtH+='<div class="mt-item" onclick="toggleMicro(\''+m.id+'\','+m.is_completed+')">'
+          +'<div class="mtc'+(m.is_completed?' done':'')+'">'+( m.is_completed?'✓':'')+'</div>'
+          +'<span class="mtl'+(m.is_completed?' done':'')+'">'+m.title+'</span></div>';
+      });
+      tasksH+='<div class="tg"><div class="tt-wbs'+(allDone?' done':'')+'"><span>'+(allDone?'✅':'○')+'</span>'+task.title+'</div>'+mtH+'</div>';
+    });
+    html+='<div class="card"><div class="cat-hdr" onclick="toggleCat(\'c'+cat.id+'\')">'
+      +'<div class="cat-title">'+cat.label+'</div>'
+      +'<div class="cat-prog">'+cd+'/'+ct+' · %'+cp+'</div></div>'
+      +'<div class="pbw"><div class="pbf" style="width:'+cp+'%"></div></div>'
+      +'<div id="c'+cat.id+'" style="margin-top:10px">'+tasksH+'</div></div>';
+  });
+  document.getElementById('wbs-content').innerHTML=html;
+}
+
+function toggleCat(id){
+  const el=document.getElementById(id);
+  el.style.display=el.style.display==='none'?'block':'none';
+}
+
+async function toggleMicro(id,cur){
+  const nv=!cur;
+  await sb.from('wbs_microtasks').update({is_completed:nv,completed_at:nv?new Date().toISOString():null}).eq('id',id);
+  if(nv)toast('Tamamlandi!');
+  await loadWBS();
+}
+
+// ── SUPPLEMENT ──
+function renderSupplement(){
+  const day=new Date().getDay();
+  const dayMap={1:'pzt',2:'pzt',3:'pzt',4:'inj',5:'fri',6:'sat',0:'sun'};
+  const type=dayMap[day];
+  const isInj=type==='inj',isFri=type==='fri';
+  
+  const plans={
+    pzt:[
+      {t:'Sabah (yemekle)',i:'D3+K2, Omega-3, B-Complex, Resveratrol',n:'Yağlı kapsüller — mutlaka yemekle'},
+      {t:'Ara öğün',i:'Kolajen + C vitamini',n:''},
+      {t:'Öğlen',i:'Creatine 3g',n:'Büyük bardak suyla'},
+      {t:'Akşam',i:'Magnesium + Zinc',n:'Akşam yemeğiyle'}
+    ],
+    inj:[
+      {t:'Sabah',i:'D3+K2, Omega-3, B-Complex',n:'⚠️ Resveratrol isteğe bağlı'},
+      {t:'Gün içi',i:'Kolajen (hafif öğünle)',n:'Creatine mide sorun yoksa'},
+      {t:'Akşam',i:'Enjeksiyon + Magnesium',n:'Zinc atlanabilir'}
+    ],
+    fri:[
+      {t:'Sabah',i:'D3+K2, Omega-3, B-Complex',n:'🔴 En hassas gün — supplement opsiyonel'},
+      {t:'Öğlen',i:'Creatine (kaydırılmış)',n:'Küçük porsiyon'},
+      {t:'Akşam',i:'Magnesium',n:'Zinc atla'},
+      {t:'Tüm gün',i:'Su + elektrolit artır',n:'Ağır antrenman yapma'}
+    ],
+    sat:[
+      {t:'Sabah',i:'D3+K2, Omega-3, B-Complex',n:'Küçük öğünle'},
+      {t:'Gün içi',i:'Kolajen + Creatine',n:'Bölerek al'},
+      {t:'Akşam',i:'Magnesium + Zinc',n:''}
+    ],
+    sun:[
+      {t:'Sabah (yemekle)',i:'D3+K2, Omega-3, B-Complex, Resveratrol',n:''},
+      {t:'Ara öğün',i:'Kolajen + C vitamini',n:''},
+      {t:'Öğlen',i:'Creatine 3g',n:''},
+      {t:'Akşam',i:'Magnesium + Zinc',n:''}
+    ]
+  };
+  
+  const dayNames=['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+  const typeLabel=isInj?'Enjeksiyon Günü ⚠️':isFri?'En Hassas Gün 🔴':'Stabil Gün ✅';
+  const items=plans[type];
+  let h='<div class="sday">'+dayNames[day]+' — '+typeLabel+'</div>';
+  items.forEach(it=>{
+    h+='<div class="srow"><div class="stime">'+it.t+'</div><div><div class="sitems">'+it.i+'</div>'+(it.n?'<div class="snote">'+it.n+'</div>':'')+'</div></div>';
+  });
+  document.getElementById('suppl-content').innerHTML=h;
+}
+
+// ── KPI ──
+async function loadKPI(){
+  const mon=getMonday();
+  const{data}=await sb.from('weekly_kpi').select('*').eq('week_start',mon).single();
+  if(!data){document.getElementById('kpi-content').innerHTML='<div class="empty"><div class="empty-icon">📊</div>Bu hafta henüz KPI girilmedi.</div>';return;}
+  const s=data.microtask_completion_pct||0;
+  const win=s>=70;
+  document.getElementById('kpi-content').innerHTML=(win?'<div class="celebrate" style="margin-bottom:12px"><div class="cel-icon">🎉</div><div class="cel-title">Başarılı Hafta!</div><div class="cel-txt">%'+s+' tamamlandi</div></div>':'')+
+    '<div class="kpi-grid">'
+    +'<div class="kpi-card"><div class="kpi-val">%'+s+'</div><div class="kpi-lbl">Task Tamamlama</div><div class="kpi-tgt">≥%70</div></div>'
+    +'<div class="kpi-card"><div class="kpi-val">'+(data.water_days||0)+'/7</div><div class="kpi-lbl">Su 2.5L Günleri</div><div class="kpi-tgt">7/7</div></div>'
+    +'<div class="kpi-card"><div class="kpi-val">%'+(data.supplement_pct||0)+'</div><div class="kpi-lbl">Supplement</div><div class="kpi-tgt">≥%80</div></div>'
+    +'<div class="kpi-card"><div class="kpi-val">'+(data.reels_published||0)+'</div><div class="kpi-lbl">Reels</div><div class="kpi-tgt">3/hafta</div></div>'
+    +'<div class="kpi-card"><div class="kpi-val">'+(data.ig_reach_change||0)+'%</div><div class="kpi-lbl">IG Reach</div><div class="kpi-tgt">>%20 artış</div></div>'
+    +'<div class="kpi-card"><div class="kpi-val">'+(data.ig_saves||0)+'</div><div class="kpi-lbl">IG Saves</div><div class="kpi-tgt">↑ her hafta</div></div>'
+    +'<div class="kpi-card"><div class="kpi-val">'+(data.energy_avg||0)+'</div><div class="kpi-lbl">Enerji Ort.</div><div class="kpi-tgt">≥6</div></div>'
+    +'<div class="kpi-card"><div class="kpi-val">%'+(data.habit_compliance_pct||0)+'</div><div class="kpi-lbl">Rutin Uyum</div><div class="kpi-tgt">≥%70</div></div>'
+    +'</div>';
+}
+
+function renderKPIForm(){
+  const fields=[
+    {id:'kf-task',l:'Task Tamamlama %'},{id:'kf-water',l:'Su 2.5L Günleri (0-7)'},
+    {id:'kf-suppl',l:'Supplement Uyum %'},{id:'kf-reels',l:'Reels Sayısı'},
+    {id:'kf-reach',l:'IG Reach Artışı %'},{id:'kf-saves',l:'IG Saves'},
+    {id:'kf-energy',l:'Enerji Ortalaması (1-10)'},{id:'kf-habit',l:'Rutin Uyum %'}
+  ];
+  document.getElementById('kpi-form').innerHTML=fields.map(f=>'<div style="margin-bottom:9px"><div style="font-size:12px;color:var(--gray);font-weight:600;margin-bottom:3px">'+f.l+'</div><input type="number" id="'+f.id+'" class="ifield" style="margin-top:0"></div>').join('');
+}
+
+async function saveKPI(){
+  const mon=getMonday();
+  const g=id=>+(document.getElementById(id).value||0);
+  await sb.from('weekly_kpi').upsert({
+    week_start:mon,microtask_completion_pct:g('kf-task'),water_days:g('kf-water'),
+    supplement_pct:g('kf-suppl'),reels_published:g('kf-reels'),ig_reach_change:g('kf-reach'),
+    ig_saves:g('kf-saves'),energy_avg:g('kf-energy'),habit_compliance_pct:g('kf-habit')
+  },{onConflict:'week_start'});
+  toast('KPI kaydedildi!');
+  await loadKPI();
+}
+
+// ── TELEGRAM ──
+async function loadTGSettings(){
+  const{data}=await sb.from('notification_settings').select('*').limit(1).single().catch(()=>({data:null}));
+  if(data){
+    if(data.telegram_bot_token)document.getElementById('tg-token').value=data.telegram_bot_token;
+    if(data.telegram_chat_id)document.getElementById('tg-chatid').value=data.telegram_chat_id;
+  }
+}
+
+async function saveTG(){
+  const token=document.getElementById('tg-token').value.trim();
+  const chatId=document.getElementById('tg-chatid').value.trim();
+  if(!token||!chatId){toast('Token ve Chat ID gerekli!');return;}
+  const{data:ex}=await sb.from('notification_settings').select('id').limit(1).single().catch(()=>({data:null}));
+  if(ex){await sb.from('notification_settings').update({telegram_bot_token:token,telegram_chat_id:chatId}).eq('id',ex.id);}
+  else{await sb.from('notification_settings').insert({telegram_bot_token:token,telegram_chat_id:chatId});}
+  toast('Telegram kaydedildi!');
+}
+
+async function testTG(){
+  const token=document.getElementById('tg-token').value.trim();
+  const chatId=document.getElementById('tg-chatid').value.trim();
+  if(!token||!chatId){toast('Önce token ve Chat ID gir!');return;}
+  try{
+    const r=await fetch('https://api.telegram.org/bot'+token+'/sendMessage',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({chat_id:chatId,text:'Lock-In 2025 baglantisi kuruldu! Bildirimler aktif.'})
+    });
+    const d=await r.json();
+    toast(d.ok?'Test mesaji gonderildi!':'Hata: '+d.description);
+  }catch(e){toast('Baglanti hatasi');}
+}
+
+async function sendTG(text){
+  try{
+    const{data}=await sb.from('notification_settings').select('*').limit(1).single().catch(()=>({data:null}));
+    if(!data||!data.telegram_bot_token)return;
+    await fetch('https://api.telegram.org/bot'+data.telegram_bot_token+'/sendMessage',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({chat_id:data.telegram_chat_id,text})
+    });
+  }catch(e){}
+}
+
+// ── UTILS ──
+function getMonday(){
+  const d=new Date();const day=d.getDay();
+  const diff=d.getDate()-day+(day===0?-6:1);
+  d.setDate(diff);return d.toISOString().split('T')[0];
+}
+
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+</script>
+</body>
+</html>
