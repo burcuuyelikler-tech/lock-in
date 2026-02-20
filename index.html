@@ -10,23 +10,27 @@
 :root{--navy:#1B2A4A;--navy2:#243560;--gold:#B8962E;--gold-l:#F5EDD6;--cream:#FAF8F3;--white:#fff;--gray:#6B7280;--gray-l:#F3F4F6;--green:#2D6A2D;--green-l:#EAF4EA;--warn:#FFF3CD;--warn-fg:#7D5A00;--r:16px;--rs:10px;--sh:0 4px 24px rgba(27,42,74,.10)}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);min-height:100vh}
-/* HEADER */
-.hdr{background:var(--navy);padding:18px 20px 14px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between}
-.hdr-title{font-family:'Playfair Display',serif;color:var(--gold);font-size:21px;font-weight:700}
-.hdr-date{color:rgba(255,255,255,.45);font-size:12px;margin-top:2px}
-.hdr-streak{background:var(--gold);color:var(--navy);border-radius:20px;padding:5px 13px;font-size:13px;font-weight:600}
-/* NAV */
-.nav{background:var(--white);border-bottom:1px solid rgba(27,42,74,.08);display:flex;overflow-x:auto;scrollbar-width:none;position:sticky;top:62px;z-index:99}
+.hdr{background:var(--navy);padding:16px 20px 12px;position:sticky;top:0;z-index:100}
+.hdr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.hdr-title{font-family:'Playfair Display',serif;color:var(--gold);font-size:20px;font-weight:700}
+.hdr-streak{background:var(--gold);color:var(--navy);border-radius:20px;padding:4px 12px;font-size:13px;font-weight:600}
+.hdr-info{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.hdr-date{color:rgba(255,255,255,.5);font-size:12px}
+.hdr-countdown{background:rgba(255,255,255,.1);border-radius:8px;padding:6px 12px;display:flex;align-items:center;gap:10px}
+.hdr-days{color:var(--gold);font-family:'Playfair Display',serif;font-size:18px;font-weight:700;line-height:1}
+.hdr-days-lbl{color:rgba(255,255,255,.6);font-size:10px;margin-top:1px}
+.hdr-prog-wrap{flex:1;max-width:120px}
+.hdr-prog-lbl{color:rgba(255,255,255,.5);font-size:10px;margin-bottom:3px;text-align:right}
+.hdr-prog-bar{background:rgba(255,255,255,.15);border-radius:99px;height:5px;overflow:hidden}
+.hdr-prog-fill{height:100%;background:var(--gold);border-radius:99px;transition:width .5s}
+.nav{background:var(--white);border-bottom:1px solid rgba(27,42,74,.08);display:flex;overflow-x:auto;scrollbar-width:none;position:sticky;top:95px;z-index:99}
 .nav::-webkit-scrollbar{display:none}
 .nb{padding:13px 16px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:var(--gray);border:none;background:none;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s}
 .nb.active{color:var(--navy);border-bottom-color:var(--gold);font-weight:600}
-/* MAIN */
 .main{padding:18px 16px 120px;max-width:600px;margin:0 auto}
-/* CARD */
 .card{background:var(--white);border-radius:var(--r);padding:20px;margin-bottom:14px;box-shadow:var(--sh)}
 .card-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:4px}
 .card-sub{font-size:12px;color:var(--gray);margin-bottom:14px}
-/* CHECKIN */
 .slbl{font-size:11px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin:16px 0 8px}
 .energy-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:4px}
 .ebtn{width:40px;height:40px;border-radius:50%;border:2px solid var(--gray-l);background:var(--white);font-size:13px;font-weight:600;color:var(--gray);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
@@ -37,14 +41,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
 .cb.done{background:var(--green);border-color:var(--green);color:#fff}
 .cl{font-size:14px;flex:1}
 .cl.done{color:var(--gray);text-decoration:line-through}
-/* BUTTONS */
 .btn{padding:13px 20px;border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s;display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%}
 .btn-gold{background:var(--gold);color:var(--navy)}
 .btn-navy{background:var(--navy);color:#fff}
 .btn-ghost{background:var(--gray-l);color:var(--navy)}
+.btn-green{background:var(--green-l);color:var(--green)}
 .btn-sm{padding:8px 14px;font-size:13px;border-radius:8px;width:auto}
 .btn-danger{background:var(--warn);color:var(--warn-fg);width:auto}
-/* TODAY TASKS */
 .tt{display:flex;align-items:center;gap:12px;padding:13px;background:var(--cream);border-radius:var(--rs);margin-bottom:9px;cursor:pointer;border:1.5px solid transparent;transition:all .2s}
 .tt:hover{border-color:var(--gold-l)}
 .tt.done{opacity:.55}
@@ -57,11 +60,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
 .bp{background:var(--gray-l);color:var(--gray)}
 .bd{background:var(--green-l);color:var(--green)}
 .bpa{background:var(--warn);color:var(--warn-fg)}
-/* PROGRESS */
 .pbw{background:var(--gray-l);border-radius:99px;height:7px;overflow:hidden;margin:8px 0 3px}
 .pbf{height:100%;background:linear-gradient(90deg,var(--gold),var(--navy));border-radius:99px;transition:width .5s}
 .plbl{font-size:12px;color:var(--gray);display:flex;justify-content:space-between}
-/* WBS */
 .cat-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 0 8px;cursor:pointer}
 .cat-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;display:flex;align-items:center;gap:7px}
 .cat-prog{font-size:12px;color:var(--gray);background:var(--gray-l);padding:3px 9px;border-radius:20px}
@@ -74,7 +75,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
 .mtc.done{background:var(--gold);border-color:var(--gold);color:#fff}
 .mtl{font-size:13px;color:var(--navy);flex:1}
 .mtl.done{color:var(--gray);text-decoration:line-through}
-/* SUPPLEMENT */
 .sday{background:var(--navy);color:#fff;border-radius:var(--rs);padding:11px 15px;margin-bottom:11px;font-size:14px;font-weight:600}
 .srow{display:flex;align-items:flex-start;gap:11px;padding:9px 0;border-bottom:1px solid var(--gray-l)}
 .srow:last-child{border-bottom:none}
@@ -82,51 +82,66 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
 .sitems{font-size:13px;flex:1}
 .snote{font-size:11px;color:var(--gray);margin-top:2px}
 .wbox{background:var(--warn);border-left:4px solid var(--gold);border-radius:var(--rs);padding:11px 14px;margin-bottom:14px;font-size:13px;color:var(--warn-fg)}
-/* KPI */
 .kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
 .kpi-card{background:var(--cream);border-radius:var(--rs);padding:14px;border:1px solid rgba(27,42,74,.08)}
 .kpi-val{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--navy)}
 .kpi-lbl{font-size:12px;color:var(--gray);margin-top:3px}
 .kpi-tgt{font-size:11px;color:var(--gold);font-weight:600;margin-top:2px}
 /* ZINCIR */
-.zincir-hero{background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:var(--r);padding:24px 20px;margin-bottom:14px;display:flex;align-items:center;gap:20px}
-.zh-num{font-family:'Playfair Display',serif;font-size:64px;font-weight:700;color:var(--gold);line-height:1}
+.zincir-hero{background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:var(--r);padding:22px 20px;margin-bottom:14px;display:flex;align-items:center;gap:20px}
+.zh-num{font-family:'Playfair Display',serif;font-size:60px;font-weight:700;color:var(--gold);line-height:1}
 .zh-info{flex:1}
-.zh-label{color:#fff;font-size:17px;font-weight:600}
-.zh-sub{color:rgba(255,255,255,.5);font-size:13px;margin-top:4px}
+.zh-label{color:#fff;font-size:16px;font-weight:600}
+.zh-sub{color:rgba(255,255,255,.5);font-size:12px;margin-top:4px}
 .zh-record{color:var(--gold-l);font-size:13px;margin-top:8px;font-weight:500}
 .habit-card{background:var(--white);border-radius:var(--r);padding:18px;margin-bottom:12px;box-shadow:var(--sh)}
 .hc-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-.hc-icon{font-size:26px;width:40px;text-align:center}
+.hc-icon{font-size:24px;width:38px;text-align:center}
 .hc-info{flex:1}
 .hc-name{font-size:15px;font-weight:600}
 .hc-sub{font-size:12px;color:var(--gray);margin-top:2px}
 .hc-right{text-align:right}
-.hc-streak{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--gold);line-height:1}
+.hc-streak{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--gold);line-height:1}
 .hc-slbl{font-size:10px;color:var(--gray);margin-top:1px}
-.tick-btn{width:40px;height:40px;min-width:40px;border-radius:50%;border:2px solid var(--gray-l);background:var(--white);font-size:19px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;margin-left:8px}
+.tick-btn{width:38px;height:38px;min-width:38px;border-radius:50%;border:2px solid var(--gray-l);background:var(--white);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;margin-left:6px}
 .tick-btn.done{background:var(--green);border-color:var(--green);color:#fff}
-/* CALENDAR CHAIN */
 .cal-wrap{overflow-x:auto;padding-bottom:4px}
 .cal-row{display:flex;gap:4px;min-width:max-content}
 .cal-day{width:34px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:3px}
 .cal-box{width:34px;height:34px;border-radius:8px;border:1.5px solid var(--gray-l);display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;background:var(--white)}
-.cal-box.done{background:var(--gold);border-color:var(--gold)}
+.cal-box.done{background:var(--gold);border-color:var(--gold);color:#fff}
 .cal-box.today{border-color:var(--navy);border-width:2px}
 .cal-box.today.done{background:var(--navy);border-color:var(--navy)}
 .cal-box.future{background:var(--gray-l);border-color:var(--gray-l)}
 .cal-lbl{font-size:9px;color:var(--gray);font-weight:600}
 .cal-lbl.today{color:var(--navy);font-weight:700}
 .hc-best{font-size:11px;color:var(--gold);font-weight:600;margin-top:10px}
-/* ADD HABIT MODAL */
+/* MIND DUMP */
+.md-item{display:flex;align-items:flex-start;gap:10px;padding:12px;background:var(--cream);border-radius:var(--rs);margin-bottom:8px;border:1.5px solid transparent;transition:all .2s}
+.md-item.done{opacity:.5}
+.md-item-text{flex:1;font-size:14px;line-height:1.5}
+.md-item-text.done{text-decoration:line-through;color:var(--gray)}
+.md-priority{font-size:10px;font-weight:600;padding:2px 7px;border-radius:99px;white-space:nowrap}
+.prio-high{background:#FEE2E2;color:#991B1B}
+.prio-med{background:var(--warn);color:var(--warn-fg)}
+.prio-low{background:var(--green-l);color:var(--green)}
+.md-actions{display:flex;gap:4px;align-items:center}
+.md-btn{width:28px;height:28px;border-radius:6px;border:none;background:var(--gray-l);color:var(--gray);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;transition:all .2s}
+.md-btn:hover{background:var(--navy);color:#fff}
+/* MODAL */
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:flex-end;justify-content:center}
-.modal{background:var(--white);border-radius:var(--r) var(--r) 0 0;padding:24px;width:100%;max-width:600px;max-height:80vh;overflow-y:auto}
+.modal{background:var(--white);border-radius:var(--r) var(--r) 0 0;padding:24px;width:100%;max-width:600px;max-height:85vh;overflow-y:auto}
 .modal-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:16px}
-.ifield{width:100%;padding:12px;border:1.5px solid var(--gray-l);border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--navy);outline:none;transition:border-color .2s;background:var(--cream);margin-top:0}
+.ifield{width:100%;padding:12px;border:1.5px solid var(--gray-l);border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--navy);outline:none;transition:border-color .2s;background:var(--cream)}
 .ifield:focus{border-color:var(--gold)}
 .emoji-grid{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
 .eg-btn{width:40px;height:40px;border-radius:8px;border:1.5px solid var(--gray-l);background:var(--white);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
 .eg-btn.active{border-color:var(--gold);background:var(--gold-l)}
+.prio-row{display:flex;gap:8px;margin-top:6px}
+.prio-btn{flex:1;padding:8px;border-radius:8px;border:1.5px solid var(--gray-l);background:var(--white);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
+.prio-btn.active-high{background:#FEE2E2;border-color:#991B1B;color:#991B1B}
+.prio-btn.active-med{background:var(--warn);border-color:var(--warn-fg);color:var(--warn-fg)}
+.prio-btn.active-low{background:var(--green-l);border-color:var(--green);color:var(--green)}
 /* MISC */
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;padding:11px 22px;border-radius:99px;font-size:14px;font-weight:500;box-shadow:0 8px 32px rgba(27,42,74,.2);opacity:0;transition:all .3s;z-index:300;white-space:nowrap}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -147,20 +162,37 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
 .cel-icon{font-size:38px;margin-bottom:8px}
 .cel-title{font-family:'Playfair Display',serif;font-size:19px;color:var(--gold);margin-bottom:4px;font-weight:700}
 .cel-txt{font-size:13px;opacity:.75}
+.clock{font-family:'Playfair Display',serif;color:rgba(255,255,255,.7);font-size:13px;margin-top:2px}
 </style>
 </head>
 <body>
 
 <div class="hdr">
-  <div>
-    <div class="hdr-title">Lock-In 2025</div>
-    <div class="hdr-date" id="hdr-date"></div>
+  <div class="hdr-top">
+    <div>
+      <div class="hdr-title">Lock-In 2025</div>
+      <div class="clock" id="hdr-clock"></div>
+    </div>
+    <div class="hdr-streak" id="hdr-streak">🔥 0 gün</div>
   </div>
-  <div class="hdr-streak" id="hdr-streak">🔥 0 gün</div>
+  <div class="hdr-info">
+    <div class="hdr-date" id="hdr-date"></div>
+    <div class="hdr-countdown">
+      <div>
+        <div class="hdr-days" id="hdr-days">—</div>
+        <div class="hdr-days-lbl">gün kaldı</div>
+      </div>
+      <div class="hdr-prog-wrap">
+        <div class="hdr-prog-lbl" id="hdr-prog-lbl">%0</div>
+        <div class="hdr-prog-bar"><div class="hdr-prog-fill" id="hdr-prog-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <nav class="nav">
   <button class="nb active" onclick="showTab('bugun')">☀️ Bugün</button>
+  <button class="nb" onclick="showTab('minddump')">🧠 Mind Dump</button>
   <button class="nb" onclick="showTab('zincir')">🔗 Zinciri Kırma</button>
   <button class="nb" onclick="showTab('wbs')">📋 WBS</button>
   <button class="nb" onclick="showTab('supplement')">💊 Supplement</button>
@@ -191,7 +223,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
   </div>
   <div class="card">
     <div class="card-title">📌 Bugünün Task'ları</div>
-    <div class="card-sub">Enerji skoruna göre WBS'den seçildi</div>
+    <div class="card-sub">WBS + Mind Dump'tan enerji skoruna göre seçildi</div>
     <div id="today-tasks"><div class="loading"><div class="spin"></div></div></div>
     <div style="margin-top:10px"><button class="btn btn-ghost btn-sm" onclick="refreshTasks()">🔄 Yeni Task Öner</button></div>
   </div>
@@ -205,6 +237,36 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
       <textarea class="ifield" id="win-of-day" rows="2" placeholder="Bugün iyi giden 1 şey..."></textarea>
     </div>
     <div style="margin-top:12px"><button class="btn btn-navy" onclick="saveEvening()">Akşam Check-In Kaydet</button></div>
+  </div>
+</div>
+
+<!-- MIND DUMP -->
+<div id="tab-minddump" style="display:none">
+  <div class="card">
+    <div class="card-title">🧠 Mind Dump</div>
+    <div class="card-sub">Aklındaki her şeyi buraya boşalt. Önemli olanlar task olarak önerilebilir.</div>
+    <textarea class="ifield" id="md-input" rows="3" placeholder="Ne aklında takılıyor? Yaz..."></textarea>
+    <div class="slbl" style="margin-top:12px">Öncelik</div>
+    <div class="prio-row">
+      <button class="prio-btn" id="prio-high" onclick="setPrio('high')">🔴 Yüksek</button>
+      <button class="prio-btn" id="prio-med" onclick="setPrio('med')">🟡 Orta</button>
+      <button class="prio-btn" id="prio-low" onclick="setPrio('low')">🟢 Düşük</button>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <button class="btn btn-gold" onclick="addMindDump()">Ekle</button>
+      <button class="btn btn-ghost btn-sm" onclick="addMindDumpToTask()" style="white-space:nowrap">🎲 Bugün Task Yap</button>
+    </div>
+  </div>
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div class="card-title" style="margin-bottom:0">Listesi</div>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-ghost btn-sm" onclick="filterMD('all')" id="mdf-all">Hepsi</button>
+        <button class="btn btn-ghost btn-sm" onclick="filterMD('open')" id="mdf-open">Açık</button>
+        <button class="btn btn-ghost btn-sm" onclick="filterMD('done')" id="mdf-done">Bitti</button>
+      </div>
+    </div>
+    <div id="md-list"><div class="loading"><div class="spin"></div></div></div>
   </div>
 </div>
 
@@ -270,7 +332,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
   </div>
   <div class="card">
     <div class="card-title">📅 40 Günlük Takvim</div>
-    <div style="font-size:13px;color:var(--gray);line-height:2">
+    <div style="font-size:13px;color:var(--gray);line-height:2.2">
       🟢 <b>Faz 1:</b> 20 Şub – 2 Mar<br>
       🟡 <b>Faz 2:</b> 3 – 17 Mar<br>
       ✈️ <b>Türkiye:</b> 18 – 24 Mar<br>
@@ -280,21 +342,21 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
   </div>
 </div>
 
-</div><!-- /main -->
+</div>
 
-<!-- ADD HABIT MODAL -->
+<!-- HABIT MODAL -->
 <div class="modal-bg" id="modal-bg" style="display:none" onclick="hideModal(event)">
-  <div class="modal" id="modal">
+  <div class="modal">
     <div class="modal-title" id="modal-title">Yeni Alışkanlık</div>
     <div class="slbl2">İkon Seç</div>
     <div class="emoji-grid" id="emoji-grid"></div>
     <div class="slbl2" style="margin-top:12px">Alışkanlık Adı</div>
     <input class="ifield" id="habit-name" placeholder="örn: Meditasyon" style="margin-top:6px">
-    <div class="slbl2" style="margin-top:12px">Açıklama (isteğe bağlı)</div>
+    <div class="slbl2" style="margin-top:12px">Açıklama</div>
     <input class="ifield" id="habit-desc" placeholder="örn: 10 dk sabah meditasyonu" style="margin-top:6px">
     <div style="display:flex;gap:10px;margin-top:18px">
       <button class="btn btn-gold" onclick="saveHabit()" style="flex:1" id="habit-save-btn">Kaydet</button>
-      <button class="btn btn-ghost btn-sm" onclick="hideModal()" style="flex:0.5">İptal</button>
+      <button class="btn btn-ghost btn-sm" onclick="hideModal()" style="flex:0.4">İptal</button>
     </div>
     <button class="btn btn-danger btn-sm" id="habit-delete-btn" style="margin-top:8px;display:none;width:100%" onclick="deleteHabit()">Alışkanlığı Sil</button>
   </div>
@@ -307,42 +369,74 @@ const SURL='https://ucwgkduvpnklfggleupb.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjd2drZHV2cG5rbGZnZ2xldXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MDE1NzcsImV4cCI6MjA4NzE3NzU3N30.AKBjKoYp2xie6qd19crJVMIJDFzmXPTqU2BTtFHnypw';
 const sb=supabase.createClient(SURL,SKEY);
 
-const TABS=['bugun','zincir','wbs','supplement','kpi','ayarlar'];
-const EMOJIS=['💧','💊','📖','📓','✨','🚿','🦷','🏃','🧘','🥗','🌿','💪','☕','🎯','📚','✍️','🎸','🖥️','🧹','💤'];
+const TABS=['bugun','minddump','zincir','wbs','supplement','kpi','ayarlar'];
+const EMOJIS=['💧','💊','📖','📓','✨','🚿','🦷','🏃','🧘','🥗','🌿','💪','☕','🎯','📚','✍️','🎸','🖥️','🧹','💤','🧴','💆','🏋️','🎨'];
 const TODAY=new Date().toISOString().split('T')[0];
+const DEADLINE=new Date('2026-04-01');
 
 let state={energy:0,mChecks:{water:0,affirmations:0,journaling:0,reading:0,supplement:0},eChecks:{teeth:0,shower:0}};
 let editingHabitId=null;
 let selectedEmoji=EMOJIS[0];
+let mdFilter='all';
+let mdPrio='med';
 
 // ── INIT ──
 window.addEventListener('DOMContentLoaded',async()=>{
   setHeaderDate();
+  startClock();
+  updateCountdown();
   renderEnergyBtns();
   renderSupplement();
   renderKPIForm();
   await loadTodayCheckin();
   await loadTodayTasks();
   await calcOverallStreak();
+  await updateHeaderProgress();
 });
 
 function setHeaderDate(){
   const D=['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
   const M=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
   const n=new Date();
-  document.getElementById('hdr-date').textContent=D[n.getDay()]+', '+n.getDate()+' '+M[n.getMonth()];
+  document.getElementById('hdr-date').textContent=D[n.getDay()]+', '+n.getDate()+' '+M[n.getMonth()]+' '+n.getFullYear();
+}
+
+function startClock(){
+  function tick(){
+    const n=new Date();
+    const h=String(n.getHours()).padStart(2,'0');
+    const m=String(n.getMinutes()).padStart(2,'0');
+    const s=String(n.getSeconds()).padStart(2,'0');
+    document.getElementById('hdr-clock').textContent=h+':'+m+':'+s;
+  }
+  tick();setInterval(tick,1000);
+}
+
+function updateCountdown(){
+  const now=new Date();
+  const diff=Math.ceil((DEADLINE-now)/(1000*60*60*24));
+  document.getElementById('hdr-days').textContent=diff>0?diff:'0';
+}
+
+async function updateHeaderProgress(){
+  const{data:cats}=await sb.from('wbs_categories').select('*, wbs_tasks(*, wbs_microtasks(*))');
+  if(!cats)return;
+  let total=0,done=0;
+  cats.forEach(c=>c.wbs_tasks.forEach(t=>(t.wbs_microtasks||[]).forEach(m=>{total++;if(m.is_completed)done++;})));
+  const pct=total?Math.round(done/total*100):0;
+  document.getElementById('hdr-prog-fill').style.width=pct+'%';
+  document.getElementById('hdr-prog-lbl').textContent='%'+pct;
 }
 
 function showTab(name){
-  TABS.forEach(t=>{
-    document.getElementById('tab-'+t).style.display=t===name?'block':'none';
-  });
+  TABS.forEach(t=>document.getElementById('tab-'+t).style.display=t===name?'block':'none');
   document.querySelectorAll('.nb').forEach((b,i)=>b.classList.toggle('active',TABS[i]===name));
   if(name==='zincir') loadHabits();
   if(name==='wbs') loadWBS();
   if(name==='supplement') renderSupplement();
   if(name==='kpi') loadKPI();
   if(name==='ayarlar') loadTGSettings();
+  if(name==='minddump') loadMindDump();
 }
 
 // ── ENERGY ──
@@ -350,8 +444,7 @@ function renderEnergyBtns(){
   const w=document.getElementById('energy-btns');
   for(let i=1;i<=10;i++){
     const b=document.createElement('button');
-    b.className='ebtn';b.textContent=i;
-    b.onclick=()=>setEnergy(i);
+    b.className='ebtn';b.textContent=i;b.onclick=()=>setEnergy(i);
     w.appendChild(b);
   }
 }
@@ -360,7 +453,6 @@ function setEnergy(s){
   document.querySelectorAll('.ebtn').forEach((b,i)=>b.classList.toggle('active',i+1===s));
 }
 
-// ── CHECKIN ITEMS ──
 function toggleCI(el,key){
   const box=el.querySelector('.cb');
   const lbl=el.querySelector('.cl');
@@ -372,7 +464,6 @@ function toggleCI(el,key){
   }
 }
 
-// ── LOAD TODAY ──
 async function loadTodayCheckin(){
   const{data}=await sb.from('daily_checkins').select('*').eq('date',TODAY);
   if(!data||!data.length)return;
@@ -386,7 +477,6 @@ async function loadTodayCheckin(){
   if(e&&e.win_of_day)document.getElementById('win-of-day').value=e.win_of_day;
 }
 
-// ── SAVE MORNING ──
 async function saveMorning(){
   if(!state.energy){toast('Enerji skorunu seç!');return;}
   const{error}=await sb.from('daily_checkins').upsert({
@@ -404,7 +494,6 @@ async function saveMorning(){
   sendTG('Sabah check-in tamam! Enerji: '+state.energy+'/10');
 }
 
-// ── SAVE EVENING ──
 async function saveEvening(){
   const win=document.getElementById('win-of-day').value;
   const{error}=await sb.from('daily_checkins').upsert({
@@ -419,13 +508,25 @@ async function saveEvening(){
 // ── TODAY TASKS ──
 async function loadTodayTasks(energyScore){
   const score=energyScore||state.energy||5;
-  const{data:ex}=await sb.from('daily_tasks').select('*, wbs_microtasks(title, wbs_tasks(title, wbs_categories(label)))').eq('date',TODAY);
+  const{data:ex}=await sb.from('daily_tasks').select('*, wbs_microtasks(title, wbs_tasks(title, wbs_categories(label))), mind_dump_items(text)').eq('date',TODAY);
   if(ex&&ex.length){renderTasks(ex);return;}
   const count=score<=4?1:2;
-  const{data:mts}=await sb.from('wbs_microtasks').select('*, wbs_tasks(title, wbs_categories(label))').eq('is_completed',false).limit(count*3);
-  if(!mts||!mts.length){document.getElementById('today-tasks').innerHTML='<div class="empty"><div class="empty-icon">🎉</div>Tüm tasklar tamamlandi!</div>';return;}
-  for(const mt of mts.slice(0,count)) await sb.from('daily_tasks').insert({date:TODAY,microtask_id:mt.id,status:'pending'});
-  const{data:newT}=await sb.from('daily_tasks').select('*, wbs_microtasks(title, wbs_tasks(title, wbs_categories(label)))').eq('date',TODAY);
+
+  // Mix: 1 WBS + optionally 1 mind dump
+  const{data:mts}=await sb.from('wbs_microtasks').select('*, wbs_tasks(title, wbs_categories(label))').eq('is_completed',false).limit(10);
+  const{data:mdItems}=await sb.from('mind_dump_items').select('*').eq('is_done',false).order('created_at',{ascending:false}).limit(5);
+
+  const toInsert=[];
+  if(mts&&mts.length) toInsert.push({date:TODAY,microtask_id:mts[0].id,status:'pending',source:'wbs'});
+  if(count>=2&&mdItems&&mdItems.length){
+    const rand=mdItems[Math.floor(Math.random()*mdItems.length)];
+    toInsert.push({date:TODAY,mind_dump_id:rand.id,status:'pending',source:'minddump'});
+  }else if(count>=2&&mts&&mts.length>1){
+    toInsert.push({date:TODAY,microtask_id:mts[1].id,status:'pending',source:'wbs'});
+  }
+
+  for(const t of toInsert) await sb.from('daily_tasks').insert(t);
+  const{data:newT}=await sb.from('daily_tasks').select('*, wbs_microtasks(title, wbs_tasks(title, wbs_categories(label))), mind_dump_items(text)').eq('date',TODAY);
   renderTasks(newT||[]);
 }
 
@@ -443,9 +544,10 @@ function renderTasks(tasks){
     const partial=t.status==='partial';
     const badgeCls=done?'badge bd':partial?'badge bpa':'badge bp';
     const badgeTxt=done?'✓ Bitti':partial?'~ Kısmen':'Bekliyor';
-    const title=(t.wbs_microtasks&&t.wbs_microtasks.title)||'—';
-    const cat=((t.wbs_microtasks&&t.wbs_microtasks.wbs_tasks&&t.wbs_microtasks.wbs_tasks.wbs_categories&&t.wbs_microtasks.wbs_tasks.wbs_categories.label)||'');
-    h+='<div class="tt'+(done?' done':'')+'" onclick="cycleTask(\''+t.id+'\',\''+t.status+'\')">'
+    const isMD=t.source==='minddump';
+    const title=isMD?(t.mind_dump_items&&t.mind_dump_items.text)||'Mind Dump Task':(t.wbs_microtasks&&t.wbs_microtasks.title)||'—';
+    const cat=isMD?'🧠 Mind Dump':((t.wbs_microtasks&&t.wbs_microtasks.wbs_tasks&&t.wbs_microtasks.wbs_tasks.wbs_categories&&t.wbs_microtasks.wbs_tasks.wbs_categories.label)||'');
+    h+='<div class="tt'+(done?' done':'')+'" onclick="cycleTask(\''+t.id+'\',\''+t.status+'\',\''+t.source+'\',\''+(t.microtask_id||'')+'\',\''+(t.mind_dump_id||')\')">'
       +'<div class="ttc'+(done?' done':'')+'">'+( done?'✓':'')+'</div>'
       +'<div class="ttin"><div class="tttl">'+title+'</div><div class="ttcat">'+cat+'</div></div>'
       +'<span class="'+badgeCls+'">'+badgeTxt+'</span></div>';
@@ -453,51 +555,118 @@ function renderTasks(tasks){
   el.innerHTML=h;
 }
 
-async function cycleTask(id,status){
+async function cycleTask(id,status,source,microtaskId,mindDumpId){
   const next=status==='pending'?'done':status==='done'?'partial':'pending';
   await sb.from('daily_tasks').update({status:next}).eq('id',id);
   if(next==='done'){
-    const t=await sb.from('daily_tasks').select('microtask_id').eq('id',id).single();
-    if(t.data&&t.data.microtask_id) await sb.from('wbs_microtasks').update({is_completed:true,completed_at:new Date().toISOString()}).eq('id',t.data.microtask_id);
+    if(source==='wbs'&&microtaskId&&microtaskId!=='undefined'){
+      await sb.from('wbs_microtasks').update({is_completed:true,completed_at:new Date().toISOString()}).eq('id',microtaskId);
+      await updateHeaderProgress();
+    }
+    if(source==='minddump'&&mindDumpId&&mindDumpId!=='undefined'){
+      await sb.from('mind_dump_items').update({is_done:true}).eq('id',mindDumpId);
+    }
     toast('Task tamamlandi!');
   }
-  const{data}=await sb.from('daily_tasks').select('*, wbs_microtasks(title, wbs_tasks(title, wbs_categories(label)))').eq('date',TODAY);
+  const{data}=await sb.from('daily_tasks').select('*, wbs_microtasks(title, wbs_tasks(title, wbs_categories(label))), mind_dump_items(text)').eq('date',TODAY);
   renderTasks(data||[]);
+}
+
+// ── MIND DUMP ──
+function setPrio(p){
+  mdPrio=p;
+  ['high','med','low'].forEach(x=>{
+    const btn=document.getElementById('prio-'+x);
+    btn.className='prio-btn'+(x===p?' active-'+x:'');
+  });
+}
+
+async function addMindDump(){
+  const text=document.getElementById('md-input').value.trim();
+  if(!text){toast('Bir şeyler yaz!');return;}
+  await sb.from('mind_dump_items').insert({text,priority:mdPrio,is_done:false});
+  document.getElementById('md-input').value='';
+  toast('Mind dump eklendi!');
+  await loadMindDump();
+}
+
+async function addMindDumpToTask(){
+  const text=document.getElementById('md-input').value.trim();
+  if(!text){toast('Önce bir şeyler yaz!');return;}
+  const{data:item}=await sb.from('mind_dump_items').insert({text,priority:mdPrio,is_done:false}).select().single();
+  if(item){
+    await sb.from('daily_tasks').insert({date:TODAY,mind_dump_id:item.id,status:'pending',source:'minddump'});
+    document.getElementById('md-input').value='';
+    toast('Bugünün task\'ına eklendi!');
+    await loadMindDump();
+    const{data}=await sb.from('daily_tasks').select('*, wbs_microtasks(title, wbs_tasks(title, wbs_categories(label))), mind_dump_items(text)').eq('date',TODAY);
+    renderTasks(data||[]);
+  }
+}
+
+async function loadMindDump(){
+  const{data}=await sb.from('mind_dump_items').select('*').order('created_at',{ascending:false});
+  if(!data){return;}
+  let items=data;
+  if(mdFilter==='open') items=data.filter(d=>!d.is_done);
+  if(mdFilter==='done') items=data.filter(d=>d.is_done);
+  if(!items.length){document.getElementById('md-list').innerHTML='<div class="empty"><div class="empty-icon">🧠</div>Henüz hiçbir şey yok.</div>';return;}
+  const prioMap={high:'🔴 Yüksek',med:'🟡 Orta',low:'🟢 Düşük'};
+  const prioCls={high:'md-priority prio-high',med:'md-priority prio-med',low:'md-priority prio-low'};
+  let h='';
+  items.forEach(item=>{
+    h+='<div class="md-item'+(item.is_done?' done':'')+'">'
+      +'<div class="md-item-text'+(item.is_done?' done':'')+'">'+item.text+'</div>'
+      +'<div class="md-actions">'
+      +(item.priority?'<span class="'+(prioCls[item.priority]||'md-priority')+'">'+( prioMap[item.priority]||item.priority)+'</span>':'')
+      +'<button class="md-btn" onclick="toggleMDDone(\''+item.id+'\','+item.is_done+')">'+(item.is_done?'↩':'✓')+'</button>'
+      +'<button class="md-btn" onclick="deleteMD(\''+item.id+'\')">✕</button>'
+      +'</div></div>';
+  });
+  document.getElementById('md-list').innerHTML=h;
+}
+
+function filterMD(f){
+  mdFilter=f;
+  ['all','open','done'].forEach(x=>{
+    const btn=document.getElementById('mdf-'+x);
+    btn.className='btn btn-'+(x===f?'navy':'ghost')+' btn-sm';
+  });
+  loadMindDump();
+}
+
+async function toggleMDDone(id,isDone){
+  await sb.from('mind_dump_items').update({is_done:!isDone}).eq('id',id);
+  await loadMindDump();
+}
+
+async function deleteMD(id){
+  await sb.from('mind_dump_items').delete().eq('id',id);
+  toast('Silindi');
+  await loadMindDump();
 }
 
 // ── ZİNCİRİ KIRMA ──
 async function loadHabits(){
   document.getElementById('habit-list').innerHTML='<div class="loading"><div class="spin"></div></div>';
-  
-  // Ensure default habits exist
   await ensureDefaultHabits();
-  
   const{data:habits}=await sb.from('habits').select('*').order('sort_order');
   if(!habits||!habits.length){
-    document.getElementById('habit-list').innerHTML='<div class="empty"><div class="empty-icon">🌱</div>Henüz aliskanlik yok.<br>Yukardaki butona tıkla!</div>';
+    document.getElementById('habit-list').innerHTML='<div class="empty"><div class="empty-icon">🌱</div>Henüz alışkanlık yok.<br>Yukarıdaki butona tıkla!</div>';
     return;
   }
-
-  // Load last 21 days of completions for all habits
-  const start=new Date();start.setDate(start.getDate()-20);
+  const start=new Date();start.setDate(start.getDate()-27);
   const startStr=start.toISOString().split('T')[0];
   const{data:logs}=await sb.from('habit_logs').select('*').gte('date',startStr);
-
-  let html='';
-  let totalStreak=0;
-  let longestOverall=0;
-
+  let html='';let totalStreak=0;let longestOverall=0;
   for(const h of habits){
     const hLogs=(logs||[]).filter(l=>l.habit_id===h.id);
     const{streak,longest,days}=calcHabitStats(hLogs);
-    totalStreak+=streak;
-    if(longest>longestOverall)longestOverall=longest;
+    totalStreak+=streak;if(longest>longestOverall)longestOverall=longest;
     const todayDone=days[TODAY]||false;
     html+=renderHabitCard(h,streak,longest,days,todayDone);
   }
-
   document.getElementById('habit-list').innerHTML=html;
-  
   const avg=habits.length>0?Math.round(totalStreak/habits.length):0;
   document.getElementById('zh-streak').textContent=avg;
   document.getElementById('zh-record').textContent='En uzun: '+longestOverall+' gün';
@@ -522,36 +691,25 @@ async function ensureDefaultHabits(){
 function calcHabitStats(logs){
   const days={};
   logs.forEach(l=>days[l.date]=true);
-  
-  // Current streak
   let streak=0;
   const d=new Date();
   while(true){
     const ds=d.toISOString().split('T')[0];
-    if(days[ds]){streak++;d.setDate(d.getDate()-1);}
-    else break;
+    if(days[ds]){streak++;d.setDate(d.getDate()-1);}else break;
   }
-  
-  // Longest streak
   const allDates=Object.keys(days).sort();
   let longest=0,cur=0,prev=null;
   allDates.forEach(ds=>{
-    if(prev){
-      const diff=(new Date(ds)-new Date(prev))/(1000*86400);
-      if(diff===1){cur++;}else{cur=1;}
-    }else{cur=1;}
-    if(cur>longest)longest=cur;
-    prev=ds;
+    if(prev){const diff=(new Date(ds)-new Date(prev))/(1000*86400);if(diff===1){cur++;}else{cur=1;}}else{cur=1;}
+    if(cur>longest)longest=cur;prev=ds;
   });
-  
   return{streak,longest,days};
 }
 
 function renderHabitCard(h,streak,longest,days,todayDone){
-  // Generate last 21 days
-  const calDays=[];
   const DAY_LABELS=['Pz','Pt','Sa','Ça','Pe','Cu','Ct'];
-  for(let i=20;i>=0;i--){
+  let calDays='';
+  for(let i=27;i>=0;i--){
     const d=new Date();d.setDate(d.getDate()-i);
     const ds=d.toISOString().split('T')[0];
     const isToday=ds===TODAY;
@@ -561,71 +719,50 @@ function renderHabitCard(h,streak,longest,days,todayDone){
     if(done)cls+=' done';
     if(isToday)cls+=' today';
     if(isFuture)cls+=' future';
-    const icon=done?'✓':(isFuture?'':'');
-    calDays.push('<div class="cal-day"><div class="'+cls+'" style="font-size:'+(done?'14':'12')+'px">'+icon+'</div><div class="cal-lbl'+(isToday?' today':'')+'">'+DAY_LABELS[d.getDay()]+'</div></div>');
+    calDays+='<div class="cal-day"><div class="'+cls+'">'+(done?'✓':'')+'</div><div class="cal-lbl'+(isToday?' today':'')+'">'+DAY_LABELS[d.getDay()]+'</div></div>';
   }
-  
-  const tickCls='tick-btn'+(todayDone?' done':'');
-  const tickIcon=todayDone?'✓':'○';
-  
   return '<div class="habit-card">'
     +'<div class="hc-top">'
     +'<div class="hc-icon">'+h.icon+'</div>'
     +'<div class="hc-info"><div class="hc-name">'+h.name+'</div><div class="hc-sub">'+(h.description||'')+'</div></div>'
     +'<div class="hc-right"><div class="hc-streak">'+streak+'</div><div class="hc-slbl">streak</div></div>'
-    +'<button class="'+tickCls+'" onclick="tickHabit(\''+h.id+'\','+todayDone+')">'+tickIcon+'</button>'
-    +'<button class="tick-btn" style="border-color:var(--gray-l);color:var(--gray);font-size:13px;width:32px;height:32px" onclick="editHabit(\''+h.id+'\',\''+h.icon+'\',\''+h.name+'\',\''+( h.description||'')+'\')">✏️</button>'
+    +'<button class="tick-btn'+(todayDone?' done':'')+'" onclick="tickHabit(\''+h.id+'\','+todayDone+')">'+(todayDone?'✓':'○')+'</button>'
+    +'<button class="tick-btn" style="border-color:var(--gray-l);color:var(--gray);font-size:13px;width:32px;height:32px" onclick="editHabit(\''+h.id+'\',\''+h.icon+'\',\''+h.name+'\',\''+(h.description||'')+'\')">✏️</button>'
     +'</div>'
-    +'<div class="cal-wrap"><div class="cal-row">'+calDays.join('')+'</div></div>'
+    +'<div class="cal-wrap"><div class="cal-row">'+calDays+'</div></div>'
     +'<div class="hc-best">🏆 En uzun streak: '+longest+' gün</div>'
     +'</div>';
 }
 
 async function tickHabit(habitId,isDone){
-  if(isDone){
-    await sb.from('habit_logs').delete().eq('habit_id',habitId).eq('date',TODAY);
-    toast('Gün iptal edildi');
-  }else{
-    await sb.from('habit_logs').upsert({habit_id:habitId,date:TODAY},{onConflict:'habit_id,date'});
-    toast('Harika! Zincir devam ediyor 🔥');
-  }
+  if(isDone){await sb.from('habit_logs').delete().eq('habit_id',habitId).eq('date',TODAY);toast('Gün iptal edildi');}
+  else{await sb.from('habit_logs').upsert({habit_id:habitId,date:TODAY},{onConflict:'habit_id,date'});toast('Harika! Zincir devam ediyor 🔥');}
   await loadHabits();
 }
 
-// ── ADD/EDIT HABIT ──
 function showAddHabit(){
-  editingHabitId=null;
-  selectedEmoji=EMOJIS[0];
+  editingHabitId=null;selectedEmoji=EMOJIS[0];
   document.getElementById('modal-title').textContent='Yeni Alışkanlık';
-  document.getElementById('habit-name').value='';
-  document.getElementById('habit-desc').value='';
+  document.getElementById('habit-name').value='';document.getElementById('habit-desc').value='';
   document.getElementById('habit-delete-btn').style.display='none';
   document.getElementById('habit-save-btn').textContent='Kaydet';
-  renderEmojiGrid();
-  document.getElementById('modal-bg').style.display='flex';
+  renderEmojiGrid();document.getElementById('modal-bg').style.display='flex';
 }
 
 function editHabit(id,icon,name,desc){
-  editingHabitId=id;
-  selectedEmoji=icon;
-  document.getElementById('modal-title').textContent='Alışkanlığı Düzenle';
-  document.getElementById('habit-name').value=name;
-  document.getElementById('habit-desc').value=desc;
+  editingHabitId=id;selectedEmoji=icon;
+  document.getElementById('modal-title').textContent='Düzenle';
+  document.getElementById('habit-name').value=name;document.getElementById('habit-desc').value=desc;
   document.getElementById('habit-delete-btn').style.display='block';
   document.getElementById('habit-save-btn').textContent='Güncelle';
-  renderEmojiGrid();
-  document.getElementById('modal-bg').style.display='flex';
+  renderEmojiGrid();document.getElementById('modal-bg').style.display='flex';
 }
 
 function renderEmojiGrid(){
-  const g=document.getElementById('emoji-grid');
-  g.innerHTML=EMOJIS.map(e=>'<button class="eg-btn'+(e===selectedEmoji?' active':'')+'" onclick="selectEmoji(\''+e+'\')">'+e+'</button>').join('');
+  document.getElementById('emoji-grid').innerHTML=EMOJIS.map(e=>'<button class="eg-btn'+(e===selectedEmoji?' active':'')+'" onclick="selectEmoji(\''+e+'\')">'+e+'</button>').join('');
 }
 
-function selectEmoji(e){
-  selectedEmoji=e;
-  renderEmojiGrid();
-}
+function selectEmoji(e){selectedEmoji=e;renderEmojiGrid();}
 
 function hideModal(ev){
   if(ev&&ev.target!==document.getElementById('modal-bg'))return;
@@ -636,14 +773,12 @@ async function saveHabit(){
   const name=document.getElementById('habit-name').value.trim();
   if(!name){toast('Alışkanlık adı gir!');return;}
   const desc=document.getElementById('habit-desc').value.trim();
-  if(editingHabitId){
-    await sb.from('habits').update({icon:selectedEmoji,name,description:desc}).eq('id',editingHabitId);
-    toast('Güncellendi!');
-  }else{
-    const{data:existing}=await sb.from('habits').select('sort_order').order('sort_order',{ascending:false}).limit(1);
-    const nextOrder=(existing&&existing.length?existing[0].sort_order:0)+1;
-    await sb.from('habits').insert({icon:selectedEmoji,name,description:desc,sort_order:nextOrder});
-    toast('Yeni alışkanlık eklendi!');
+  if(editingHabitId){await sb.from('habits').update({icon:selectedEmoji,name,description:desc}).eq('id',editingHabitId);toast('Güncellendi!');}
+  else{
+    const{data:ex}=await sb.from('habits').select('sort_order').order('sort_order',{ascending:false}).limit(1);
+    const next=(ex&&ex.length?ex[0].sort_order:0)+1;
+    await sb.from('habits').insert({icon:selectedEmoji,name,description:desc,sort_order:next});
+    toast('Alışkanlık eklendi!');
   }
   document.getElementById('modal-bg').style.display='none';
   await loadHabits();
@@ -651,27 +786,11 @@ async function saveHabit(){
 
 async function deleteHabit(){
   if(!editingHabitId)return;
-  if(!confirm('Bu alışkanlığı silmek istediğine emin misin? Tüm geçmiş veriler de silinir.'))return;
+  if(!confirm('Silmek istediğine emin misin? Tüm geçmiş veriler de silinir.'))return;
   await sb.from('habit_logs').delete().eq('habit_id',editingHabitId);
   await sb.from('habits').delete().eq('id',editingHabitId);
   document.getElementById('modal-bg').style.display='none';
-  toast('Alışkanlık silindi');
-  await loadHabits();
-}
-
-// ── OVERALL STREAK ──
-async function calcOverallStreak(){
-  const{data}=await sb.from('daily_checkins').select('date').eq('type','morning').order('date',{ascending:false}).limit(60);
-  if(!data||!data.length){document.getElementById('hdr-streak').textContent='🔥 0 gün';return;}
-  let streak=0;
-  const base=new Date();base.setHours(0,0,0,0);
-  const dates=data.map(d=>d.date);
-  for(let i=0;i<dates.length;i++){
-    const exp=new Date(base);exp.setDate(base.getDate()-i);
-    if(dates[i]===exp.toISOString().split('T')[0])streak++;
-    else break;
-  }
-  document.getElementById('hdr-streak').textContent='🔥 '+streak+' gün';
+  toast('Silindi');await loadHabits();
 }
 
 // ── WBS ──
@@ -682,11 +801,9 @@ async function loadWBS(){
   cats.forEach(c=>c.wbs_tasks.forEach(t=>(t.wbs_microtasks||[]).forEach(m=>{total++;if(m.is_completed)done++;})));
   const pct=total?Math.round(done/total*100):0;
   document.getElementById('overall-prog').innerHTML='<div class="pbw"><div class="pbf" style="width:'+pct+'%"></div></div><div class="plbl"><span>Genel ilerleme</span><span>'+done+'/'+total+' (%'+pct+')</span></div>';
-  
   let html='';
   cats.forEach(cat=>{
-    const tasks=cat.wbs_tasks||[];
-    let ct=0,cd=0;
+    const tasks=cat.wbs_tasks||[];let ct=0,cd=0;
     tasks.forEach(t=>(t.wbs_microtasks||[]).forEach(m=>{ct++;if(m.is_completed)cd++;}));
     const cp=ct?Math.round(cd/ct*100):0;
     let tasksH='';
@@ -708,17 +825,15 @@ async function loadWBS(){
       +'<div id="c'+cat.id+'" style="margin-top:10px">'+tasksH+'</div></div>';
   });
   document.getElementById('wbs-content').innerHTML=html;
+  document.getElementById('hdr-prog-fill').style.width=pct+'%';
+  document.getElementById('hdr-prog-lbl').textContent='%'+pct;
 }
 
-function toggleCat(id){
-  const el=document.getElementById(id);
-  el.style.display=el.style.display==='none'?'block':'none';
-}
+function toggleCat(id){const el=document.getElementById(id);el.style.display=el.style.display==='none'?'block':'none';}
 
 async function toggleMicro(id,cur){
-  const nv=!cur;
-  await sb.from('wbs_microtasks').update({is_completed:nv,completed_at:nv?new Date().toISOString():null}).eq('id',id);
-  if(nv)toast('Tamamlandi!');
+  await sb.from('wbs_microtasks').update({is_completed:!cur,completed_at:!cur?new Date().toISOString():null}).eq('id',id);
+  if(!cur)toast('Tamamlandi!');
   await loadWBS();
 }
 
@@ -727,89 +842,61 @@ function renderSupplement(){
   const day=new Date().getDay();
   const dayMap={1:'pzt',2:'pzt',3:'pzt',4:'inj',5:'fri',6:'sat',0:'sun'};
   const type=dayMap[day];
-  const isInj=type==='inj',isFri=type==='fri';
-  
   const plans={
-    pzt:[
-      {t:'Sabah (yemekle)',i:'D3+K2, Omega-3, B-Complex, Resveratrol',n:'Yağlı kapsüller — mutlaka yemekle'},
-      {t:'Ara öğün',i:'Kolajen + C vitamini',n:''},
-      {t:'Öğlen',i:'Creatine 3g',n:'Büyük bardak suyla'},
-      {t:'Akşam',i:'Magnesium + Zinc',n:'Akşam yemeğiyle'}
-    ],
-    inj:[
-      {t:'Sabah',i:'D3+K2, Omega-3, B-Complex',n:'⚠️ Resveratrol isteğe bağlı'},
-      {t:'Gün içi',i:'Kolajen (hafif öğünle)',n:'Creatine mide sorun yoksa'},
-      {t:'Akşam',i:'Enjeksiyon + Magnesium',n:'Zinc atlanabilir'}
-    ],
-    fri:[
-      {t:'Sabah',i:'D3+K2, Omega-3, B-Complex',n:'🔴 En hassas gün — supplement opsiyonel'},
-      {t:'Öğlen',i:'Creatine (kaydırılmış)',n:'Küçük porsiyon'},
-      {t:'Akşam',i:'Magnesium',n:'Zinc atla'},
-      {t:'Tüm gün',i:'Su + elektrolit artır',n:'Ağır antrenman yapma'}
-    ],
-    sat:[
-      {t:'Sabah',i:'D3+K2, Omega-3, B-Complex',n:'Küçük öğünle'},
-      {t:'Gün içi',i:'Kolajen + Creatine',n:'Bölerek al'},
-      {t:'Akşam',i:'Magnesium + Zinc',n:''}
-    ],
-    sun:[
-      {t:'Sabah (yemekle)',i:'D3+K2, Omega-3, B-Complex, Resveratrol',n:''},
-      {t:'Ara öğün',i:'Kolajen + C vitamini',n:''},
-      {t:'Öğlen',i:'Creatine 3g',n:''},
-      {t:'Akşam',i:'Magnesium + Zinc',n:''}
-    ]
+    pzt:[{t:'Sabah (yemekle)',i:'D3+K2, Omega-3, B-Complex, Resveratrol',n:'Yağlı kapsüller — mutlaka yemekle'},{t:'Ara öğün',i:'Kolajen + C vitamini',n:''},{t:'Öğlen',i:'Creatine 3g',n:'Büyük bardak suyla'},{t:'Akşam',i:'Magnesium + Zinc',n:'Akşam yemeğiyle'}],
+    inj:[{t:'Sabah',i:'D3+K2, Omega-3, B-Complex',n:'⚠️ Resveratrol isteğe bağlı'},{t:'Gün içi',i:'Kolajen (hafif öğünle)',n:'Creatine mide sorun yoksa'},{t:'Akşam',i:'Enjeksiyon + Magnesium',n:'Zinc atlanabilir'}],
+    fri:[{t:'Sabah',i:'D3+K2, Omega-3, B-Complex',n:'🔴 En hassas gün — supplement opsiyonel'},{t:'Öğlen',i:'Creatine (kaydırılmış)',n:'Küçük porsiyon'},{t:'Akşam',i:'Magnesium',n:'Zinc atla'},{t:'Tüm gün',i:'Su + elektrolit artır',n:'Ağır antrenman yapma'}],
+    sat:[{t:'Sabah',i:'D3+K2, Omega-3, B-Complex',n:'Küçük öğünle'},{t:'Gün içi',i:'Kolajen + Creatine',n:'Bölerek al'},{t:'Akşam',i:'Magnesium + Zinc',n:''}],
+    sun:[{t:'Sabah (yemekle)',i:'D3+K2, Omega-3, B-Complex, Resveratrol',n:''},{t:'Ara öğün',i:'Kolajen + C vitamini',n:''},{t:'Öğlen',i:'Creatine 3g',n:''},{t:'Akşam',i:'Magnesium + Zinc',n:''}]
   };
-  
   const dayNames=['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
-  const typeLabel=isInj?'Enjeksiyon Günü ⚠️':isFri?'En Hassas Gün 🔴':'Stabil Gün ✅';
-  const items=plans[type];
-  let h='<div class="sday">'+dayNames[day]+' — '+typeLabel+'</div>';
-  items.forEach(it=>{
-    h+='<div class="srow"><div class="stime">'+it.t+'</div><div><div class="sitems">'+it.i+'</div>'+(it.n?'<div class="snote">'+it.n+'</div>':'')+'</div></div>';
-  });
+  const typeLabel={pzt:'Stabil Gün ✅',inj:'Enjeksiyon Günü ⚠️',fri:'En Hassas Gün 🔴',sat:'Normal Gün',sun:'Normal Gün'};
+  let h='<div class="sday">'+dayNames[day]+' — '+typeLabel[type]+'</div>';
+  plans[type].forEach(it=>{h+='<div class="srow"><div class="stime">'+it.t+'</div><div><div class="sitems">'+it.i+'</div>'+(it.n?'<div class="snote">'+it.n+'</div>':'')+'</div></div>';});
   document.getElementById('suppl-content').innerHTML=h;
 }
 
 // ── KPI ──
 async function loadKPI(){
   const mon=getMonday();
-  const{data}=await sb.from('weekly_kpi').select('*').eq('week_start',mon).single();
+  const{data}=await sb.from('weekly_kpi').select('*').eq('week_start',mon).single().catch(()=>({data:null}));
   if(!data){document.getElementById('kpi-content').innerHTML='<div class="empty"><div class="empty-icon">📊</div>Bu hafta henüz KPI girilmedi.</div>';return;}
   const s=data.microtask_completion_pct||0;
-  const win=s>=70;
-  document.getElementById('kpi-content').innerHTML=(win?'<div class="celebrate" style="margin-bottom:12px"><div class="cel-icon">🎉</div><div class="cel-title">Başarılı Hafta!</div><div class="cel-txt">%'+s+' tamamlandi</div></div>':'')+
-    '<div class="kpi-grid">'
+  document.getElementById('kpi-content').innerHTML=(s>=70?'<div class="celebrate" style="margin-bottom:12px"><div class="cel-icon">🎉</div><div class="cel-title">Başarılı Hafta!</div><div class="cel-txt">%'+s+' tamamlandi</div></div>':'')
+    +'<div class="kpi-grid">'
     +'<div class="kpi-card"><div class="kpi-val">%'+s+'</div><div class="kpi-lbl">Task Tamamlama</div><div class="kpi-tgt">≥%70</div></div>'
-    +'<div class="kpi-card"><div class="kpi-val">'+(data.water_days||0)+'/7</div><div class="kpi-lbl">Su 2.5L Günleri</div><div class="kpi-tgt">7/7</div></div>'
+    +'<div class="kpi-card"><div class="kpi-val">'+(data.water_days||0)+'/7</div><div class="kpi-lbl">Su 2.5L</div><div class="kpi-tgt">7/7</div></div>'
     +'<div class="kpi-card"><div class="kpi-val">%'+(data.supplement_pct||0)+'</div><div class="kpi-lbl">Supplement</div><div class="kpi-tgt">≥%80</div></div>'
     +'<div class="kpi-card"><div class="kpi-val">'+(data.reels_published||0)+'</div><div class="kpi-lbl">Reels</div><div class="kpi-tgt">3/hafta</div></div>'
-    +'<div class="kpi-card"><div class="kpi-val">'+(data.ig_reach_change||0)+'%</div><div class="kpi-lbl">IG Reach</div><div class="kpi-tgt">>%20 artış</div></div>'
-    +'<div class="kpi-card"><div class="kpi-val">'+(data.ig_saves||0)+'</div><div class="kpi-lbl">IG Saves</div><div class="kpi-tgt">↑ her hafta</div></div>'
+    +'<div class="kpi-card"><div class="kpi-val">'+(data.ig_reach_change||0)+'%</div><div class="kpi-lbl">IG Reach</div><div class="kpi-tgt">>%20</div></div>'
+    +'<div class="kpi-card"><div class="kpi-val">'+(data.ig_saves||0)+'</div><div class="kpi-lbl">IG Saves</div><div class="kpi-tgt">↑</div></div>'
     +'<div class="kpi-card"><div class="kpi-val">'+(data.energy_avg||0)+'</div><div class="kpi-lbl">Enerji Ort.</div><div class="kpi-tgt">≥6</div></div>'
     +'<div class="kpi-card"><div class="kpi-val">%'+(data.habit_compliance_pct||0)+'</div><div class="kpi-lbl">Rutin Uyum</div><div class="kpi-tgt">≥%70</div></div>'
     +'</div>';
 }
 
 function renderKPIForm(){
-  const fields=[
-    {id:'kf-task',l:'Task Tamamlama %'},{id:'kf-water',l:'Su 2.5L Günleri (0-7)'},
-    {id:'kf-suppl',l:'Supplement Uyum %'},{id:'kf-reels',l:'Reels Sayısı'},
-    {id:'kf-reach',l:'IG Reach Artışı %'},{id:'kf-saves',l:'IG Saves'},
-    {id:'kf-energy',l:'Enerji Ortalaması (1-10)'},{id:'kf-habit',l:'Rutin Uyum %'}
-  ];
+  const fields=[{id:'kf-task',l:'Task Tamamlama %'},{id:'kf-water',l:'Su 2.5L Günleri (0-7)'},{id:'kf-suppl',l:'Supplement Uyum %'},{id:'kf-reels',l:'Reels Sayısı'},{id:'kf-reach',l:'IG Reach Artışı %'},{id:'kf-saves',l:'IG Saves'},{id:'kf-energy',l:'Enerji Ortalaması'},{id:'kf-habit',l:'Rutin Uyum %'}];
   document.getElementById('kpi-form').innerHTML=fields.map(f=>'<div style="margin-bottom:9px"><div style="font-size:12px;color:var(--gray);font-weight:600;margin-bottom:3px">'+f.l+'</div><input type="number" id="'+f.id+'" class="ifield" style="margin-top:0"></div>').join('');
 }
 
 async function saveKPI(){
-  const mon=getMonday();
   const g=id=>+(document.getElementById(id).value||0);
-  await sb.from('weekly_kpi').upsert({
-    week_start:mon,microtask_completion_pct:g('kf-task'),water_days:g('kf-water'),
-    supplement_pct:g('kf-suppl'),reels_published:g('kf-reels'),ig_reach_change:g('kf-reach'),
-    ig_saves:g('kf-saves'),energy_avg:g('kf-energy'),habit_compliance_pct:g('kf-habit')
-  },{onConflict:'week_start'});
-  toast('KPI kaydedildi!');
-  await loadKPI();
+  await sb.from('weekly_kpi').upsert({week_start:getMonday(),microtask_completion_pct:g('kf-task'),water_days:g('kf-water'),supplement_pct:g('kf-suppl'),reels_published:g('kf-reels'),ig_reach_change:g('kf-reach'),ig_saves:g('kf-saves'),energy_avg:g('kf-energy'),habit_compliance_pct:g('kf-habit')},{onConflict:'week_start'});
+  toast('KPI kaydedildi!');await loadKPI();
+}
+
+// ── STREAK ──
+async function calcOverallStreak(){
+  const{data}=await sb.from('daily_checkins').select('date').eq('type','morning').order('date',{ascending:false}).limit(60);
+  if(!data||!data.length){document.getElementById('hdr-streak').textContent='🔥 0 gün';return;}
+  let streak=0;
+  const base=new Date();base.setHours(0,0,0,0);
+  for(let i=0;i<data.length;i++){
+    const exp=new Date(base);exp.setDate(base.getDate()-i);
+    if(data[i].date===exp.toISOString().split('T')[0])streak++;else break;
+  }
+  document.getElementById('hdr-streak').textContent='🔥 '+streak+' gün';
 }
 
 // ── TELEGRAM ──
@@ -820,54 +907,31 @@ async function loadTGSettings(){
     if(data.telegram_chat_id)document.getElementById('tg-chatid').value=data.telegram_chat_id;
   }
 }
-
 async function saveTG(){
   const token=document.getElementById('tg-token').value.trim();
   const chatId=document.getElementById('tg-chatid').value.trim();
   if(!token||!chatId){toast('Token ve Chat ID gerekli!');return;}
   const{data:ex}=await sb.from('notification_settings').select('id').limit(1).single().catch(()=>({data:null}));
-  if(ex){await sb.from('notification_settings').update({telegram_bot_token:token,telegram_chat_id:chatId}).eq('id',ex.id);}
-  else{await sb.from('notification_settings').insert({telegram_bot_token:token,telegram_chat_id:chatId});}
+  if(ex)await sb.from('notification_settings').update({telegram_bot_token:token,telegram_chat_id:chatId}).eq('id',ex.id);
+  else await sb.from('notification_settings').insert({telegram_bot_token:token,telegram_chat_id:chatId});
   toast('Telegram kaydedildi!');
 }
-
 async function testTG(){
   const token=document.getElementById('tg-token').value.trim();
   const chatId=document.getElementById('tg-chatid').value.trim();
   if(!token||!chatId){toast('Önce token ve Chat ID gir!');return;}
-  try{
-    const r=await fetch('https://api.telegram.org/bot'+token+'/sendMessage',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({chat_id:chatId,text:'Lock-In 2025 baglantisi kuruldu! Bildirimler aktif.'})
-    });
-    const d=await r.json();
-    toast(d.ok?'Test mesaji gonderildi!':'Hata: '+d.description);
-  }catch(e){toast('Baglanti hatasi');}
+  try{const r=await fetch('https://api.telegram.org/bot'+token+'/sendMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:chatId,text:'Lock-In 2025 baglantisi kuruldu!'})});const d=await r.json();toast(d.ok?'Test mesaji gonderildi!':'Hata: '+d.description);}catch(e){toast('Baglanti hatasi');}
 }
-
 async function sendTG(text){
-  try{
-    const{data}=await sb.from('notification_settings').select('*').limit(1).single().catch(()=>({data:null}));
-    if(!data||!data.telegram_bot_token)return;
-    await fetch('https://api.telegram.org/bot'+data.telegram_bot_token+'/sendMessage',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({chat_id:data.telegram_chat_id,text})
-    });
-  }catch(e){}
+  try{const{data}=await sb.from('notification_settings').select('*').limit(1).single().catch(()=>({data:null}));if(!data||!data.telegram_bot_token)return;await fetch('https://api.telegram.org/bot'+data.telegram_bot_token+'/sendMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:data.telegram_chat_id,text})});}catch(e){}
 }
 
 // ── UTILS ──
-function getMonday(){
-  const d=new Date();const day=d.getDay();
-  const diff=d.getDate()-day+(day===0?-6:1);
-  d.setDate(diff);return d.toISOString().split('T')[0];
-}
+function getMonday(){const d=new Date();const day=d.getDay();const diff=d.getDate()-day+(day===0?-6:1);d.setDate(diff);return d.toISOString().split('T')[0];}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
 
-function toast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
-}
+// Init mind dump prio
+setPrio('med');
 </script>
 </body>
 </html>
