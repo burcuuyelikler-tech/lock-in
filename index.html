@@ -1146,43 +1146,6 @@ async function loadHabitsDaily(){
   try{
     await ensureDefaultHabits();
     const{data:habits}=await sb.from('habits').select('*').order('sort_order');
-    if(!habits||!habits.length){el.innerHTML='<div class="empty"><div class="empty-icon">🌱</div>Henüz alışkanlık yok.<br>Zincir sekmesinden ekle!</div>';return;}
-    const{data:logs}=await sb.from('habit_logs').select('habit_id').eq('date',TODAY);
-    const doneIds=new Set((logs||[]).map(l=>l.habit_id));
-    const total=habits.length;
-    const doneCount=habits.filter(h=>doneIds.has(h.id)).length;
-    const pct=total?Math.round(doneCount/total*100):0;
-    let h='<div class="pbw"><div class="pbf" style="width:'+pct+'%"></div></div>'
-      +'<div class="plbl" style="margin-bottom:14px"><span>Bugün</span><span>'+doneCount+'/'+total+' (%'+pct+')</span></div>';
-    habits.forEach(habit=>{
-      const done=doneIds.has(habit.id);
-      h+='<div class="ci" style="cursor:pointer" onclick="tickHabitDaily(''+habit.id+'','+done+')">'
-        +'<div class="cb'+(done?' done':'')+'">'+( done?'✓':'')+'</div>'
-        +'<span class="cl'+(done?' done':'')+'">'+habit.icon+' '+habit.name+'</span>'
-        +(habit.description?'<span style="font-size:11px;color:var(--gray)">'+habit.description+'</span>':'')
-        +'</div>';
-    });
-    if(doneCount===total&&total>0){
-      h+='<div style="background:var(--green-l);border-radius:var(--rs);padding:12px;text-align:center;font-size:14px;font-weight:600;color:var(--green);margin-top:12px">🎉 Bugün tüm alışkanlıklar tamam!</div>';
-    }
-    el.innerHTML=h;
-  }catch(e){el.innerHTML='<div class="empty">Yüklenemedi: '+e.message+'</div>';}
-}
-
-async function tickHabitDaily(hid,isDone){
-  try{
-    if(isDone){await sb.from('habit_logs').delete().eq('habit_id',hid).eq('date',TODAY);}
-    else{await sb.from('habit_logs').upsert({habit_id:hid,date:TODAY},{onConflict:'habit_id,date'});toast('✓ Yapıldı!');}
-    await loadHabitsDaily();
-  }catch(e){toast('Hata: '+e.message);}
-}
-
-// ── HABİTS DAILY ──
-async function loadHabitsDaily(){
-  const el=document.getElementById('habits-daily-list');
-  try{
-    await ensureDefaultHabits();
-    const{data:habits}=await sb.from('habits').select('*').order('sort_order');
     if(!habits||!habits.length){
       el.innerHTML='<div class="empty"><div class="empty-icon">🌱</div>Henüz alışkanlık yok.<br>Zincir sekmesinden ekle!</div>';
       return;
@@ -1196,10 +1159,11 @@ async function loadHabitsDaily(){
       +'<div class="plbl" style="margin-bottom:16px"><span>Bugün</span><span>'+doneCount+'/'+total+' (%'+pct+')</span></div>';
     habits.forEach(habit=>{
       const done=doneIds.has(habit.id);
-      h+='<div class="ci" onclick="tickHabitDaily(\''+habit.id+'\','+done+')">'
-        +'<div class="cb'+(done?' done':'')+'">'+( done?'✓':'')+'</div>'
-        +'<div style="flex:1"><span class="cl'+(done?' done':'')+'">'+habit.icon+' '+habit.name+'</span>'
-        +(habit.description?'<div style="font-size:11px;color:var(--gray);margin-top:1px">'+habit.description+'</div>':'')
+      const hid=habit.id;
+      h+='<div class="ci" style="cursor:pointer" data-hid="'+hid+'" data-done="'+done+'" onclick="tickHabitDailyEl(this)">'
+        +'<div class="cb'+(done?' done':'')+'">'+(done?'✓':'')+'</div>'
+        +'<div style="flex:1"><span class="cl'+(done?' done':'')+'">'+ habit.icon+' '+habit.name+'</span>'
+        +(habit.description?'<div style="font-size:11px;color:var(--gray);margin-top:1px">'+habit.description+'</div>':'')  
         +'</div></div>';
     });
     if(doneCount===total&&total>0){
@@ -1207,6 +1171,12 @@ async function loadHabitsDaily(){
     }
     el.innerHTML=h;
   }catch(e){el.innerHTML='<div class="empty">Yüklenemedi: '+e.message+'</div>';}
+}
+
+function tickHabitDailyEl(el){
+  const hid=el.dataset.hid;
+  const isDone=el.dataset.done==='true';
+  tickHabitDaily(hid,isDone);
 }
 
 async function tickHabitDaily(hid,isDone){
