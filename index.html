@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>Lock-in 2026</title>
+<title>Lock-In 2025</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -236,7 +236,7 @@ textarea.ifield{resize:vertical}
 
 <div class="hdr">
   <div class="hdr-r1">
-    <div class="hdr-title">Be so good that they can't ignore you!</div>
+    <div class="hdr-title">Lock-In 2025</div>
     <div class="hdr-streak" id="hdr-streak">🔥 0 gün</div>
   </div>
   <div class="hdr-r2">
@@ -334,7 +334,10 @@ textarea.ifield{resize:vertical}
 <!-- SUPPLEMENT -->
 <div id="tab-supplement" style="display:none">
   <div class="card">
-    <div class="card-title">💊 Bugünün Supplementleri</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div class="card-title" style="margin-bottom:0">💊 Bugünün Supplementleri</div>
+      <button class="btn btn-ghost btn-sm" onclick="openSupplEdit()">✏️ Düzenle</button>
+    </div>
     <div id="suppl-day-lbl" style="font-size:12px;color:var(--gray);margin-bottom:10px"></div>
     <div class="wbox">⚠️ Yağlı kapsülleri (Omega-3, D3+K2) asla aç karna alma.</div>
     <div id="suppl-list"></div>
@@ -352,6 +355,12 @@ textarea.ifield{resize:vertical}
       <button class="prio-btn" id="pb-hi" onclick="setPrio('high')">🔴 Yüksek</button>
       <button class="prio-btn sel-md" id="pb-md" onclick="setPrio('med')">🟡 Orta</button>
       <button class="prio-btn" id="pb-lo" onclick="setPrio('low')">🟢 Düşük</button>
+    </div>
+    <div class="slbl">İş Boyutu</div>
+    <div class="prio-row">
+      <button class="prio-btn sel-lo" id="pb-sm" onclick="setSize('small')">🟢 Küçük</button>
+      <button class="prio-btn" id="pb-med" onclick="setSize('medium')">🟡 Orta</button>
+      <button class="prio-btn" id="pb-big" onclick="setSize('large')">🔴 Büyük</button>
     </div>
     <div style="display:flex;gap:8px;margin-top:12px">
       <button class="btn btn-gold" style="flex:1" onclick="addMD()">Ekle</button>
@@ -644,6 +653,21 @@ textarea.ifield{resize:vertical}
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- SUPPLEMENT EDIT MODAL -->
+<div class="modal-bg" id="suppl-modal" style="display:none" onclick="if(event.target===this)closeModal('suppl-modal')">
+  <div class="modal">
+    <div class="modal-title">💊 Supplement Listesi Düzenle</div>
+    <div style="font-size:12px;color:var(--gray);margin-bottom:12px">Bugünün gün planını düzenliyorsunuz. Değişiklikler localStorage'a kaydedilir.</div>
+    <div id="suppl-edit-list"></div>
+    <button class="btn btn-ghost" onclick="addSupplItem()" style="margin-top:8px">+ Madde Ekle</button>
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <button class="btn btn-gold" onclick="saveSupplEdit()" style="flex:1">Kaydet</button>
+      <button class="btn btn-ghost btn-sm" onclick="closeModal('suppl-modal')" style="flex:0.4">İptal</button>
+    </div>
+    <button class="btn btn-red btn-sm" onclick="resetSupplToDefault()" style="width:100%;margin-top:8px">🔄 Varsayılana Sıfırla</button>
+  </div>
+</div>
 
 <script>
 const SURL='https://ucwgkduvpnklfggleupb.supabase.co';
@@ -1089,7 +1113,7 @@ async function refreshTasks() {
 // SUPPLEMENT
 function renderSupplements() {
   const day = new Date().getDay();
-  const items = SUPPL[day] || SUPPL[1];
+  const items = getSupplPlan();
   const names = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
   document.getElementById('suppl-day-lbl').textContent = names[day];
   const saved = JSON.parse(localStorage.getItem('suppl_' + TODAY) || '{}');
@@ -1133,7 +1157,7 @@ async function addMD() {
   const text = document.getElementById('md-input').value.trim();
   if (!text) { toast('Bir şeyler yaz!'); return; }
   try {
-    await sb.from('mind_dump_items').insert({text, priority: mdPrio, is_done: false});
+    await sb.from('mind_dump_items').insert({text, priority: mdPrio, size: mdSize, is_done: false});
     document.getElementById('md-input').value = '';
     toast('Eklendi!');
     await loadMindDump();
@@ -1143,7 +1167,7 @@ async function addMDAsTask() {
   const text = document.getElementById('md-input').value.trim();
   if (!text) { toast('Bir şeyler yaz!'); return; }
   try {
-    const {data:item} = await sb.from('mind_dump_items').insert({text, priority: mdPrio, is_done: false}).select().single();
+    const {data:item} = await sb.from('mind_dump_items').insert({text, priority: mdPrio, size: mdSize, is_done: false}).select().single();
     if (item) {
       await sb.from('daily_tasks').insert({date: TODAY, mind_dump_id: item.id, status: 'pending', source: 'minddump'});
       document.getElementById('md-input').value = '';
@@ -1170,11 +1194,14 @@ async function loadMindDump() {
     if (!items.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">🧠</div>Henüz hiçbir şey yok.</div>'; return; }
     const pM = {high:'🔴 Yüksek', med:'🟡 Orta', low:'🟢 Düşük'};
     const pC = {high:'md-prio p-hi', med:'md-prio p-md', low:'md-prio p-lo'};
+    const sM = {small:'🟢 Küçük', medium:'🟡 Orta', large:'🔴 Büyük'};
+    const sC = {small:'p-lo', medium:'p-md', large:'p-hi'};
     el.innerHTML = items.map(item =>
       '<div class="md-item' + (item.is_done ? ' done' : '') + '">'
       + '<div class="md-text' + (item.is_done ? ' done' : '') + '">' + item.text + '</div>'
       + '<div style="display:flex;align-items:center;gap:5px;flex-shrink:0">'
       + (item.priority ? '<span class="' + (pC[item.priority]||'md-prio') + '">' + (pM[item.priority]||'') + '</span>' : '')
+      + (item.size ? '<span class="md-prio ' + (sC[item.size]||'') + '" style="margin-left:3px">' + (sM[item.size]||'') + '</span>' : '')
       + '<button class="md-btn" onclick="toggleMD(\'' + item.id + '\',' + item.is_done + ')">' + (item.is_done ? '↩' : '✓') + '</button>'
       + '<button class="md-btn" onclick="deleteMD(\'' + item.id + '\')">✕</button>'
       + '</div></div>'
@@ -1797,6 +1824,90 @@ async function calcStreak() {
   } catch(e) {}
 }
 
+// SUPPLEMENT EDIT
+const SUPPL_KEY = 'suppl_custom_';
+function getSupplPlan() {
+  const day = new Date().getDay();
+  const saved = localStorage.getItem(SUPPL_KEY + day);
+  return saved ? JSON.parse(saved) : (SUPPL[day] || SUPPL[1]);
+}
+function openSupplEdit() {
+  const day = new Date().getDay();
+  const items = getSupplPlan();
+  renderSupplEditList(items);
+  document.getElementById('suppl-modal').style.display = 'flex';
+}
+function renderSupplEditList(items) {
+  const el = document.getElementById('suppl-edit-list');
+  let html = '';
+  items.forEach((item, i) => {
+    html += '<div style="background:var(--cream);border-radius:var(--rs);padding:10px;margin-bottom:8px">'
+      + '<div style="display:flex;gap:8px;align-items:center;margin-bottom:6px">'
+      + '<input type="text" data-i="' + i + '" data-f="n" class="si-field" placeholder="İsim" value="" style="flex:1;padding:8px 10px;border:1.5px solid var(--gray-l);border-radius:8px;font-size:13px;outline:none">'
+      + '<button class="del-btn" onclick="removeSupplItem(' + i + ')">✕</button>'
+      + '</div>'
+      + '<div style="display:flex;gap:8px">'
+      + '<input type="text" data-i="' + i + '" data-f="t" class="si-field" placeholder="Zaman" value="" style="flex:1;padding:8px 10px;border:1.5px solid var(--gray-l);border-radius:8px;font-size:13px;outline:none">'
+      + '<input type="text" data-i="' + i + '" data-f="note" class="si-field" placeholder="Not" value="" style="flex:1;padding:8px 10px;border:1.5px solid var(--gray-l);border-radius:8px;font-size:13px;outline:none">'
+      + '</div></div>';
+  });
+  el.innerHTML = html;
+  // Set values after render to avoid quote issues
+  el.querySelectorAll('.si-field').forEach(inp => {
+    const i = parseInt(inp.dataset.i), f = inp.dataset.f;
+    inp.value = items[i][f] || '';
+    inp.addEventListener('input', function() { supplLiveEdit(this); });
+  });
+}
+function supplLiveEdit(inp) {
+  const day = new Date().getDay();
+  const saved = localStorage.getItem(SUPPL_KEY + day);
+  const cur = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(SUPPL[day]||SUPPL[1]));
+  const i = parseInt(inp.dataset.i), f = inp.dataset.f;
+  if (!cur[i]) cur[i] = {n:'',t:'',note:''};
+  cur[i][f] = inp.value;
+  localStorage.setItem(SUPPL_KEY + day, JSON.stringify(cur));
+}
+
+// updateSupplItem removed - handled by supplLiveEdit
+function addSupplItem() {
+  const day = new Date().getDay();
+  const saved = localStorage.getItem(SUPPL_KEY + day);
+  const cur = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(SUPPL[day]||SUPPL[1]));
+  cur.push({n:'', t:'', note:''});
+  localStorage.setItem(SUPPL_KEY + day, JSON.stringify(cur));
+  renderSupplEditList(cur);
+}
+function removeSupplItem(i) {
+  const day = new Date().getDay();
+  const saved = localStorage.getItem(SUPPL_KEY + day);
+  const cur = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(SUPPL[day]||SUPPL[1]));
+  cur.splice(i, 1);
+  localStorage.setItem(SUPPL_KEY + day, JSON.stringify(cur));
+  renderSupplEditList(cur);
+}
+function saveSupplEdit() {
+  closeModal('suppl-modal');
+  toast('✅ Supplement listesi güncellendi!');
+  renderSupplements();
+}
+function resetSupplToDefault() {
+  const day = new Date().getDay();
+  localStorage.removeItem(SUPPL_KEY + day);
+  closeModal('suppl-modal');
+  toast('🔄 Varsayılana sıfırlandı');
+  renderSupplements();
+}
+
+// MIND DUMP SIZE
+let mdSize = 'small';
+function setSize(s) {
+  mdSize = s;
+  document.getElementById('pb-sm').className = 'prio-btn' + (s === 'small' ? ' sel-lo' : '');
+  document.getElementById('pb-med').className = 'prio-btn' + (s === 'medium' ? ' sel-md' : '');
+  document.getElementById('pb-big').className = 'prio-btn' + (s === 'large' ? ' sel-hi' : '');
+}
+
 // INIT
 window.addEventListener('DOMContentLoaded', async () => {
   initHeader();
@@ -1805,6 +1916,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   renderKPIForm();
   renderLogRating();
   setPrio('med');
+  setSize('small');
   // Restore persisted checks from localStorage
   const savedMC = localStorage.getItem('mc_' + TODAY);
   if (savedMC) morningChecks = JSON.parse(savedMC);
