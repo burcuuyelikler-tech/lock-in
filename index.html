@@ -2,19 +2,27 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 <title>Lock-In 2025</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--navy:#1B2A4A;--navy2:#243560;--gold:#B8962E;--gold-l:#F5EDD6;--cream:#FAF8F3;--white:#fff;--gray:#6B7280;--gray-l:#F3F4F6;--green:#2D6A2D;--green-l:#EAF4EA;--warn:#FFF3CD;--warn-fg:#7D5A00;--red:#DC2626;--red-l:#FEE2E2;--r:16px;--rs:10px;--sh:0 4px 24px rgba(27,42,74,.10)}
+:root{
+  --navy:#1B2A4A;--navy2:#243560;--gold:#B8962E;--gold-l:#F5EDD6;
+  --cream:#FAF8F3;--white:#fff;--gray:#6B7280;--gray-l:#F3F4F6;
+  --green:#2D6A2D;--green-l:#EAF4EA;--warn:#FFF3CD;--warn-fg:#7D5A00;
+  --red:#DC2626;--red-l:#FEE2E2;--r:16px;--rs:10px;
+  --sh:0 4px 24px rgba(27,42,74,.10);
+}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);min-height:100vh}
+
+/* HEADER */
 .hdr{background:var(--navy);padding:14px 18px 12px;position:sticky;top:0;z-index:100}
-.hdr-row1{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.hdr-r1{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
 .hdr-title{font-family:'Playfair Display',serif;color:var(--gold);font-size:20px;font-weight:700}
 .hdr-streak{background:var(--gold);color:var(--navy);border-radius:20px;padding:4px 12px;font-size:13px;font-weight:600}
-.hdr-row2{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.hdr-r2{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .hdr-datetime{flex:1}
 .hdr-date-txt{color:rgba(255,255,255,.65);font-size:12px;font-weight:500}
 .hdr-clock-txt{color:var(--gold);font-family:'Playfair Display',serif;font-size:15px;margin-top:1px}
@@ -26,31 +34,44 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
 .hdr-prog-pct{color:rgba(255,255,255,.8);font-size:12px;font-weight:600;margin-bottom:3px}
 .hdr-prog-bar{width:80px;height:5px;background:rgba(255,255,255,.15);border-radius:99px;overflow:hidden}
 .hdr-prog-fill{height:100%;background:var(--gold);border-radius:99px;transition:width .5s;width:0%}
+
+/* NAV */
 .nav{background:var(--white);border-bottom:1px solid rgba(27,42,74,.08);display:flex;overflow-x:auto;scrollbar-width:none;position:sticky;top:88px;z-index:99}
 .nav::-webkit-scrollbar{display:none}
 .nb{padding:13px 14px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:var(--gray);border:none;background:none;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s}
-.nb.active{color:var(--navy);border-bottom-color:var(--gold);font-weight:600}
+.nb.act{color:var(--navy);border-bottom-color:var(--gold);font-weight:600}
+
+/* LAYOUT */
 .main{padding:16px 16px 120px;max-width:600px;margin:0 auto}
 .card{background:var(--white);border-radius:var(--r);padding:18px;margin-bottom:14px;box-shadow:var(--sh)}
-.card-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:4px}
-.card-sub{font-size:12px;color:var(--gray);margin-bottom:14px}
+.card-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:14px}
 .slbl{font-size:11px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin:14px 0 8px}
-.energy-row{display:flex;gap:6px;flex-wrap:wrap}
-.ebtn{width:38px;height:38px;border-radius:50%;border:2px solid var(--gray-l);background:var(--white);font-size:13px;font-weight:600;color:var(--gray);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
-.ebtn.active{background:var(--navy);border-color:var(--navy);color:var(--white)}
-.ci{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--gray-l);cursor:pointer;user-select:none}
-.ci:last-child{border-bottom:none}
-.cb{width:22px;height:22px;min-width:22px;border:2px solid var(--gray-l);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;transition:all .2s}
-.cb.done{background:var(--green);border-color:var(--green);color:#fff}
-.cl{font-size:14px;flex:1}
-.cl.done{color:var(--gray);text-decoration:line-through}
+.slbl:first-child{margin-top:0}
+
+/* BUTTONS */
 .btn{padding:12px 18px;border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s;display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%}
 .btn-gold{background:var(--gold);color:var(--navy)}
 .btn-navy{background:var(--navy);color:#fff}
 .btn-ghost{background:var(--gray-l);color:var(--navy)}
-.btn-green{background:var(--green-l);color:var(--green)}
 .btn-red{background:var(--red-l);color:var(--red)}
 .btn-sm{padding:7px 13px;font-size:13px;border-radius:8px;width:auto}
+
+/* CHECKLIST */
+.ci{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--gray-l);cursor:pointer;user-select:none}
+.ci:last-child{border-bottom:none}
+.ci.ro{pointer-events:none;opacity:.65}
+.cb{width:22px;height:22px;min-width:22px;border:2px solid var(--gray-l);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;transition:all .2s}
+.cb.done{background:var(--green);border-color:var(--green);color:#fff}
+.cl{font-size:14px;flex:1}
+.cl.done{color:var(--gray);text-decoration:line-through}
+
+/* ENERGY BTNS */
+.energy-row{display:flex;gap:6px;flex-wrap:wrap}
+.ebtn{width:38px;height:38px;border-radius:50%;border:2px solid var(--gray-l);background:var(--white);font-size:13px;font-weight:600;color:var(--gray);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
+.ebtn.act{background:var(--navy);border-color:var(--navy);color:#fff}
+.ebtn:disabled{opacity:.5;cursor:default}
+
+/* TASKS */
 .task-item{display:flex;align-items:center;gap:11px;padding:12px;background:var(--cream);border-radius:var(--rs);margin-bottom:8px;cursor:pointer;border:1.5px solid transparent;transition:all .2s}
 .task-item:hover{border-color:var(--gold-l)}
 .task-item.done{opacity:.55}
@@ -63,9 +84,46 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
 .b-pend{background:var(--gray-l);color:var(--gray)}
 .b-done{background:var(--green-l);color:var(--green)}
 .b-part{background:var(--warn);color:var(--warn-fg)}
+
+/* PROGRESS */
 .pbw{background:var(--gray-l);border-radius:99px;height:7px;overflow:hidden;margin:8px 0 3px}
 .pbf{height:100%;background:linear-gradient(90deg,var(--gold),var(--navy));border-radius:99px;transition:width .5s}
 .plbl{font-size:12px;color:var(--gray);display:flex;justify-content:space-between}
+
+/* HABITS */
+.h-card{background:var(--white);border-radius:var(--r);padding:16px;margin-bottom:12px;box-shadow:var(--sh)}
+.h-top{display:flex;align-items:center;gap:11px;margin-bottom:12px}
+.h-icon{font-size:24px;width:36px;text-align:center}
+.h-info{flex:1}
+.h-name{font-size:15px;font-weight:600}
+.h-sub{font-size:12px;color:var(--gray);margin-top:2px}
+.h-streak{text-align:right}
+.h-s-num{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--gold);line-height:1}
+.h-s-lbl{font-size:10px;color:var(--gray)}
+.tick-btn{width:38px;height:38px;min-width:38px;border-radius:50%;border:2px solid var(--gray-l);background:var(--white);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.tick-btn.done{background:var(--green);border-color:var(--green);color:#fff}
+.edit-btn{width:32px;height:32px;min-width:32px;border-radius:50%;border:1.5px solid var(--gray-l);background:var(--white);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
+/* CALENDAR */
+.cal-wrap{overflow-x:auto;padding-bottom:2px}
+.cal-row{display:flex;gap:4px;min-width:max-content}
+.cal-day{width:32px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:3px}
+.cal-box{width:32px;height:32px;border-radius:7px;border:1.5px solid var(--gray-l);display:flex;align-items:center;justify-content:center;font-size:13px;background:var(--white)}
+.cal-box.hit{background:var(--gold);border-color:var(--gold);color:#fff}
+.cal-box.today{border-color:var(--navy);border-width:2px}
+.cal-box.today.hit{background:var(--navy);border-color:var(--navy);color:#fff}
+.cal-box.fut{background:var(--gray-l);border-color:var(--gray-l)}
+.cal-lbl{font-size:9px;color:var(--gray);font-weight:600}
+.cal-lbl.today{color:var(--navy);font-weight:700}
+.h-best{font-size:11px;color:var(--gold);font-weight:600;margin-top:8px}
+
+/* COUNTER */
+.counter-row{display:flex;align-items:center;gap:8px;margin-top:6px}
+.cnt-btn{width:32px;height:32px;border-radius:50%;border:2px solid var(--gray-l);background:var(--white);font-size:20px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--navy)}
+.cnt-val{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--navy);min-width:50px;text-align:center}
+.cnt-unit{font-size:12px;color:var(--gray)}
+
+/* WBS */
 .cat-hdr{display:flex;align-items:center;justify-content:space-between;padding:11px 0 8px;cursor:pointer}
 .cat-name{font-family:'Playfair Display',serif;font-size:16px;font-weight:700}
 .cat-prog{font-size:12px;color:var(--gray);background:var(--gray-l);padding:3px 9px;border-radius:20px}
@@ -78,45 +136,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
 .mt-check.done{background:var(--gold);border-color:var(--gold);color:#fff}
 .mt-lbl{font-size:13px;flex:1}
 .mt-lbl.done{color:var(--gray);text-decoration:line-through}
-/* SUPPLEMENT CHECKLIST */
-.suppl-check-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--gray-l);cursor:pointer;user-select:none}
-.suppl-check-item:last-child{border-bottom:none}
+
+/* SUPPLEMENT */
+.suppl-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--gray-l);cursor:pointer;user-select:none}
+.suppl-item:last-child{border-bottom:none}
 .suppl-cb{width:22px;height:22px;min-width:22px;border:2px solid var(--gray-l);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;transition:all .2s}
 .suppl-cb.done{background:var(--gold);border-color:var(--gold);color:#fff}
-.suppl-item-info{flex:1}
-.suppl-item-name{font-size:14px;font-weight:500}
-.suppl-item-note{font-size:11px;color:var(--gray);margin-top:2px}
-.suppl-all-done{background:var(--green-l);border-radius:var(--rs);padding:12px;text-align:center;font-size:14px;font-weight:600;color:var(--green);margin-top:12px;display:none}
-/* ZINCIR */
-.z-hero{background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:var(--r);padding:22px 18px;margin-bottom:14px;display:flex;align-items:center;gap:18px}
-.z-num{font-family:'Playfair Display',serif;font-size:60px;font-weight:700;color:var(--gold);line-height:1}
-.z-info{flex:1}
-.z-lbl{color:#fff;font-size:16px;font-weight:600}
-.z-sub{color:rgba(255,255,255,.5);font-size:12px;margin-top:4px}
-.z-rec{color:var(--gold-l);font-size:13px;margin-top:8px;font-weight:500}
-.h-card{background:var(--white);border-radius:var(--r);padding:16px;margin-bottom:12px;box-shadow:var(--sh)}
-.h-top{display:flex;align-items:center;gap:11px;margin-bottom:12px}
-.h-icon{font-size:24px;width:36px;text-align:center}
-.h-info{flex:1}
-.h-name{font-size:15px;font-weight:600}
-.h-sub{font-size:12px;color:var(--gray);margin-top:2px}
-.h-streak{text-align:right}
-.h-s-num{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--gold);line-height:1}
-.h-s-lbl{font-size:10px;color:var(--gray)}
-.tick-btn{width:38px;height:38px;min-width:38px;border-radius:50%;border:2px solid var(--gray-l);background:var(--white);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;margin-left:6px}
-.tick-btn.done{background:var(--green);border-color:var(--green);color:#fff}
-.edit-btn{width:32px;height:32px;min-width:32px;border-radius:50%;border:1.5px solid var(--gray-l);background:var(--white);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-left:4px}
-.cal-wrap{overflow-x:auto;padding-bottom:2px}
-.cal-row{display:flex;gap:4px;min-width:max-content}
-.cal-day{width:32px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:3px}
-.cal-box{width:32px;height:32px;border-radius:7px;border:1.5px solid var(--gray-l);display:flex;align-items:center;justify-content:center;font-size:13px;background:var(--white)}
-.cal-box.hit{background:var(--gold);border-color:var(--gold);color:#fff}
-.cal-box.today{border-color:var(--navy);border-width:2px}
-.cal-box.today.hit{background:var(--navy);border-color:var(--navy);color:#fff}
-.cal-box.fut{background:var(--gray-l);border-color:var(--gray-l)}
-.cal-lbl{font-size:9px;color:var(--gray);font-weight:600}
-.cal-lbl.today{color:var(--navy);font-weight:700}
-.h-best{font-size:11px;color:var(--gold);font-weight:600;margin-top:8px}
+.suppl-info{flex:1}
+.suppl-name{font-size:14px;font-weight:500}
+.suppl-note{font-size:11px;color:var(--gray);margin-top:2px}
+
 /* MIND DUMP */
 .md-item{display:flex;align-items:flex-start;gap:10px;padding:11px;background:var(--cream);border-radius:var(--rs);margin-bottom:8px}
 .md-item.done{opacity:.5}
@@ -132,35 +161,35 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
 .prio-btn.sel-hi{background:var(--red-l);border-color:var(--red);color:var(--red)}
 .prio-btn.sel-md{background:var(--warn);border-color:var(--warn-fg);color:var(--warn-fg)}
 .prio-btn.sel-lo{background:var(--green-l);border-color:var(--green);color:var(--green)}
-/* LOG (okuma/izleme/dinleme) */
+
+/* LOG */
 .log-item{display:flex;align-items:center;gap:12px;padding:12px;background:var(--cream);border-radius:var(--rs);margin-bottom:8px}
-.log-type-badge{font-size:18px;width:36px;text-align:center}
 .log-info{flex:1}
-.log-title{font-size:14px;font-weight:500}
+.log-title-txt{font-size:14px;font-weight:500}
 .log-meta{font-size:12px;color:var(--gray);margin-top:2px}
-.log-del{width:28px;height:28px;border-radius:6px;border:none;background:var(--gray-l);color:var(--gray);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.log-del{width:28px;height:28px;border-radius:6px;border:none;background:var(--gray-l);color:var(--gray);cursor:pointer;font-size:13px;flex-shrink:0}
 .type-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
 .type-tab{padding:7px 14px;border-radius:99px;border:1.5px solid var(--gray-l);background:var(--white);font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
-.type-tab.active{background:var(--navy);border-color:var(--navy);color:#fff}
-/* MODAL */
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:flex-end;justify-content:center}
-.modal{background:var(--white);border-radius:var(--r) var(--r) 0 0;padding:22px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto}
-.modal-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:14px}
-.ifield{width:100%;padding:11px;border:1.5px solid var(--gray-l);border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--navy);outline:none;background:var(--cream)}
-.ifield:focus{border-color:var(--gold)}
-.emoji-grid{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0}
-.eg-btn{width:38px;height:38px;border-radius:8px;border:1.5px solid var(--gray-l);background:var(--white);font-size:19px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.eg-btn.active{border-color:var(--gold);background:var(--gold-l)}
-/* CHECKIN EDIT */
-.checkin-edit-item{display:flex;align-items:center;gap:10px;padding:10px;background:var(--cream);border-radius:var(--rs);margin-bottom:6px}
-.checkin-edit-item input[type=text]{flex:1;padding:8px 10px;border:1.5px solid var(--gray-l);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;background:var(--white)}
-.checkin-edit-item input[type=text]:focus{border-color:var(--gold)}
-.del-item-btn{width:28px;height:28px;border-radius:6px;border:none;background:var(--red-l);color:var(--red);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.type-tab.act{background:var(--navy);border-color:var(--navy);color:#fff}
+
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kpi-card{background:var(--cream);border-radius:var(--rs);padding:13px;border:1px solid rgba(27,42,74,.08)}
+.kpi-val{font-family:'Playfair Display',serif;font-size:24px;font-weight:700}
+.kpi-lbl{font-size:12px;color:var(--gray);margin-top:3px}
+.kpi-tgt{font-size:11px;color:var(--gold);font-weight:600;margin-top:2px}
+
 /* MISC */
 .celebrate{background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:var(--r);padding:20px;text-align:center;color:#fff;margin-bottom:14px}
 .cel-icon{font-size:36px;margin-bottom:7px}
 .cel-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--gold);font-weight:700;margin-bottom:3px}
 .cel-txt{font-size:13px;opacity:.75}
+.z-hero{background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:var(--r);padding:22px 18px;margin-bottom:14px;display:flex;align-items:center;gap:18px}
+.z-num{font-family:'Playfair Display',serif;font-size:60px;font-weight:700;color:var(--gold);line-height:1}
+.z-info{flex:1}
+.z-lbl{color:#fff;font-size:16px;font-weight:600}
+.z-sub{color:rgba(255,255,255,.5);font-size:12px;margin-top:4px}
+.z-rec{color:var(--gold-l);font-size:13px;margin-top:8px;font-weight:500}
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;padding:10px 20px;border-radius:99px;font-size:14px;font-weight:500;box-shadow:0 8px 32px rgba(27,42,74,.2);opacity:0;transition:all .3s;z-index:300;white-space:nowrap;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .spin{width:28px;height:28px;border:3px solid var(--gray-l);border-top-color:var(--gold);border-radius:50%;animation:sp .8s linear infinite}
@@ -168,43 +197,56 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
 .loading{display:flex;flex-direction:column;align-items:center;gap:10px;padding:32px;color:var(--gray);font-size:13px}
 .empty{text-align:center;padding:32px 16px;color:var(--gray);font-size:14px}
 .empty-icon{font-size:32px;margin-bottom:8px}
-.setup-step{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--gray-l)}
-.setup-step:last-child{border-bottom:none}
-.s-num{width:26px;height:26px;min-width:26px;background:var(--navy);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
-.s-txt{font-size:13px;line-height:1.6;flex:1}
-.s-txt code{background:var(--gray-l);padding:2px 5px;border-radius:4px;font-size:11px}
-.ifield2{width:100%;padding:10px;border:1.5px solid var(--gray-l);border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;background:var(--cream);margin-top:7px}
-.rating-row{display:flex;gap:8px;margin-top:6px}
-.rating-btn{width:36px;height:36px;border-radius:50%;border:2px solid var(--gray-l);background:var(--white);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;color:var(--gray)}
-.rating-btn.active{background:var(--gold);border-color:var(--gold);color:var(--navy)}
 .wbox{background:var(--warn);border-left:4px solid var(--gold);border-radius:var(--rs);padding:10px 13px;margin-bottom:13px;font-size:13px;color:var(--warn-fg)}
-.counter-row{display:flex;align-items:center;gap:8px;margin-top:8px}
-.cnt-btn{width:32px;height:32px;border-radius:50%;border:2px solid var(--gray-l);background:var(--white);font-size:18px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;color:var(--navy)}
-.cnt-btn:active{background:var(--gold);border-color:var(--gold)}
-.cnt-val{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--navy);min-width:50px;text-align:center}
-.cnt-unit{font-size:12px;color:var(--gray)}
-.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.kpi-card{background:var(--cream);border-radius:var(--rs);padding:13px;border:1px solid rgba(27,42,74,.08)}
-.kpi-val{font-family:'Playfair Display',serif;font-size:24px;font-weight:700}
-.kpi-lbl{font-size:12px;color:var(--gray);margin-top:3px}
-.kpi-tgt{font-size:11px;color:var(--gold);font-weight:600;margin-top:2px}
+.ifield{width:100%;padding:11px;border:1.5px solid var(--gray-l);border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--navy);outline:none;background:var(--cream)}
+.ifield:focus{border-color:var(--gold)}
+textarea.ifield{resize:vertical}
+
+/* MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:flex-end;justify-content:center}
+.modal{background:var(--white);border-radius:var(--r) var(--r) 0 0;padding:22px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto}
+.modal-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:14px}
+.emoji-grid{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0}
+.eg-btn{width:38px;height:38px;border-radius:8px;border:1.5px solid var(--gray-l);background:var(--white);font-size:19px;cursor:pointer}
+.eg-btn.act{border-color:var(--gold);background:var(--gold-l)}
+.rating-row{display:flex;gap:8px;margin-top:6px}
+.rating-btn{width:36px;height:36px;border-radius:50%;border:2px solid var(--gray-l);background:var(--white);font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--gray)}
+.rating-btn.act{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+.ci-edit-item{display:flex;align-items:center;gap:10px;padding:10px;background:var(--cream);border-radius:var(--rs);margin-bottom:6px}
+.ci-edit-item input{flex:1;padding:8px 10px;border:1.5px solid var(--gray-l);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;background:var(--white)}
+.ci-edit-item input:focus{border-color:var(--gold)}
+.del-btn{width:28px;height:28px;border-radius:6px;border:none;background:var(--red-l);color:var(--red);cursor:pointer;font-size:14px;flex-shrink:0}
+
+/* SAĞLIK / OPT / VISION */
+.health-entry{padding:11px 0;border-bottom:1px solid var(--gray-l)}
+.health-entry:last-child{border-bottom:none}
+.opt-entry{padding:10px 0;border-bottom:1px solid var(--gray-l)}
+.opt-entry:last-child{border-bottom:none}
+.vb-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.vb-img{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:1;background:var(--gray-l)}
+.vb-img img{width:100%;height:100%;object-fit:cover}
+.vb-note{position:relative;border-radius:12px;padding:14px;aspect-ratio:1;display:flex;align-items:center;justify-content:center}
+.vb-del{position:absolute;top:6px;right:6px;width:24px;height:24px;border-radius:50%;border:none;background:rgba(0,0,0,.4);color:#fff;cursor:pointer;font-size:11px}
+.color-row{display:flex;gap:8px;margin-top:6px}
+.color-swatch{width:32px;height:32px;border-radius:8px;cursor:pointer;border:2px solid transparent}
+.color-swatch.act{border-color:var(--gold)}
 </style>
 </head>
 <body>
 
 <div class="hdr">
-  <div class="hdr-row1">
+  <div class="hdr-r1">
     <div class="hdr-title">Lock-In 2025</div>
     <div class="hdr-streak" id="hdr-streak">🔥 0 gün</div>
   </div>
-  <div class="hdr-row2">
+  <div class="hdr-r2">
     <div class="hdr-datetime">
-      <div class="hdr-date-txt" id="hdr-date">—</div>
-      <div class="hdr-clock-txt" id="hdr-clock">00:00:00</div>
+      <div class="hdr-date-txt" id="hdr-date">Yükleniyor...</div>
+      <div class="hdr-clock-txt" id="hdr-clock">--:--:--</div>
     </div>
     <div class="hdr-right">
       <div class="hdr-days-box">
-        <div class="hdr-days-num" id="hdr-days">—</div>
+        <div class="hdr-days-num" id="hdr-days">--</div>
         <div class="hdr-days-lbl">gün kaldı</div>
       </div>
       <div class="hdr-prog-box">
@@ -215,8 +257,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
   </div>
 </div>
 
-<nav class="nav">
-  <button class="nb active" onclick="showTab('bugun')">☀️ Bugün</button>
+<nav class="nav" id="main-nav">
+  <button class="nb act" onclick="showTab('bugun')">☀️ Bugün</button>
   <button class="nb" onclick="showTab('supplement')">💊 Supplement</button>
   <button class="nb" onclick="showTab('minddump')">🧠 Mind Dump</button>
   <button class="nb" onclick="showTab('habits')">✅ Habits</button>
@@ -243,41 +285,49 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
       <div id="cel-top3" style="font-size:13px;color:#fff;white-space:pre-wrap;line-height:1.6"></div>
     </div>
   </div>
+
   <div class="card" id="card-morning">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
       <div class="card-title" style="margin-bottom:0">☀️ Sabah Check-In</div>
       <button class="btn btn-ghost btn-sm" onclick="openCheckinEdit('morning')">✏️ Düzenle</button>
     </div>
-    <div class="slbl">Enerji Seviyeni Seç</div>
+    <div class="slbl" style="margin-top:0">Enerji Seviyesi</div>
     <div class="energy-row" id="energy-btns"></div>
     <div class="slbl">Rutin</div>
-    <div id="morning-checklist"></div>
+    <div id="morning-list"></div>
     <div class="slbl">Günün TOP 3 Önceliği</div>
     <textarea class="ifield" id="top3-input" rows="3" placeholder="1. &#10;2. &#10;3. "></textarea>
-    <div style="margin-top:14px"><button class="btn btn-gold" onclick="saveMorning()">Sabah Check-In Kaydet</button></div>
+    <div style="margin-top:14px">
+      <button class="btn btn-gold" onclick="saveMorning()">Sabah Check-In Kaydet</button>
+    </div>
   </div>
+
   <div class="card">
-    <div class="card-title">📌 Bugünün Task'ları</div>
-    <div class="card-sub">WBS + Mind Dump'tan enerji skoruna göre seçildi</div>
+    <div class="card-title">📌 Bugünün Görevleri</div>
     <div id="today-tasks"><div class="loading"><div class="spin"></div><span>Yükleniyor...</span></div></div>
-    <div style="margin-top:8px"><button class="btn btn-ghost btn-sm" onclick="refreshTasks()">🔄 Yeni Öner</button></div>
+    <div style="margin-top:8px">
+      <button class="btn btn-ghost btn-sm" onclick="refreshTasks()">🔄 Yenile</button>
+    </div>
   </div>
+
   <div class="card">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
       <div class="card-title" style="margin-bottom:0">🌙 Akşam Check-In</div>
       <button class="btn btn-ghost btn-sm" onclick="openCheckinEdit('evening')">✏️ Düzenle</button>
     </div>
-    <div class="slbl">Öz Bakım</div>
-    <div id="evening-checklist"></div>
+    <div class="slbl" style="margin-top:0">Öz Bakım</div>
+    <div id="evening-list"></div>
     <div style="margin-top:12px">
       <div class="slbl">Bugünün En İyi Şeyi</div>
-      <textarea class="ifield" id="win-of-day" rows="2" placeholder="Bugün iyi giden 1 şey..."></textarea>
+      <textarea class="ifield" id="win-input" rows="2" placeholder="Bugün iyi giden 1 şey..."></textarea>
     </div>
     <div style="margin-top:12px">
       <div class="slbl">Güne Puan Ver (0-10)</div>
       <div class="energy-row" id="day-score-btns"></div>
     </div>
-    <div style="margin-top:10px"><button class="btn btn-navy" onclick="saveEvening()">Akşam Check-In Kaydet</button></div>
+    <div style="margin-top:14px">
+      <button class="btn btn-navy" onclick="saveEvening()">Akşam Check-In Kaydet</button>
+    </div>
   </div>
 </div>
 
@@ -285,19 +335,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
 <div id="tab-supplement" style="display:none">
   <div class="card">
     <div class="card-title">💊 Bugünün Supplementleri</div>
-    <div class="card-sub" id="suppl-day-label"></div>
-    <div class="wbox">⚠️ Yağlı kapsülleri (Omega-3, D3+K2, Resveratrol) asla aç karna alma.</div>
-    <div id="suppl-checklist"></div>
-    <div class="suppl-all-done" id="suppl-all-done">🎉 Tüm supplementler alındı! Harika!</div>
-  </div>
-  <div class="card">
-    <div class="card-title">📋 Haftalık Program</div>
-    <div style="font-size:13px;color:var(--gray);line-height:2">
-      <b style="color:var(--navy)">Pzt-Çar (Stabil):</b> D3+K2, Omega-3, B-Complex, Resveratrol (sabah) + Kolajen+C (ara) + Creatine (öğlen) + Mg+Zinc (akşam)<br>
-      <b style="color:var(--navy)">Perşembe (Enjeksiyon):</b> D3+K2, Omega-3, B-Complex (sabah) + Enjeksiyon+Mg (akşam)<br>
-      <b style="color:var(--navy)">Cuma (Hassas):</b> D3+K2, Omega-3, B-Complex (sabah) + Creatine (öğlen) + Mg (akşam)<br>
-      <b style="color:var(--navy)">Cmt-Pazar:</b> Normal doz
-    </div>
+    <div id="suppl-day-lbl" style="font-size:12px;color:var(--gray);margin-bottom:10px"></div>
+    <div class="wbox">⚠️ Yağlı kapsülleri (Omega-3, D3+K2) asla aç karna alma.</div>
+    <div id="suppl-list"></div>
+    <div id="suppl-done-msg" style="display:none;background:var(--green-l);border-radius:var(--rs);padding:12px;text-align:center;font-size:14px;font-weight:600;color:var(--green);margin-top:12px">🎉 Tüm supplementler alındı!</div>
   </div>
 </div>
 
@@ -305,7 +346,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
 <div id="tab-minddump" style="display:none">
   <div class="card">
     <div class="card-title">🧠 Mind Dump</div>
-    <div class="card-sub">Aklındaki her şeyi boşalt.</div>
     <textarea class="ifield" id="md-input" rows="3" placeholder="Ne aklında takılıyor?"></textarea>
     <div class="slbl">Öncelik</div>
     <div class="prio-row">
@@ -313,14 +353,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
       <button class="prio-btn sel-md" id="pb-md" onclick="setPrio('med')">🟡 Orta</button>
       <button class="prio-btn" id="pb-lo" onclick="setPrio('low')">🟢 Düşük</button>
     </div>
-    <div class="slbl">İş Boyutu</div>
-    <div class="prio-row">
-      <button class="prio-btn" id="pb-sm" onclick="setSize('small')">🟢 Küçük</button>
-      <button class="prio-btn sel-md" id="pb-md-size" onclick="setSize('medium')">🟡 Orta</button>
-      <button class="prio-btn" id="pb-lg" onclick="setSize('large')">🔴 Büyük</button>
-    </div>
     <div style="display:flex;gap:8px;margin-top:12px">
-      <button class="btn btn-gold" onclick="addMD()">Ekle</button>
+      <button class="btn btn-gold" style="flex:1" onclick="addMD()">Ekle</button>
       <button class="btn btn-ghost btn-sm" onclick="addMDAsTask()">🎲 Task Yap</button>
     </div>
   </div>
@@ -337,36 +371,32 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
   </div>
 </div>
 
-<!-- HABİTS -->
-
-
-<!-- HABİTS DAILY -->
+<!-- HABITS -->
 <div id="tab-habits" style="display:none">
   <div class="card">
     <div class="card-title">✅ Bugünün Alışkanlıkları</div>
-    <div class="card-sub">Her birini tamamladıkça işaretle.</div>
-    <div id="habits-daily-list"><div class="loading"><div class="spin"></div></div></div>
+    <div id="habits-daily"></div>
   </div>
 </div>
 
 <!-- ZİNCİR -->
 <div id="tab-zincir" style="display:none">
   <div class="z-hero">
-    <div class="z-num" id="z-streak">0</div>
+    <div class="z-num" id="z-num">0</div>
     <div class="z-info">
-      <div class="z-lbl">🔥 Aktif Streak</div>
-      <div class="z-sub">Ortalama üst üste gün</div>
-      <div class="z-rec" id="z-record">En uzun: 0 gün</div>
+      <div class="z-lbl">🔥 Ortalama Streak</div>
+      <div class="z-sub">Tüm alışkanlıkların ortalaması</div>
+      <div class="z-rec" id="z-rec">En uzun: 0 gün</div>
     </div>
   </div>
-  <div id="habit-list"><div class="loading"><div class="spin"></div></div></div>
+  <div id="zincir-list"><div class="loading"><div class="spin"></div></div></div>
   <button class="btn btn-gold" onclick="openAddHabit()" style="margin-top:4px">+ Yeni Alışkanlık</button>
 </div>
 
 <!-- WBS -->
 <div id="tab-wbs" style="display:none">
   <div class="card">
-    <div class="card-title">📋 WBS — Proje Task'ları</div>
+    <div class="card-title">📋 WBS — Genel İlerleme</div>
     <div id="wbs-overall"></div>
   </div>
   <div id="wbs-list"><div class="loading"><div class="spin"></div></div></div>
@@ -376,42 +406,36 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
 <div id="tab-log" style="display:none">
   <div class="card">
     <div class="card-title">📚 İçerik Logu</div>
-    <div class="card-sub">Okuduklarını, izlediklerini, dinlediklerini kaydet.</div>
     <div class="type-tabs">
-      <button class="type-tab active" id="lt-all" onclick="setLogType('all')">Hepsi</button>
-      <button class="type-tab" id="lt-book" onclick="setLogType('book')">📖 Kitap</button>
-      <button class="type-tab" id="lt-article" onclick="setLogType('article')">📰 Makale</button>
-      <button class="type-tab" id="lt-video" onclick="setLogType('video')">🎬 Video</button>
-      <button class="type-tab" id="lt-podcast" onclick="setLogType('podcast')">🎙️ Podcast</button>
-      <button class="type-tab" id="lt-course" onclick="setLogType('course')">🎓 Kurs</button>
+      <button class="type-tab act" id="lt-all" onclick="setLogFilter('all',this)">Hepsi</button>
+      <button class="type-tab" onclick="setLogFilter('book',this)">📖 Kitap</button>
+      <button class="type-tab" onclick="setLogFilter('article',this)">📰 Makale</button>
+      <button class="type-tab" onclick="setLogFilter('video',this)">🎬 Video</button>
+      <button class="type-tab" onclick="setLogFilter('podcast',this)">🎙️ Podcast</button>
+      <button class="type-tab" onclick="setLogFilter('course',this)">🎓 Kurs</button>
     </div>
-    <button class="btn btn-gold" onclick="openAddLog()" style="margin-bottom:14px">+ Yeni Ekle</button>
+    <button class="btn btn-gold" onclick="openAddLog()" style="margin-bottom:14px">+ Ekle</button>
     <div id="log-list"><div class="loading"><div class="spin"></div></div></div>
   </div>
 </div>
-
-
 
 <!-- SAĞLIK -->
 <div id="tab-saglik" style="display:none">
   <div class="card">
     <div class="card-title">🍎 Günlük Sağlık Logu</div>
-    <div class="card-sub">Yemek, uyku ve egzersiz takibi.</div>
-    <div class="slbl">Tarih</div>
-    <input type="date" class="ifield" id="saglik-date" style="margin-bottom:12px">
+    <div class="slbl" style="margin-top:0">Tarih</div>
+    <input type="date" class="ifield" id="saglik-date">
     <div class="slbl">😴 Uyku</div>
-    <div style="display:flex;gap:8px;align-items:center;margin-bottom:4px">
-      <input type="number" class="ifield" id="saglik-sleep-h" placeholder="Saat" min="0" max="24" style="width:80px">
-      <span style="font-size:13px;color:var(--gray)">saat</span>
+    <div style="display:flex;gap:8px;align-items:center">
+      <input type="number" class="ifield" id="saglik-sleep-h" placeholder="Saat" min="0" max="24" style="width:90px">
       <input type="number" class="ifield" id="saglik-sleep-q" placeholder="Kalite 1-5" min="1" max="5" style="width:110px">
-      <span style="font-size:13px;color:var(--gray)">kalite</span>
     </div>
     <div class="slbl">🏋️ Egzersiz</div>
-    <input class="ifield" id="saglik-exercise" placeholder="örn: 30 dk yürüyüş, yoga" style="margin-bottom:8px">
+    <input class="ifield" id="saglik-exercise" placeholder="örn: 30 dk yürüyüş">
     <div class="slbl">🥗 Yemekler</div>
     <textarea class="ifield" id="saglik-food" rows="2" placeholder="Kahvaltı, öğle, akşam..."></textarea>
     <div class="slbl">💧 Su (litre)</div>
-    <input type="number" class="ifield" id="saglik-water" placeholder="örn: 2.5" step="0.5" style="margin-bottom:8px">
+    <input type="number" class="ifield" id="saglik-water" placeholder="2.5" step="0.5">
     <div class="slbl">📝 Not</div>
     <textarea class="ifield" id="saglik-note" rows="2" placeholder="Nasıl hissettin?"></textarea>
     <div style="margin-top:14px"><button class="btn btn-gold" onclick="saveSaglik()">Kaydet</button></div>
@@ -422,7 +446,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
   </div>
 </div>
 
-<!-- OPTIMAİZED LİFE -->
+<!-- OPTİMAİZED -->
 <div id="tab-optimaized" style="display:none">
   <div class="z-hero" style="margin-bottom:14px">
     <div style="flex:1">
@@ -432,36 +456,29 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
     <div style="font-size:36px">⚡</div>
   </div>
   <div class="card">
-    <div class="card-title">📊 Bu Haftanın Metrikleri</div>
-    <div id="opt-metrics-view"><div class="loading"><div class="spin"></div></div></div>
+    <div class="card-title">📊 Bu Hafta</div>
+    <div id="opt-view"><div class="loading"><div class="spin"></div></div></div>
   </div>
   <div class="card">
-    <div class="card-title">📝 Metrikleri Güncelle</div>
-    <div class="slbl">İçerik Üretimi</div>
+    <div class="card-title">📝 Güncelle</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
       <div><div style="font-size:12px;color:var(--gray);margin-bottom:3px">Hazırlanan içerik</div><input type="number" id="opt-prepared" class="ifield" placeholder="0"></div>
       <div><div style="font-size:12px;color:var(--gray);margin-bottom:3px">Paylaşılan içerik</div><input type="number" id="opt-published" class="ifield" placeholder="0"></div>
-      <div><div style="font-size:12px;color:var(--gray);margin-bottom:3px">Reels sayısı</div><input type="number" id="opt-reels" class="ifield" placeholder="0"></div>
-      <div><div style="font-size:12px;color:var(--gray);margin-bottom:3px">Stories sayısı</div><input type="number" id="opt-stories" class="ifield" placeholder="0"></div>
-    </div>
-    <div class="slbl">Sosyal Medya</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-      <div><div style="font-size:12px;color:var(--gray);margin-bottom:3px">Takipçi sayısı</div><input type="number" id="opt-followers" class="ifield" placeholder="0"></div>
-      <div><div style="font-size:12px;color:var(--gray);margin-bottom:3px">Takipçi artışı</div><input type="number" id="opt-follower-gain" class="ifield" placeholder="0"></div>
+      <div><div style="font-size:12px;color:var(--gray);margin-bottom:3px">Reels</div><input type="number" id="opt-reels" class="ifield" placeholder="0"></div>
+      <div><div style="font-size:12px;color:var(--gray);margin-bottom:3px">Stories</div><input type="number" id="opt-stories" class="ifield" placeholder="0"></div>
+      <div><div style="font-size:12px;color:var(--gray);margin-bottom:3px">Takipçi</div><input type="number" id="opt-followers" class="ifield" placeholder="0"></div>
+      <div><div style="font-size:12px;color:var(--gray);margin-bottom:3px">Takipçi artışı</div><input type="number" id="opt-fgain" class="ifield" placeholder="0"></div>
       <div><div style="font-size:12px;color:var(--gray);margin-bottom:3px">İzlenme</div><input type="number" id="opt-views" class="ifield" placeholder="0"></div>
       <div><div style="font-size:12px;color:var(--gray);margin-bottom:3px">Beğeni</div><input type="number" id="opt-likes" class="ifield" placeholder="0"></div>
       <div><div style="font-size:12px;color:var(--gray);margin-bottom:3px">Kaydetme</div><input type="number" id="opt-saves" class="ifield" placeholder="0"></div>
       <div><div style="font-size:12px;color:var(--gray);margin-bottom:3px">Reach</div><input type="number" id="opt-reach" class="ifield" placeholder="0"></div>
-    </div>
-    <div class="slbl">Gelir</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-      <div><div style="font-size:12px;color:var(--gray);margin-bottom:3px">Satış adedi</div><input type="number" id="opt-sales" class="ifield" placeholder="0"></div>
+      <div><div style="font-size:12px;color:var(--gray);margin-bottom:3px">Satış</div><input type="number" id="opt-sales" class="ifield" placeholder="0"></div>
       <div><div style="font-size:12px;color:var(--gray);margin-bottom:3px">Gelir (€)</div><input type="number" id="opt-revenue" class="ifield" placeholder="0" step="0.01"></div>
     </div>
-    <button class="btn btn-gold" style="margin-top:14px" onclick="saveOptimAIzed()">Kaydet</button>
+    <button class="btn btn-gold" style="margin-top:14px" onclick="saveOpt()">Kaydet</button>
   </div>
   <div class="card">
-    <div class="card-title">📈 Haftalık Geçmiş</div>
+    <div class="card-title">📈 Geçmiş</div>
     <div id="opt-history"><div class="loading"><div class="spin"></div></div></div>
   </div>
 </div>
@@ -470,67 +487,64 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
 <div id="tab-visionboard" style="display:none">
   <div class="card">
     <div class="card-title">🌟 Vision Board</div>
-    <div class="card-sub">Hayallerini, hedeflerini ve motivasyon görsellerini buraya ekle.</div>
     <div style="display:flex;gap:8px">
-      <button class="btn btn-gold" onclick="document.getElementById('vb-file-input').click()" style="flex:1">📸 Görsel Ekle</button>
-      <button class="btn btn-ghost btn-sm" onclick="openAddVBNote()">✍️ Not</button>
+      <button class="btn btn-gold" style="flex:1" onclick="document.getElementById('vb-file').click()">📸 Görsel Ekle</button>
+      <button class="btn btn-ghost btn-sm" onclick="openVBNote()">✍️ Not</button>
     </div>
-    <input type="file" id="vb-file-input" accept="image/*" style="display:none" onchange="uploadVBImage(event)">
+    <input type="file" id="vb-file" accept="image/*" style="display:none" onchange="uploadVBImg(event)">
   </div>
-  <div id="vb-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px"></div>
+  <div class="vb-grid" id="vb-grid"></div>
 </div>
 
 <!-- KPI -->
 <div id="tab-kpi" style="display:none">
   <div class="card">
     <div class="card-title">📊 Haftalık KPI</div>
-    <div class="card-sub">%70 ve üzeri = başarılı hafta 🎉</div>
     <div id="kpi-view"><div class="loading"><div class="spin"></div></div></div>
   </div>
   <div class="card">
-    <div class="card-title">📝 KPI Güncelle</div>
+    <div class="card-title">📝 Güncelle</div>
     <div id="kpi-form"></div>
-    <button class="btn btn-navy" style="margin-top:12px" onclick="saveKPI()">KPI Kaydet</button>
+    <button class="btn btn-navy" style="margin-top:12px" onclick="saveKPI()">Kaydet</button>
   </div>
 </div>
 
 <!-- AYARLAR -->
 <div id="tab-ayarlar" style="display:none">
   <div class="card">
-    <div class="card-title">📱 Telegram Bildirimleri</div>
-    <div class="setup-step"><div class="s-num">1</div><div class="s-txt">Telegram'da <code>@BotFather</code> ara → tıkla.</div></div>
-    <div class="setup-step"><div class="s-num">2</div><div class="s-txt"><code>/newbot</code> yaz → isim ver → token al.</div></div>
-    <div class="setup-step"><div class="s-num">3</div><div class="s-txt">Bota mesaj at. Tarayıcıda: <code>https://api.telegram.org/bot[TOKEN]/getUpdates</code> → <code>"id"</code> = Chat ID.</div></div>
-    <input class="ifield2" id="tg-token" placeholder="Bot Token">
-    <input class="ifield2" id="tg-chatid" placeholder="Chat ID">
+    <div class="card-title">⏳ Geri Sayım Tarihi</div>
+    <div style="margin-bottom:10px">
+      <div style="font-size:12px;color:var(--gray);margin-bottom:3px">Mevcut hedef</div>
+      <div style="font-size:18px;font-weight:700;color:var(--gold)" id="cd-current">1 Nisan 2026</div>
+      <div style="font-size:13px;color:var(--gray);margin-top:2px" id="cd-left"></div>
+    </div>
+    <input type="date" class="ifield" id="cd-new-date">
+    <div style="margin-top:10px"><button class="btn btn-navy btn-sm" onclick="saveDeadline()" style="width:100%">Tarihi Güncelle</button></div>
+  </div>
+  <div class="card">
+    <div class="card-title">📱 Telegram</div>
+    <input class="ifield" id="tg-token" placeholder="Bot Token">
+    <input class="ifield" id="tg-chatid" placeholder="Chat ID" style="margin-top:8px">
     <div style="display:flex;gap:8px;margin-top:10px">
       <button class="btn btn-navy btn-sm" onclick="saveTG()" style="flex:1">Kaydet</button>
       <button class="btn btn-ghost btn-sm" onclick="testTG()" style="flex:1">📨 Test</button>
     </div>
   </div>
   <div class="card">
-    <div class="card-title">⏳ Geri Sayım Tarihi</div>
-    <div class="card-sub">Header'da görünen hedef tarih.</div>
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-      <div>
-        <div style="font-size:12px;color:var(--gray);margin-bottom:3px">Mevcut hedef</div>
-        <div style="font-size:16px;font-weight:600;color:var(--gold)" id="countdown-current-date">1 Nisan 2026</div>
-        <div style="font-size:13px;color:var(--gray)" id="countdown-days-left"></div>
-      </div>
+    <div class="card-title">📅 Program</div>
+    <div style="font-size:13px;color:var(--gray);line-height:2.2">
+      🟢 <b>Faz 1:</b> 20 Şub – 2 Mar<br>
+      🟡 <b>Faz 2:</b> 3 – 17 Mar<br>
+      ✈️ <b>Türkiye:</b> 18 – 24 Mar<br>
+      🔵 <b>Faz 3:</b> 25 – 31 Mar
     </div>
-    <div style="font-size:12px;color:var(--gray);margin-bottom:4px">Yeni hedef tarih</div>
-    <input type="date" class="ifield2" id="countdown-new-date">
-    <div style="margin-top:10px"><button class="btn btn-navy btn-sm" onclick="saveCountdownDate()" style="width:100%">Tarihi Güncelle</button></div>
-  </div>
-    <div style="font-size:13px;color:var(--gray);line-height:2.2">🟢 <b>Faz 1:</b> 20 Şub – 2 Mar<br>🟡 <b>Faz 2:</b> 3 – 17 Mar<br>✈️ <b>Türkiye:</b> 18 – 24 Mar<br>🔵 <b>Faz 3:</b> 25 – 31 Mar</div>
-    <div style="margin-top:10px;padding:10px;background:var(--gold-l);border-radius:8px;font-size:13px;color:var(--navy);font-weight:500">🎯 Hedef: Haftalık task'ların %70'ini tamamla.</div>
   </div>
 </div>
 
-</div>
+</div><!-- /main -->
 
 <!-- HABIT MODAL -->
-<div class="modal-bg" id="habit-modal" style="display:none" onclick="closeMBg(event,'habit-modal')">
+<div class="modal-bg" id="habit-modal" style="display:none" onclick="if(event.target===this)closeModal('habit-modal')">
   <div class="modal">
     <div class="modal-title" id="hm-title">Yeni Alışkanlık</div>
     <div class="slbl" style="margin-top:0">İkon</div>
@@ -542,52 +556,65 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
     <div class="slbl">Numerik Hedef (opsiyonel)</div>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:6px">
       <div>
-        <div style="font-size:11px;color:var(--gray);margin-bottom:3px">Hedef Değer</div>
+        <div style="font-size:11px;color:var(--gray);margin-bottom:3px">Hedef</div>
         <input class="ifield" id="h-target" type="number" placeholder="2.5" step="0.5" min="0">
       </div>
       <div>
         <div style="font-size:11px;color:var(--gray);margin-bottom:3px">Birim</div>
-        <input class="ifield" id="h-unit" placeholder="litre / dk">
+        <input class="ifield" id="h-unit" placeholder="litre">
       </div>
       <div>
         <div style="font-size:11px;color:var(--gray);margin-bottom:3px">Adım</div>
         <input class="ifield" id="h-step" type="number" placeholder="0.5" step="0.1" min="0.1">
       </div>
     </div>
-    <div style="font-size:11px;color:var(--gray);margin-top:4px">Boş bırakırsan normal tick alışkanlığı olur.</div>
+    <div style="font-size:11px;color:var(--gray);margin-top:4px">Boş bırakırsan normal tick olur.</div>
     <div style="display:flex;gap:8px;margin-top:16px">
-      <button class="btn btn-gold" onclick="saveHabit()" id="h-save-btn" style="flex:1">Kaydet</button>
+      <button class="btn btn-gold" id="h-save-btn" onclick="saveHabit()" style="flex:1">Kaydet</button>
       <button class="btn btn-ghost btn-sm" onclick="closeModal('habit-modal')" style="flex:0.4">İptal</button>
     </div>
-    <button class="btn btn-red btn-sm" id="h-del-btn" style="display:none;width:100%;margin-top:8px" onclick="deleteHabit()">Alışkanlığı Sil</button>
+    <button class="btn btn-red btn-sm" id="h-del-btn" style="display:none;width:100%;margin-top:8px" onclick="deleteHabit()">Sil</button>
+  </div>
+</div>
+
+<!-- CHECK-IN EDIT MODAL -->
+<div class="modal-bg" id="ci-modal" style="display:none" onclick="if(event.target===this)closeModal('ci-modal')">
+  <div class="modal">
+    <div class="modal-title" id="ci-modal-title">Rutin Düzenle</div>
+    <div id="ci-edit-list"></div>
+    <button class="btn btn-ghost" onclick="addCIItem()" style="margin-top:8px">+ Madde Ekle</button>
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <button class="btn btn-gold" onclick="saveCIItems()" style="flex:1">Kaydet</button>
+      <button class="btn btn-ghost btn-sm" onclick="closeModal('ci-modal')" style="flex:0.4">İptal</button>
+    </div>
   </div>
 </div>
 
 <!-- LOG MODAL -->
-<div class="modal-bg" id="log-modal" style="display:none" onclick="closeMBg(event,'log-modal')">
+<div class="modal-bg" id="log-modal" style="display:none" onclick="if(event.target===this)closeModal('log-modal')">
   <div class="modal">
     <div class="modal-title">İçerik Ekle</div>
     <div class="slbl" style="margin-top:0">Tür</div>
-    <div class="type-tabs" id="log-type-select">
-      <button class="type-tab active" onclick="setNewLogType('book',this)">📖 Kitap</button>
+    <div class="type-tabs" id="log-type-tabs">
+      <button class="type-tab act" onclick="setNewLogType('book',this)">📖 Kitap</button>
       <button class="type-tab" onclick="setNewLogType('article',this)">📰 Makale</button>
       <button class="type-tab" onclick="setNewLogType('video',this)">🎬 Video</button>
       <button class="type-tab" onclick="setNewLogType('podcast',this)">🎙️ Podcast</button>
       <button class="type-tab" onclick="setNewLogType('course',this)">🎓 Kurs</button>
     </div>
-    <div class="slbl">Başlık / Ad</div>
-    <input class="ifield" id="log-title-input" placeholder="örn: Atomic Habits">
+    <div class="slbl">Başlık</div>
+    <input class="ifield" id="log-title-in" placeholder="örn: Atomic Habits">
     <div class="slbl">Yazar / Kaynak</div>
-    <input class="ifield" id="log-author-input" placeholder="örn: James Clear" style="margin-top:6px">
+    <input class="ifield" id="log-author-in" placeholder="örn: James Clear" style="margin-top:6px">
     <div class="slbl">Puan (1-5)</div>
     <div class="rating-row" id="log-rating-row"></div>
     <div class="slbl">Not</div>
-    <textarea class="ifield" id="log-note-input" rows="2" placeholder="En önemli çıkarım..." style="margin-top:6px"></textarea>
+    <textarea class="ifield" id="log-note-in" rows="2" placeholder="En önemli çıkarım..." style="margin-top:6px"></textarea>
     <div class="slbl">Durum</div>
-    <div style="display:flex;gap:8px;margin-top:6px">
-      <button class="type-tab active" id="ls-reading" onclick="setLogStatus('reading',this)">📖 Devam ediyor</button>
-      <button class="type-tab" id="ls-done" onclick="setLogStatus('done',this)">✅ Tamamlandı</button>
-      <button class="type-tab" id="ls-want" onclick="setLogStatus('want',this)">🔖 Listede</button>
+    <div class="type-tabs" id="log-status-tabs">
+      <button class="type-tab act" onclick="setLogStatus('reading',this)">📖 Devam ediyor</button>
+      <button class="type-tab" onclick="setLogStatus('done',this)">✅ Tamamlandı</button>
+      <button class="type-tab" onclick="setLogStatus('want',this)">🔖 Listede</button>
     </div>
     <div style="display:flex;gap:8px;margin-top:16px">
       <button class="btn btn-gold" onclick="saveLog()" style="flex:1">Kaydet</button>
@@ -596,38 +623,22 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
   </div>
 </div>
 
-<!-- CHECK-IN EDIT MODAL -->
-<div class="modal-bg" id="checkin-modal" style="display:none" onclick="closeMBg(event,'checkin-modal')">
-  <div class="modal">
-    <div class="modal-title" id="ci-modal-title">Check-In Düzenle</div>
-    <div class="card-sub">Sürükleyerek sıralayabilirsin. Sil butonuyla kaldırabilirsin.</div>
-    <div id="ci-edit-list"></div>
-    <button class="btn btn-ghost" onclick="addCheckinItem()" style="margin-top:8px">+ Madde Ekle</button>
-    <div style="display:flex;gap:8px;margin-top:14px">
-      <button class="btn btn-gold" onclick="saveCheckinItems()" style="flex:1">Kaydet</button>
-      <button class="btn btn-ghost btn-sm" onclick="closeModal('checkin-modal')" style="flex:0.4">İptal</button>
-    </div>
-  </div>
-</div>
-
-
-
-<!-- VİSİON BOARD NOT MODAL -->
-<div class="modal-bg" id="vb-note-modal" style="display:none" onclick="closeMBg(event,'vb-note-modal')">
+<!-- VISION NOTE MODAL -->
+<div class="modal-bg" id="vb-modal" style="display:none" onclick="if(event.target===this)closeModal('vb-modal')">
   <div class="modal">
     <div class="modal-title">Not / Hedef Ekle</div>
-    <textarea class="ifield" id="vb-note-text" rows="3" placeholder="Hedefin, motivasyon cümlesi, affirmation..."></textarea>
+    <textarea class="ifield" id="vb-note-text" rows="3" placeholder="Hedefin, motivasyon cümlesi..."></textarea>
     <div class="slbl">Renk</div>
-    <div style="display:flex;gap:8px;margin-top:6px" id="vb-color-picker">
-      <div onclick="selVBColor('#F5EDD6')" style="width:32px;height:32px;border-radius:8px;background:#F5EDD6;border:2px solid var(--gold);cursor:pointer"></div>
-      <div onclick="selVBColor('#EAF4EA')" style="width:32px;height:32px;border-radius:8px;background:#EAF4EA;border:2px solid transparent;cursor:pointer"></div>
-      <div onclick="selVBColor('#FFF3CD')" style="width:32px;height:32px;border-radius:8px;background:#FFF3CD;border:2px solid transparent;cursor:pointer"></div>
-      <div onclick="selVBColor('#F3F4F6')" style="width:32px;height:32px;border-radius:8px;background:#F3F4F6;border:2px solid transparent;cursor:pointer"></div>
-      <div onclick="selVBColor('#1B2A4A')" style="width:32px;height:32px;border-radius:8px;background:#1B2A4A;border:2px solid transparent;cursor:pointer"></div>
+    <div class="color-row" id="vb-colors">
+      <div class="color-swatch act" style="background:#F5EDD6" onclick="setVBColor('#F5EDD6',this)"></div>
+      <div class="color-swatch" style="background:#EAF4EA" onclick="setVBColor('#EAF4EA',this)"></div>
+      <div class="color-swatch" style="background:#FFF3CD" onclick="setVBColor('#FFF3CD',this)"></div>
+      <div class="color-swatch" style="background:#F3F4F6" onclick="setVBColor('#F3F4F6',this)"></div>
+      <div class="color-swatch" style="background:#1B2A4A" onclick="setVBColor('#1B2A4A',this)"></div>
     </div>
     <div style="display:flex;gap:8px;margin-top:16px">
       <button class="btn btn-gold" onclick="saveVBNote()" style="flex:1">Ekle</button>
-      <button class="btn btn-ghost btn-sm" onclick="closeModal('vb-note-modal')" style="flex:0.4">İptal</button>
+      <button class="btn btn-ghost btn-sm" onclick="closeModal('vb-modal')" style="flex:0.4">İptal</button>
     </div>
   </div>
 </div>
@@ -637,1020 +648,893 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
 <script>
 const SURL='https://ucwgkduvpnklfggleupb.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjd2drZHV2cG5rbGZnZ2xldXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MDE1NzcsImV4cCI6MjA4NzE3NzU3N30.AKBjKoYp2xie6qd19crJVMIJDFzmXPTqU2BTtFHnypw';
-const sb=supabase.createClient(SURL,SKEY);
+const sb = supabase.createClient(SURL, SKEY);
 
-const TABS=['bugun','supplement','minddump','habits','zincir','wbs','log','saglik','optimaized','visionboard','kpi','ayarlar'];
-const EMOJIS=['💧','💊','📖','📓','✨','🚿','🦷','🏃','🧘','🥗','🌿','💪','☕','🎯','📚','✍️','🎸','🖥️','🧹','💤','🧴','💆','🏋️','🎨'];
-const DN=['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
-const MN=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
-const DS=['Pz','Pt','Sa','Ça','Pe','Cu','Ct'];
-const DEADLINE_KEY = 'lockin_deadline';
-function getDeadline() {
-  const saved = localStorage.getItem(DEADLINE_KEY);
-  return saved ? new Date(saved) : new Date('2026-04-01T00:00:00');
-}
-const LOG_ICONS={book:'📖',article:'📰',video:'🎬',podcast:'🎙️',course:'🎓'};
-
-function getToday(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
-let TODAY=getToday();
-let energy=0;
-let editHabitId=null,selEmoji=EMOJIS[0];
-let mdPrio='med',mdFilter='all',mdSize='medium',dayScore=0;
-let newLogType='book',logStatus='reading',logRating=0;
-let editCheckinType=null;
-
-// DEFAULT CHECK-IN ITEMS stored in localStorage + Supabase
-const DEFAULT_MORNING=[
-  {key:'water',label:'💧 1 bardak su içtim'},
-  {key:'affirmations',label:'✨ Affirmationlarımı okudum'},
-  {key:'journaling',label:'📓 Journaling yaptım'},
-  {key:'reading',label:'📖 Hollandaca okuma (15 dk)'},
-  {key:'supplement',label:'💊 Sabah supplementlerimi aldım'},
-];
-const DEFAULT_EVENING=[
-  {key:'teeth',label:'🦷 Diş fırçaladım'},
-  {key:'shower',label:'🚿 Duş aldım'},
-];
-
-let morningItems=JSON.parse(localStorage.getItem('morningItems')||JSON.stringify(DEFAULT_MORNING));
-let eveningItems=JSON.parse(localStorage.getItem('eveningItems')||JSON.stringify(DEFAULT_EVENING));
-let morningChecks={};
-let eveningChecks={};
-
-// SUPPLEMENT DATA
-const SUPPL_PLANS={
-  0:[{n:'D3+K2, Omega-3, B-Complex, Resveratrol',t:'Sabah (yemekle)',note:'Yağlı kapsüller'},{n:'Kolajen + C vitamini',t:'Ara öğün',note:''},{n:'Creatine 3g',t:'Öğlen',note:'Büyük bardak suyla'},{n:'Magnesium + Zinc',t:'Akşam',note:'Yemekle'}],
-  1:[{n:'D3+K2, Omega-3, B-Complex, Resveratrol',t:'Sabah (yemekle)',note:'Yağlı kapsüller'},{n:'Kolajen + C vitamini',t:'Ara öğün',note:''},{n:'Creatine 3g',t:'Öğlen',note:''},{n:'Magnesium + Zinc',t:'Akşam',note:''}],
-  2:[{n:'D3+K2, Omega-3, B-Complex, Resveratrol',t:'Sabah (yemekle)',note:''},{n:'Kolajen + C vitamini',t:'Ara öğün',note:''},{n:'Creatine 3g',t:'Öğlen',note:''},{n:'Magnesium + Zinc',t:'Akşam',note:''}],
-  3:[{n:'D3+K2, Omega-3, B-Complex, Resveratrol',t:'Sabah (yemekle)',note:''},{n:'Kolajen + C vitamini',t:'Ara öğün',note:''},{n:'Creatine 3g',t:'Öğlen',note:''},{n:'Magnesium + Zinc',t:'Akşam',note:''}],
-  4:[{n:'D3+K2, Omega-3, B-Complex',t:'Sabah',note:'⚠️ Resveratrol isteğe bağlı'},{n:'Enjeksiyon + Magnesium',t:'Akşam',note:'Zinc atlanabilir'}],
-  5:[{n:'D3+K2, Omega-3, B-Complex',t:'Sabah',note:'🔴 En hassas gün'},{n:'Creatine (küçük doz)',t:'Öğlen',note:''},{n:'Magnesium',t:'Akşam',note:'Zinc atla'}],
-  6:[{n:'D3+K2, Omega-3, B-Complex',t:'Sabah',note:''},{n:'Kolajen + Creatine',t:'Gün içi',note:'Bölerek al'},{n:'Magnesium + Zinc',t:'Akşam',note:''}],
+const TABS = ['bugun','supplement','minddump','habits','zincir','wbs','log','saglik','optimaized','visionboard','kpi','ayarlar'];
+const EMOJIS = ['💧','💊','📖','📓','✨','🚿','🦷','🏃','🧘','🥗','🌿','💪','☕','🎯','📚','✍️','🎸','🖥️','🧹','💤','🧴','💆','🏋️','🎨'];
+const DN = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+const MN = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+const DS = ['Pz','Pt','Sa','Ça','Pe','Cu','Ct'];
+const SUPPL = {
+  0:[{n:'D3+K2, Omega-3, B-Complex',t:'Sabah'},{n:'Creatine+Kolajen',t:'Gün içi'},{n:'Mg+Zinc',t:'Akşam'}],
+  1:[{n:'D3+K2, Omega-3, B-Complex, Resveratrol',t:'Sabah (yemekle)',note:'Yağlı kapsüller'},{n:'Kolajen+C',t:'Ara öğün'},{n:'Creatine 3g',t:'Öğlen'},{n:'Mg+Zinc',t:'Akşam'}],
+  2:[{n:'D3+K2, Omega-3, B-Complex, Resveratrol',t:'Sabah'},{n:'Kolajen+C',t:'Ara öğün'},{n:'Creatine 3g',t:'Öğlen'},{n:'Mg+Zinc',t:'Akşam'}],
+  3:[{n:'D3+K2, Omega-3, B-Complex, Resveratrol',t:'Sabah'},{n:'Kolajen+C',t:'Ara öğün'},{n:'Creatine 3g',t:'Öğlen'},{n:'Mg+Zinc',t:'Akşam'}],
+  4:[{n:'D3+K2, Omega-3, B-Complex',t:'Sabah'},{n:'Enjeksiyon+Mg',t:'Akşam',note:'Zinc atlanabilir'}],
+  5:[{n:'D3+K2, Omega-3, B-Complex',t:'Sabah',note:'En hassas gün'},{n:'Creatine (az)',t:'Öğlen'},{n:'Mg',t:'Akşam'}],
+  6:[{n:'D3+K2, Omega-3, B-Complex',t:'Sabah'},{n:'Kolajen+Creatine',t:'Gün içi'},{n:'Mg+Zinc',t:'Akşam'}]
 };
+const LOG_ICONS = {book:'📖',article:'📰',video:'🎬',podcast:'🎙️',course:'🎓'};
+const STATUS_LBL = {reading:'📖 Devam ediyor',done:'✅ Tamamlandı',want:'🔖 Listede'};
+const DEADLINE_KEY = 'lockin_deadline';
 
-window.addEventListener('DOMContentLoaded',async()=>{
-  initHeader();
-  renderEnergyBtns();
-  renderDayScoreBtns();
-  // Restore persisted checks
-  const savedMC=localStorage.getItem('morningChecks_'+TODAY);
-  if(savedMC)morningChecks=JSON.parse(savedMC);
-  const savedEC=localStorage.getItem('eveningChecks_'+TODAY);
-  if(savedEC)eveningChecks=JSON.parse(savedEC);
-  renderMorningChecklist();
-  renderEveningChecklist();
-  renderSupplementChecklist();
-  renderKPIForm();
-  renderLogRatingRow();
-  await loadTodayCheckin();
-  await loadTodayTasks();
-  await calcStreak();
-  await loadHeaderProgress();
-});
+// STATE
+let TODAY = getToday();
+let energy = 0;
+let dayScore = 0;
+let morningDone = false;
+let eveningDone = false;
+let editHabitId = null;
+let selEmoji = EMOJIS[0];
+let mdPrio = 'med';
+let mdFilter = 'all';
+let newLogType = 'book';
+let logStatus = 'reading';
+let logRating = 0;
+let vbColor = '#F5EDD6';
+let editCIType = null;
 
-// ── HEADER ──
-function initHeader(){
-  updateDate();startClock();updateCountdown();setInterval(updateCountdown,60000);
+const DEFAULT_MORNING = [
+  {key:'water', label:'💧 1 bardak su içtim'},
+  {key:'affirmations', label:'✨ Affirmationlarımı okudum'},
+  {key:'journaling', label:'📓 Journaling yaptım'},
+  {key:'reading', label:'📖 Hollandaca okuma (15 dk)'},
+  {key:'supplement', label:'💊 Sabah supplementlerimi aldım'},
+];
+const DEFAULT_EVENING = [
+  {key:'teeth', label:'🦷 Diş fırçaladım'},
+  {key:'shower', label:'🚿 Duş aldım'},
+];
+
+let morningItems = JSON.parse(localStorage.getItem('ci_morning') || JSON.stringify(DEFAULT_MORNING));
+let eveningItems = JSON.parse(localStorage.getItem('ci_evening') || JSON.stringify(DEFAULT_EVENING));
+let morningChecks = {};
+let eveningChecks = {};
+
+// UTILS
+function getToday() {
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
 }
-function updateDate(){
-  const n=new Date();
-  document.getElementById('hdr-date').textContent=DN[n.getDay()]+', '+n.getDate()+' '+MN[n.getMonth()]+' '+n.getFullYear();
+function getDeadline() {
+  const s = localStorage.getItem(DEADLINE_KEY);
+  return s ? new Date(s) : new Date('2026-04-01T00:00:00');
 }
-function startClock(){
-  function tick(){
-    const n=new Date();
-    document.getElementById('hdr-clock').textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0')+':'+String(n.getSeconds()).padStart(2,'0');
-    TODAY=getToday();
+function getMonday() {
+  const d = new Date();
+  const day = d.getDay();
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  d.setDate(diff);
+  return d.toISOString().split('T')[0];
+}
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+function closeModal(id) {
+  document.getElementById(id).style.display = 'none';
+}
+function numVal(id) {
+  return parseFloat(document.getElementById(id).value) || 0;
+}
+
+// HEADER
+function initHeader() {
+  updateDateDisplay();
+  startClock();
+  updateCountdown();
+  setInterval(updateCountdown, 60000);
+}
+function updateDateDisplay() {
+  const n = new Date();
+  document.getElementById('hdr-date').textContent =
+    DN[n.getDay()] + ', ' + n.getDate() + ' ' + MN[n.getMonth()] + ' ' + n.getFullYear();
+}
+function startClock() {
+  function tick() {
+    const n = new Date();
+    document.getElementById('hdr-clock').textContent =
+      String(n.getHours()).padStart(2,'0') + ':' +
+      String(n.getMinutes()).padStart(2,'0') + ':' +
+      String(n.getSeconds()).padStart(2,'0');
+    TODAY = getToday();
   }
-  tick();setInterval(tick,1000);
+  tick();
+  setInterval(tick, 1000);
 }
-function updateCountdown(){
-  const diff=Math.ceil((getDeadline()-new Date())/(1000*60*60*24));
-  document.getElementById('hdr-days').textContent=diff>0?diff:'0';
+function updateCountdown() {
+  const diff = Math.ceil((getDeadline() - new Date()) / (1000*60*60*24));
+  document.getElementById('hdr-days').textContent = diff > 0 ? diff : '0';
 }
-async function loadHeaderProgress(){
-  try{
-    const{data:cats}=await sb.from('wbs_categories').select('*, wbs_tasks(*, wbs_microtasks(*))');
-    if(!cats)return;
-    let total=0,done=0;
-    cats.forEach(c=>(c.wbs_tasks||[]).forEach(t=>(t.wbs_microtasks||[]).forEach(m=>{total++;if(m.is_completed)done++;})));
-    const pct=total?Math.round(done/total*100):0;
-    document.getElementById('hdr-prog-fill').style.width=pct+'%';
-    document.getElementById('hdr-prog-pct').textContent='%'+pct;
-  }catch(e){}
-}
-
-// ── TAB ──
-function showTab(name){
-  TABS.forEach(t=>document.getElementById('tab-'+t).style.display=t===name?'block':'none');
-  document.querySelectorAll('.nb').forEach((b,i)=>b.classList.toggle('active',TABS[i]===name));
-  if(name==='wbs')loadWBS();
-  if(name==='habits')loadHabitsDaily();
-  if(name==='habits')loadHabitsDaily();
-  if(name==='zincir')loadHabits();
-  if(name==='supplement')renderSupplementChecklist();
-  if(name==='kpi')loadKPI();
-  if(name==='ayarlar')loadTGSettings();
-  if(name==='minddump')loadMindDump();
-  if(name==='log')loadLog();
-  if(name==='saglik')loadSaglik();
-  if(name==='optimaized')loadOptimAIzed();
-  if(name==='visionboard')loadVisionBoard();
-}
-
-// ── ENERGY ──
-function renderEnergyBtns(){
-  const w=document.getElementById('energy-btns');w.innerHTML='';
-  for(let i=1;i<=10;i++){
-    const b=document.createElement('button');
-    b.className='ebtn';b.textContent=i;
-    b.onclick=()=>{energy=i;document.querySelectorAll('.ebtn').forEach((x,j)=>x.classList.toggle('active',j+1===i));};
-    w.appendChild(b);
-  }
-}
-
-function renderDayScoreBtns(){
-  const w=document.getElementById('day-score-btns');
-  if(!w)return;
-  w.innerHTML='';
-  for(let i=0;i<=10;i++){
-    const b=document.createElement('button');
-    b.className='ebtn'+(i===dayScore?' active':'');
-    b.textContent=i;
-    b.onclick=()=>{dayScore=i;renderDayScoreBtns();};
-    w.appendChild(b);
-  }
-}
-
-// ── DYNAMIC CHECK-IN LISTS ──
-function renderMorningChecklist(){
-  const el=document.getElementById('morning-checklist');
-  el.innerHTML=morningItems.map((item,i)=>`
-    <div class="ci" onclick="toggleMorning(${i})">
-      <div class="cb ${morningChecks[item.key]?'done':''}">${morningChecks[item.key]?'✓':''}</div>
-      <span class="cl ${morningChecks[item.key]?'done':''}">${item.label}</span>
-    </div>`).join('');
-}
-function toggleMorning(i){
-  const key=morningItems[i].key;
-  morningChecks[key]=!morningChecks[key];
-  localStorage.setItem('morningChecks_'+TODAY, JSON.stringify(morningChecks));
-  renderMorningChecklist();
-}
-
-function renderEveningChecklist(){
-  const el=document.getElementById('evening-checklist');
-  el.innerHTML=eveningItems.map((item,i)=>`
-    <div class="ci" onclick="toggleEvening(${i})">
-      <div class="cb ${eveningChecks[item.key]?'done':''}">${eveningChecks[item.key]?'✓':''}</div>
-      <span class="cl ${eveningChecks[item.key]?'done':''}">${item.label}</span>
-    </div>`).join('');
-}
-function toggleEvening(i){
-  const key=eveningItems[i].key;
-  eveningChecks[key]=!eveningChecks[key];
-  localStorage.setItem('eveningChecks_'+TODAY, JSON.stringify(eveningChecks));
-  renderEveningChecklist();
-}
-
-// ── CHECK-IN EDIT ──
-function openCheckinEdit(type){
-  editCheckinType=type;
-  document.getElementById('ci-modal-title').textContent=type==='morning'?'Sabah Rutini Düzenle':'Akşam Rutini Düzenle';
-  const items=type==='morning'?morningItems:eveningItems;
-  renderCheckinEditList(items);
-  document.getElementById('checkin-modal').style.display='flex';
-}
-
-function renderCheckinEditList(items){
-  const el=document.getElementById('ci-edit-list');
-  el.innerHTML=items.map((item,i)=>`
-    <div class="checkin-edit-item" data-index="${i}">
-      <span style="font-size:16px;cursor:grab">☰</span>
-      <input type="text" value="${item.label}" onchange="updateCheckinLabel(${i},this.value)">
-      <button class="del-item-btn" onclick="removeCheckinItem(${i})">✕</button>
-    </div>`).join('');
-}
-
-function updateCheckinLabel(i,val){
-  if(editCheckinType==='morning')morningItems[i].label=val;
-  else eveningItems[i].label=val;
-}
-
-function addCheckinItem(){
-  const newKey='item_'+Date.now();
-  if(editCheckinType==='morning'){
-    morningItems.push({key:newKey,label:'Yeni madde'});
-    renderCheckinEditList(morningItems);
-  }else{
-    eveningItems.push({key:newKey,label:'Yeni madde'});
-    renderCheckinEditList(eveningItems);
-  }
-}
-
-function removeCheckinItem(i){
-  if(editCheckinType==='morning'){morningItems.splice(i,1);renderCheckinEditList(morningItems);}
-  else{eveningItems.splice(i,1);renderCheckinEditList(eveningItems);}
-}
-
-function saveCheckinItems(){
-  if(editCheckinType==='morning'){
-    localStorage.setItem('morningItems',JSON.stringify(morningItems));
-    renderMorningChecklist();
-  }else{
-    localStorage.setItem('eveningItems',JSON.stringify(eveningItems));
-    renderEveningChecklist();
-  }
-  closeModal('checkin-modal');
-  toast('Rutin güncellendi!');
-}
-
-// ── SUPPLEMENT CHECKLIST ──
-function renderSupplementChecklist(){
-  const day=new Date().getDay();
-  const items=SUPPL_PLANS[day]||SUPPL_PLANS[1];
-  const typeLabel={0:'Pazar — Normal',1:'Pazartesi — Stabil ✅',2:'Salı — Stabil ✅',3:'Çarşamba — Stabil ✅',4:'Perşembe — Enjeksiyon ⚠️',5:'Cuma — Hassas 🔴',6:'Cumartesi — Normal'};
-  document.getElementById('suppl-day-label').textContent=typeLabel[day]||'';
-  const saved=JSON.parse(localStorage.getItem('suppl_checks_'+TODAY)||'{}');
-  let html='';
-  items.forEach((item,i)=>{
-    const done=saved[i]||false;
-    html+=`<div class="suppl-check-item" onclick="toggleSuppl(${i})">
-      <div class="suppl-cb ${done?'done':''}">${done?'✓':''}</div>
-      <div class="suppl-item-info">
-        <div class="suppl-item-name">${item.n}</div>
-        <div class="suppl-item-note">${item.t}${item.note?' · '+item.note:''}</div>
-      </div>
-    </div>`;
-  });
-  document.getElementById('suppl-checklist').innerHTML=html;
-  checkSupplAll(items.length,saved);
-}
-
-function toggleSuppl(i){
-  const day=new Date().getDay();
-  const items=SUPPL_PLANS[day]||SUPPL_PLANS[1];
-  const saved=JSON.parse(localStorage.getItem('suppl_checks_'+TODAY)||'{}');
-  saved[i]=!saved[i];
-  localStorage.setItem('suppl_checks_'+TODAY,JSON.stringify(saved));
-  renderSupplementChecklist();
-  checkSupplAll(items.length,saved);
-}
-
-async function checkSupplAll(total,saved){
-  const doneCount=Object.values(saved).filter(Boolean).length;
-  const allDone=doneCount>=total;
-  document.getElementById('suppl-all-done').style.display=allDone?'block':'none';
-  if(allDone){
-    // Auto-tick the "supplement" habit
-    try{
-      const{data:habits}=await sb.from('habits').select('id,name').ilike('name','%supplement%').limit(1);
-      if(habits&&habits.length){
-        await sb.from('habit_logs').upsert({habit_id:habits[0].id,date:TODAY},{onConflict:'habit_id,date'});
-        toast('💊 Tüm supplementler tamam! Habit otomatik işaretlendi 🎉');
-      }else{
-        toast('💊 Tüm supplementler tamam! 🎉');
-      }
-    }catch(e){toast('💊 Tüm supplementler tamam! 🎉');}
-  }
-}
-
-// ── CHECKIN ──
-async function loadTodayCheckin(){
-  try{
-    const{data}=await sb.from('daily_checkins').select('*').eq('date',TODAY);
-    if(!data||!data.length)return;
-    const m=data.find(d=>d.type==='morning');
-    if(m){
-      document.getElementById('card-morning').style.display='none';
-      document.getElementById('cel-morning').style.display='block';
-      energy=m.energy_score||0;
-    }
-    const e=data.find(d=>d.type==='evening');
-    if(e){
-      if(e.win_of_day)document.getElementById('win-of-day').value=e.win_of_day;
-      if(e.day_score!=null){dayScore=e.day_score;renderDayScoreBtns();}
-      // Make evening readonly since already submitted
-      setTimeout(()=>{
-        document.querySelectorAll('#evening-checklist .ci').forEach(el=>{el.style.pointerEvents='none';el.style.opacity='.7';});
-        const wod=document.getElementById('win-of-day');if(wod){wod.readOnly=true;wod.style.opacity='.7';}
-        document.querySelectorAll('#day-score-btns .ebtn').forEach(b=>b.disabled=true);
-      },300);
-    }
-    if(m&&m.top3){
-      document.getElementById('top3-input').value=m.top3;
-      const t3el=document.getElementById('cel-top3');
-      if(t3el){t3el.textContent=m.top3;document.getElementById('cel-top3-wrap').style.display='block';}
-    }
-  }catch(e){}
-}
-
-async function saveMorning(){
-  if(!energy){toast('Enerji skorunu seç!');return;}
-  const checks={};
-  morningItems.forEach(item=>{checks[item.key+'_done']=morningChecks[item.key]||false;});
-  try{
-    const top3=document.getElementById('top3-input').value.trim();
-    await sb.from('daily_checkins').upsert({
-      date:TODAY,type:'morning',energy_score:energy,
-      water_done:morningChecks['water']||false,
-      affirmations_done:morningChecks['affirmations']||false,
-      journaling_done:morningChecks['journaling']||false,
-      reading_done:morningChecks['reading']||false,
-      supplement_done:morningChecks['supplement']||false,
-      top3,
-    },{onConflict:'date,type'});
-    toast('✅ Sabah check-in kaydedildi!');
-    document.getElementById('card-morning').style.display='none';
-    document.getElementById('cel-morning').style.display='block';
-    // Show saved top3 in celebrate card
-    const top3val=document.getElementById('top3-input').value.trim();
-    if(top3val){
-      const t3el=document.getElementById('cel-top3');
-      if(t3el){t3el.textContent=top3val;document.getElementById('cel-top3-wrap').style.display='block';}
-    }
-    await loadTodayTasks(energy);
-    await calcStreak();
-    sendTG('☀️ Sabah check-in tamam! Enerji: '+energy+'/10');
-  }catch(e){toast('Hata: '+e.message);}
-}
-
-async function saveEvening(){
-  const win=document.getElementById('win-of-day').value;
-  try{
-    await sb.from('daily_checkins').upsert({
-      date:TODAY,type:'evening',
-      teeth_done:eveningChecks['teeth']||false,
-      shower_done:eveningChecks['shower']||false,
-      win_of_day:win,
-      day_score:dayScore||null,
-    },{onConflict:'date,type'});
-    toast('🌙 Akşam check-in kaydedildi!');
-    // Make evening checklist read-only
-    document.querySelectorAll('#evening-checklist .ci').forEach(el=>{
-      el.style.pointerEvents='none';el.style.opacity='.7';
-    });
-    document.getElementById('win-of-day').readOnly=true;
-    document.getElementById('win-of-day').style.opacity='.7';
-    document.querySelectorAll('#day-score-btns .ebtn').forEach(b=>b.disabled=true);
-    sendTG('🌙 Akşam check-in tamam! En iyi şey: '+(win||'—'));
-  }catch(e){toast('Hata: '+e.message);}
-}
-
-// ── TODAY TASKS ──
-async function loadTodayTasks(energyScore){
-  const score=energyScore||energy||5;
-  const el=document.getElementById('today-tasks');
-  el.innerHTML='<div class="loading"><div class="spin"></div><span>Yükleniyor...</span></div>';
-  try{
-    const{data:existing}=await sb.from('daily_tasks').select('id,status,source,microtask_id,mind_dump_id,wbs_microtasks(title,wbs_tasks(title,wbs_categories(label)))').eq('date',TODAY);
-    if(existing&&existing.length){
-      const mdIds=existing.filter(t=>t.mind_dump_id).map(t=>t.mind_dump_id);
-      let mdTexts={};
-      if(mdIds.length){
-        const{data:md}=await sb.from('mind_dump_items').select('id,text').in('id',mdIds);
-        if(md)md.forEach(m=>mdTexts[m.id]=m.text);
-      }
-      renderTasks(existing,mdTexts);return;
-    }
-    const count=score<=4?1:2;
-    const maxSize=score<=3?'small':score<=6?'medium':'large';
-    const sizeOrder={small:1,medium:2,large:3};
-    let mdQuery=sb.from('mind_dump_items').select('id,size').eq('is_done',false);
-    if(maxSize==='small') mdQuery=mdQuery.eq('size','small');
-    else if(maxSize==='medium') mdQuery=mdQuery.in('size',['small','medium']);
-    const{data:mts}=await sb.from('wbs_microtasks').select('id,title,wbs_tasks(title,wbs_categories(label))').eq('is_completed',false).limit(10);
-    const inserts=[];
-    if(mts&&mts.length)inserts.push({date:TODAY,microtask_id:mts[0].id,status:'pending',source:'wbs'});
-    if(count>=2){
-      let added=false;
-      try{const{data:mdI}=await mdQuery.limit(5);
-        if(mdI&&mdI.length){inserts.push({date:TODAY,mind_dump_id:mdI[Math.floor(Math.random()*mdI.length)].id,status:'pending',source:'minddump'});added=true;}}catch(e){}
-      if(!added&&mts&&mts.length>1)inserts.push({date:TODAY,microtask_id:mts[1].id,status:'pending',source:'wbs'});
-    }
-    for(const ins of inserts)await sb.from('daily_tasks').insert(ins);
-    const{data:newT}=await sb.from('daily_tasks').select('id,status,source,microtask_id,mind_dump_id,wbs_microtasks(title,wbs_tasks(title,wbs_categories(label)))').eq('date',TODAY);
-    const mdIds2=(newT||[]).filter(t=>t.mind_dump_id).map(t=>t.mind_dump_id);
-    let mdTexts2={};
-    if(mdIds2.length){try{const{data:md2}=await sb.from('mind_dump_items').select('id,text').in('id',mdIds2);if(md2)md2.forEach(m=>mdTexts2[m.id]=m.text);}catch(e){}}
-    renderTasks(newT||[],mdTexts2);
-  }catch(e){el.innerHTML='<div class="empty"><div class="empty-icon">⚠️</div>'+e.message+'</div>';}
-}
-
-async function refreshTasks(){
-  try{await sb.from('daily_tasks').delete().eq('date',TODAY);}catch(e){}
-  await loadTodayTasks(energy);
-}
-
-function renderTasks(tasks,mdTexts){
-  mdTexts=mdTexts||{};
-  const el=document.getElementById('today-tasks');
-  if(!tasks.length){el.innerHTML='<div class="empty"><div class="empty-icon">📌</div>Önce sabah check-in yap</div>';return;}
-  let h='';
-  tasks.forEach(t=>{
-    const done=t.status==='done',part=t.status==='partial',isMD=t.source==='minddump';
-    const title=isMD?(mdTexts[t.mind_dump_id]||'Mind Dump Task'):((t.wbs_microtasks&&t.wbs_microtasks.title)||'—');
-    const cat=isMD?'🧠 Mind Dump':((t.wbs_microtasks&&t.wbs_microtasks.wbs_tasks&&t.wbs_microtasks.wbs_tasks.wbs_categories&&t.wbs_microtasks.wbs_tasks.wbs_categories.label)||'');
-    const micId=t.microtask_id||'',mdId=t.mind_dump_id||'';
-    h+='<div class="task-item'+(done?' done':'')+'" onclick="cycleTask(\''+t.id+'\',\''+t.status+'\',\''+t.source+'\',\''+micId+'\',\''+mdId+'\')">'
-      +'<div class="task-check'+(done?' done':'')+'">'+( done?'✓':'')+'</div>'
-      +'<div class="task-info"><div class="task-title">'+title+'</div><div class="task-cat">'+cat+'</div></div>'
-      +'<span class="badge '+(done?'b-done':part?'b-part':'b-pend')+'">'+(done?'✓ Bitti':part?'~ Kısmen':'Bekliyor')+'</span></div>';
-  });
-  el.innerHTML=h;
-}
-
-async function cycleTask(id,status,source,micId,mdId){
-  const next=status==='pending'?'done':status==='done'?'partial':'pending';
-  try{
-    await sb.from('daily_tasks').update({status:next}).eq('id',id);
-    if(next==='done'){
-      if(source==='wbs'&&micId&&micId!=='null'&&micId!==''){
-        await sb.from('wbs_microtasks').update({is_completed:true,completed_at:new Date().toISOString()}).eq('id',micId);
-        await loadHeaderProgress();
-      }
-      if(source==='minddump'&&mdId&&mdId!=='null'&&mdId!==''){
-        try{await sb.from('mind_dump_items').update({is_done:true}).eq('id',mdId);}catch(e){}
-      }
-      toast('✅ Task tamamlandı!');
-    }
-    await loadTodayTasks(energy);
-  }catch(e){toast('Hata: '+e.message);}
-}
-
-// ── MIND DUMP ──
-function setPrio(p){
-  mdPrio=p;
-  document.getElementById('pb-hi').className='prio-btn'+(p==='high'?' sel-hi':'');
-  document.getElementById('pb-md').className='prio-btn'+(p==='med'?' sel-md':'');
-  document.getElementById('pb-lo').className='prio-btn'+(p==='low'?' sel-lo':'');
-}
-function setSize(s){
-  mdSize=s;
-  document.getElementById('pb-sm').className='prio-btn'+(s==='small'?' sel-lo':'');
-  document.getElementById('pb-md-size').className='prio-btn'+(s==='medium'?' sel-md':'');
-  document.getElementById('pb-lg').className='prio-btn'+(s==='large'?' sel-hi':'');
-}
-async function addMD(){
-  const text=document.getElementById('md-input').value.trim();
-  if(!text){toast('Bir şeyler yaz!');return;}
-  try{await sb.from('mind_dump_items').insert({text,priority:mdPrio,size:mdSize,is_done:false});document.getElementById('md-input').value='';toast('Mind dump eklendi!');await loadMindDump();}catch(e){toast('Hata: '+e.message);}
-}
-async function addMDAsTask(){
-  const text=document.getElementById('md-input').value.trim();
-  if(!text){toast('Önce bir şeyler yaz!');return;}
-  try{
-    const{data:item}=await sb.from('mind_dump_items').insert({text,priority:mdPrio,size:mdSize,is_done:false}).select().single();
-    if(item){await sb.from('daily_tasks').insert({date:TODAY,mind_dump_id:item.id,status:'pending',source:'minddump'});document.getElementById('md-input').value='';toast('Bugünün task\'ına eklendi!');await loadMindDump();await loadTodayTasks(energy);}
-  }catch(e){toast('Hata: '+e.message);}
-}
-function setMDFilter(f){
-  mdFilter=f;
-  ['all','open','done'].forEach(x=>document.getElementById('mdf-'+x).className='btn btn-'+(x===f?'navy':'ghost')+' btn-sm');
-  loadMindDump();
-}
-async function loadMindDump(){
-  try{
-    const{data}=await sb.from('mind_dump_items').select('*').order('created_at',{ascending:false});
-    if(!data)return;
-    let items=data;
-    if(mdFilter==='open')items=data.filter(d=>!d.is_done);
-    if(mdFilter==='done')items=data.filter(d=>d.is_done);
-    const el=document.getElementById('md-list');
-    if(!items.length){el.innerHTML='<div class="empty"><div class="empty-icon">🧠</div>Henüz hiçbir şey yok.</div>';return;}
-    const pM={high:'🔴 Yüksek',med:'🟡 Orta',low:'🟢 Düşük'};
-    const sM={small:'🟢 Küçük',medium:'🟡 Orta',large:'🔴 Büyük'};
-    const pC={high:'md-prio p-hi',med:'md-prio p-md',low:'md-prio p-lo'};
-    let h='';
-    items.forEach(item=>{
-      h+='<div class="md-item'+(item.is_done?' done':'')+'"><div class="md-text'+(item.is_done?' done':'')+'">'+item.text+'</div>'
-        +'<div style="display:flex;align-items:center;gap:5px;flex-shrink:0">'
-        +(item.priority?'<span class="'+(pC[item.priority]||'md-prio')+'">'+( pM[item.priority]||'')+'</span>':'')
-        +(item.size?'<span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:99px;background:var(--gray-l);color:var(--gray)">'+(sM[item.size]||'')+'</span>':'')
-        +'<button class="md-btn" onclick="toggleMD(\''+item.id+'\','+item.is_done+')">'+(item.is_done?'↩':'✓')+'</button>'
-        +'<button class="md-btn" onclick="deleteMD(\''+item.id+'\')">✕</button></div></div>';
-    });
-    el.innerHTML=h;
-  }catch(e){document.getElementById('md-list').innerHTML='<div class="empty">Yüklenemedi</div>';}
-}
-async function toggleMD(id,isDone){await sb.from('mind_dump_items').update({is_done:!isDone}).eq('id',id);await loadMindDump();}
-async function deleteMD(id){await sb.from('mind_dump_items').delete().eq('id',id);toast('Silindi');await loadMindDump();}
-
-// ── LOG ──
-function renderLogRatingRow(){
-  const row=document.getElementById('log-rating-row');
-  row.innerHTML='';
-  for(let i=1;i<=5;i++){
-    const b=document.createElement('button');
-    b.className='rating-btn'+(i<=logRating?' active':'');
-    b.textContent=['1','2','3','4','5'][i-1]+'★';
-    const score=i;
-    b.onclick=()=>{logRating=score;renderLogRatingRow();};
-    row.appendChild(b);
-  }
-}
-
-function setNewLogType(type,btn){
-  newLogType=type;
-  document.querySelectorAll('#log-type-select .type-tab').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-}
-function setLogStatus(s,btn){
-  logStatus=s;
-  ['reading','done','want'].forEach(x=>document.getElementById('ls-'+x).classList.remove('active'));
-  btn.classList.add('active');
-}
-
-function setLogType(type){
-  ['all','book','article','video','podcast','course'].forEach(x=>document.getElementById('lt-'+x).className='type-tab'+(x===type?' active':''));
-  loadLog(type);
-}
-
-function openAddLog(){
-  logRating=0;newLogType='book';logStatus='reading';
-  document.getElementById('log-title-input').value='';
-  document.getElementById('log-author-input').value='';
-  document.getElementById('log-note-input').value='';
-  renderLogRatingRow();
-  document.querySelectorAll('#log-type-select .type-tab').forEach((b,i)=>b.classList.toggle('active',i===0));
-  ['reading','done','want'].forEach(x=>document.getElementById('ls-'+x).classList.toggle('active',x==='reading'));
-  document.getElementById('log-modal').style.display='flex';
-}
-
-async function saveLog(){
-  const title=document.getElementById('log-title-input').value.trim();
-  if(!title){toast('Başlık gir!');return;}
-  try{
-    await sb.from('content_logs').insert({
-      title,
-      author:document.getElementById('log-author-input').value.trim(),
-      type:newLogType,
-      rating:logRating||null,
-      note:document.getElementById('log-note-input').value.trim(),
-      status:logStatus,
-      logged_date:TODAY
-    });
-    closeModal('log-modal');
-    toast('✅ Kaydedildi!');
-    await loadLog();
-  }catch(e){toast('Hata: '+e.message);}
-}
-
-async function loadLog(filterType){
-  const ft=filterType||'all';
-  try{
-    let q=sb.from('content_logs').select('*').order('logged_date',{ascending:false});
-    if(ft!=='all')q=q.eq('type',ft);
-    const{data}=await q;
-    const el=document.getElementById('log-list');
-    if(!data||!data.length){el.innerHTML='<div class="empty"><div class="empty-icon">📚</div>Henüz içerik eklenmedi.</div>';return;}
-    const statusLbl={reading:'📖 Devam ediyor',done:'✅ Tamamlandı',want:'🔖 Listede'};
-    let h='';
-    data.forEach(item=>{
-      const stars=item.rating?'★'.repeat(item.rating)+'☆'.repeat(5-item.rating):'';
-      h+='<div class="log-item">'
-        +'<div class="log-type-badge">'+(LOG_ICONS[item.type]||'📄')+'</div>'
-        +'<div class="log-info">'
-        +'<div class="log-title">'+item.title+'</div>'
-        +'<div class="log-meta">'+(item.author?item.author+' · ':'')+( statusLbl[item.status]||item.status)+(stars?' · <span style="color:var(--gold)">'+stars+'</span>':'')+'</div>'
-        +(item.note?'<div style="font-size:12px;color:var(--gray);margin-top:3px">'+item.note+'</div>':'')
-        +'</div>'
-        +'<button class="log-del" onclick="deleteLog(\''+item.id+'\')">✕</button></div>';
-    });
-    el.innerHTML=h;
-  }catch(e){document.getElementById('log-list').innerHTML='<div class="empty">Yüklenemedi: '+e.message+'</div>';}
-}
-async function deleteLog(id){await sb.from('content_logs').delete().eq('id',id);toast('Silindi');await loadLog();}
-
-// ── HABİTS DAILY ──
-async function loadHabitsDaily(){
-  const el=document.getElementById('habits-daily-list');
-  try{
-    await ensureDefaultHabits();
-    const{data:habits}=await sb.from('habits').select('*').order('sort_order');
-    if(!habits||!habits.length){
-      el.innerHTML='<div class="empty"><div class="empty-icon">🌱</div>Henüz alışkanlık yok.<br>Zincir sekmesinden ekle!</div>';
-      return;
-    }
-    const{data:logs}=await sb.from('habit_logs').select('habit_id').eq('date',TODAY);
-    const doneIds=new Set((logs||[]).map(l=>l.habit_id));
-    const total=habits.length;
-    const doneCount=habits.filter(h=>doneIds.has(h.id)).length;
-    const pct=total?Math.round(doneCount/total*100):0;
-    let h='<div class="pbw"><div class="pbf" style="width:'+pct+'%"></div></div>'
-      +'<div class="plbl" style="margin-bottom:16px"><span>Bugün</span><span>'+doneCount+'/'+total+' (%'+pct+')</span></div>';
-    habits.forEach(habit=>{
-      const done=doneIds.has(habit.id);
-      const hid=habit.id;
-      h+='<div class="ci" style="cursor:pointer" data-hid="'+hid+'" data-done="'+done+'" onclick="tickHabitDailyEl(this)">'
-        +'<div class="cb'+(done?' done':'')+'">'+(done?'✓':'')+'</div>'
-        +'<div style="flex:1"><span class="cl'+(done?' done':'')+'">'+ habit.icon+' '+habit.name+'</span>'
-        +(habit.description?'<div style="font-size:11px;color:var(--gray);margin-top:1px">'+habit.description+'</div>':'')  
-        +'</div></div>';
-    });
-    if(doneCount===total&&total>0){
-      h+='<div style="background:var(--green-l);border-radius:var(--rs);padding:12px;text-align:center;font-size:14px;font-weight:600;color:var(--green);margin-top:12px">🎉 Bugün tüm alışkanlıklar tamam!</div>';
-    }
-    el.innerHTML=h;
-  }catch(e){el.innerHTML='<div class="empty">Yüklenemedi: '+e.message+'</div>';}
-}
-
-function tickHabitDailyEl(el){
-  const hid=el.dataset.hid;
-  const isDone=el.dataset.done==='true';
-  tickHabitDaily(hid,isDone);
-}
-
-async function tickHabitDaily(hid,isDone){
-  try{
-    if(isDone){
-      await sb.from('habit_logs').delete().eq('habit_id',hid).eq('date',TODAY);
-    }else{
-      await sb.from('habit_logs').upsert({habit_id:hid,date:TODAY},{onConflict:'habit_id,date'});
-      toast('✓ Yapıldı!');
-    }
-    await loadHabitsDaily();
-  }catch(e){toast('Hata: '+e.message);}
-}
-
-// ── ZİNCİR ──
-async function loadHabits(){
-  document.getElementById('habit-list').innerHTML='<div class="loading"><div class="spin"></div></div>';
-  try{
-    await ensureDefaultHabits();
-    const{data:habits}=await sb.from('habits').select('*').order('sort_order');
-    if(!habits||!habits.length){document.getElementById('habit-list').innerHTML='<div class="empty"><div class="empty-icon">🌱</div>Henüz alışkanlık yok.</div>';return;}
-    const start=new Date();start.setDate(start.getDate()-27);
-    const{data:logs}=await sb.from('habit_logs').select('habit_id,date').gte('date',start.toISOString().split('T')[0]);
-    let html='',totalStreak=0,longestAll=0;
-    for(const h of habits){
-      const{streak,longest,days}=calcHabitStats((logs||[]).filter(l=>l.habit_id===h.id));
-      totalStreak+=streak;if(longest>longestAll)longestAll=longest;
-      html+=buildHabitCard(h,streak,longest,days);
-    }
-    document.getElementById('habit-list').innerHTML=html;
-    const avg=habits.length>0?Math.round(totalStreak/habits.length):0;
-    document.getElementById('z-streak').textContent=avg;
-    document.getElementById('z-record').textContent='En uzun: '+longestAll+' gün';
-    document.getElementById('hdr-streak').textContent='🔥 '+avg+' gün';
-  }catch(e){document.getElementById('habit-list').innerHTML='<div class="empty">Yüklenemedi: '+e.message+'</div>';}
-}
-async function ensureDefaultHabits(){
-  const{data}=await sb.from('habits').select('id').limit(1);
-  if(data&&data.length)return;
-  const defs=[{icon:'💧',name:'Su — 2.5L',description:'Günlük hedef',sort_order:1},{icon:'💊',name:'Supplement',description:'Sabah protokolü',sort_order:2},{icon:'✨',name:'Affirmations',description:'Sesli okuma',sort_order:3},{icon:'📓',name:'Journaling',description:'3 şükran + niyet',sort_order:4},{icon:'📖',name:'Hollandaca Okuma',description:'15 dk',sort_order:5},{icon:'🦷',name:'Diş Fırçalama',description:'Sabah + akşam',sort_order:6},{icon:'🚿',name:'Duş',description:'Haftada min 3',sort_order:7}];
-  for(const d of defs)await sb.from('habits').insert(d);
-}
-function calcHabitStats(logs){
-  const days={};logs.forEach(l=>days[l.date]=true);
-  let streak=0;const d=new Date();
-  for(let i=0;i<365;i++){const ds=d.toISOString().split('T')[0];if(days[ds]){streak++;d.setDate(d.getDate()-1);}else break;}
-  const sorted=Object.keys(days).sort();let longest=0,cur=0,prev=null;
-  sorted.forEach(ds=>{if(prev){const diff=Math.round((new Date(ds)-new Date(prev))/86400000);cur=diff===1?cur+1:1;}else{cur=1;}if(cur>longest)longest=cur;prev=ds;});
-  return{streak,longest,days};
-}
-function buildHabitCard(h,streak,longest,days){
-  const todayDone=days[TODAY]||false;
-  let cal='';
-  for(let i=27;i>=0;i--){
-    const d=new Date();d.setDate(d.getDate()-i);
-    const ds=d.toISOString().split('T')[0];
-    const isT=ds===TODAY,isFut=ds>TODAY,hit=days[ds]||false;
-    let cls='cal-box'+(hit?' hit':'')+(isT?' today':'')+(isFut?' fut':'');
-    cal+='<div class="cal-day"><div class="'+cls+'">'+(hit?'✓':'')+'</div><div class="cal-lbl'+(isT?' today':'')+'">'+DS[d.getDay()]+'</div></div>';
-  }
-  const eid=h.id,en=h.name.replace(/'/g,'&apos;'),ed=(h.description||'').replace(/'/g,'&apos;');
-  // Detect numeric habit: target_value set OR description contains a number with unit
-  const hasNumeric = h.target_value != null && h.target_value > 0;
-  const unit = h.target_unit || '';
-  const currentVal = parseFloat(localStorage.getItem('habit_val_'+TODAY+'_'+eid)||'0');
-
-  let actionHtml='';
-  if(hasNumeric){
-    actionHtml='<div class="counter-row">'
-      +'<button class="cnt-btn" onclick="habitCounterAdj(''+eid+'','+h.target_value+','+h.target_step+',-1)" style="font-size:20px">−</button>'
-      +'<div class="cnt-val" id="hcv-'+eid+'">'+currentVal+'</div>'
-      +'<span class="cnt-unit">/ '+h.target_value+' '+unit+'</span>'
-      +'<button class="cnt-btn" onclick="habitCounterAdj(''+eid+'','+h.target_value+','+h.target_step+',1)" style="background:var(--gold);border-color:var(--gold);color:var(--navy)">+</button>'
-      +'</div>';
-  } else {
-    actionHtml='<button class="tick-btn'+(todayDone?' done':'')+'" onclick="tickHabit(''+eid+'','+todayDone+')">'+(todayDone?'✓':'○')+'</button>';
-  }
-
-  return '<div class="h-card"><div class="h-top">'
-    +'<div class="h-icon">'+h.icon+'</div>'
-    +'<div class="h-info"><div class="h-name">'+h.name+'</div><div class="h-sub">'+(h.description||'')+'</div></div>'
-    +'<div class="h-streak"><div class="h-s-num">'+streak+'</div><div class="h-s-lbl">streak</div></div>'
-    +actionHtml
-    +'<button class="edit-btn" onclick="openEditHabit(''+eid+'',''+h.icon+'',''+en+'',''+ed+'','+( h.target_value||'null')+',''+unit+'','+( h.target_step||'null')+')">✏️</button>'
-    +'</div><div class="cal-wrap"><div class="cal-row">'+cal+'</div></div>'
-    +'<div class="h-best">🏆 En uzun streak: '+longest+' gün</div></div>';
-}
-
-
-function renderEmojiGrid(){
-  document.getElementById('emoji-grid').innerHTML=EMOJIS.map(e=>'<button class="eg-btn'+(e===selEmoji?' active':'')+'" onclick="selEmojiClick(\''+e+'\')">'+e+'</button>').join('');
-}
-function selEmojiClick(e){selEmoji=e;renderEmojiGrid();}
-function openAddHabit(){
-  editHabitId=null;selEmoji=EMOJIS[0];
-  document.getElementById('hm-title').textContent='Yeni Alışkanlık';
-  document.getElementById('h-name').value='';
-  document.getElementById('h-desc').value='';
-  document.getElementById('h-target').value='';
-  document.getElementById('h-unit').value='';
-  document.getElementById('h-step').value='';
-  document.getElementById('h-del-btn').style.display='none';
-  document.getElementById('h-save-btn').textContent='Kaydet';
-  renderEmojiGrid();document.getElementById('habit-modal').style.display='flex';
-}
-function openEditHabit(id,icon,name,desc,targetVal,unit,step){
-  editHabitId=id;selEmoji=icon;
-  document.getElementById('hm-title').textContent='Düzenle';
-  document.getElementById('h-name').value=name;
-  document.getElementById('h-desc').value=desc;
-  document.getElementById('h-target').value=targetVal&&targetVal!='null'?targetVal:'';
-  document.getElementById('h-unit').value=unit&&unit!='null'?unit:'';
-  document.getElementById('h-step').value=step&&step!='null'?step:'';
-  document.getElementById('h-del-btn').style.display='block';
-  document.getElementById('h-save-btn').textContent='Güncelle';
-  renderEmojiGrid();document.getElementById('habit-modal').style.display='flex';
-}
-function habitCounterAdj(hid, target, step, dir){
-  const stepVal = parseFloat(step) || 0.5;
-  const key = 'habit_val_'+TODAY+'_'+hid;
-  let val = parseFloat(localStorage.getItem(key)||'0');
-  val = Math.max(0, Math.round((val + dir * stepVal) * 100) / 100); // no negatives
-  localStorage.setItem(key, val);
-  const el = document.getElementById('hcv-'+hid);
-  if(el) el.textContent = val;
-  // If reached target, auto-tick
-  if(val >= target){
-    sb.from('habit_logs').upsert({habit_id:hid,date:TODAY},{onConflict:'habit_id,date'})
-      .then(()=>{ loadHabits(); toast('🎯 Hedef tamamlandı!'); });
-  } else {
-    // Remove tick if went below target
-    sb.from('habit_logs').delete().eq('habit_id',hid).eq('date',TODAY).then(()=>{
-      const card = document.getElementById('hcv-'+hid);
-      if(card){ const h=card.closest('.h-card'); if(h){ const num=h.querySelector('.h-s-num'); } }
-    });
-  }
-}
-
-async function saveHabit(){
-  const name=document.getElementById('h-name').value.trim();
-  if(!name){toast('Ad gir!');return;}
-  const desc=document.getElementById('h-desc').value.trim();
-  try{
-    const targetVal=parseFloat(document.getElementById('h-target').value)||null;
-    const unitVal=document.getElementById('h-unit').value.trim();
-    const stepVal=parseFloat(document.getElementById('h-step').value)||null;
-    if(editHabitId){
-      await sb.from('habits').update({icon:selEmoji,name,description:desc,target_value:targetVal,target_unit:unitVal,target_step:stepVal}).eq('id',editHabitId);
-      toast('Güncellendi!');
-    } else {
-      const{data:ex}=await sb.from('habits').select('sort_order').order('sort_order',{ascending:false}).limit(1);
-      await sb.from('habits').insert({icon:selEmoji,name,description:desc,sort_order:((ex&&ex.length?ex[0].sort_order:0)+1),target_value:targetVal,target_unit:unitVal,target_step:stepVal});
-      toast('Eklendi!');
-    }
-    closeModal('habit-modal');await loadHabits();
-  }catch(e){toast('Hata: '+e.message);}
-}
-async function deleteHabit(){
-  if(!editHabitId)return;
-  if(!confirm('Silmek istediğine emin misin?'))return;
-  try{await sb.from('habit_logs').delete().eq('habit_id',editHabitId);await sb.from('habits').delete().eq('id',editHabitId);closeModal('habit-modal');toast('Silindi');await loadHabits();}catch(e){toast('Hata: '+e.message);}
-}
-
-// ── WBS ──
-async function loadWBS(){
-  try{
-    const{data:cats}=await sb.from('wbs_categories').select('*, wbs_tasks(*, wbs_microtasks(*))').order('sort_order');
-    if(!cats)return;
-    let total=0,done=0;
-    cats.forEach(c=>(c.wbs_tasks||[]).forEach(t=>(t.wbs_microtasks||[]).forEach(m=>{total++;if(m.is_completed)done++;})));
-    const pct=total?Math.round(done/total*100):0;
-    document.getElementById('wbs-overall').innerHTML='<div class="pbw"><div class="pbf" style="width:'+pct+'%"></div></div><div class="plbl"><span>Genel ilerleme</span><span>'+done+'/'+total+' (%'+pct+')</span></div>';
-    document.getElementById('hdr-prog-fill').style.width=pct+'%';
-    document.getElementById('hdr-prog-pct').textContent='%'+pct;
-    let html='';
-    cats.forEach(cat=>{
-      const tasks=cat.wbs_tasks||[];let ct=0,cd=0;
-      tasks.forEach(t=>(t.wbs_microtasks||[]).forEach(m=>{ct++;if(m.is_completed)cd++;}));
-      const cp=ct?Math.round(cd/ct*100):0;
-      let th='';
-      tasks.forEach(task=>{
-        const ms=task.wbs_microtasks||[];const allDone=ms.length>0&&ms.every(m=>m.is_completed);
-        let mh='';
-        ms.forEach(m=>{mh+='<div class="mt-row" onclick="toggleMicro(\''+m.id+'\','+m.is_completed+')">'+'<div class="mt-check'+(m.is_completed?' done':'')+'">'+( m.is_completed?'✓':'')+'</div><span class="mt-lbl'+(m.is_completed?' done':'')+'">'+m.title+'</span></div>';});
-        th+='<div class="task-group"><div class="wbs-task'+(allDone?' done':'')+'"><span>'+(allDone?'✅':'○')+'</span>'+task.title+'</div>'+mh+'</div>';
-      });
-      html+='<div class="card"><div class="cat-hdr" onclick="toggleCat(\'wc-'+cat.id+'\')">'+'<div class="cat-name">'+cat.label+'</div><div class="cat-prog">'+cd+'/'+ct+' · %'+cp+'</div></div>'+'<div class="pbw"><div class="pbf" style="width:'+cp+'%"></div></div>'+'<div id="wc-'+cat.id+'" style="margin-top:8px">'+th+'</div></div>';
-    });
-    document.getElementById('wbs-list').innerHTML=html;
-  }catch(e){document.getElementById('wbs-list').innerHTML='<div class="empty">Yüklenemedi</div>';}
-}
-function toggleCat(id){const el=document.getElementById(id);el.style.display=el.style.display==='none'?'block':'none';}
-async function toggleMicro(id,cur){
-  try{await sb.from('wbs_microtasks').update({is_completed:!cur,completed_at:!cur?new Date().toISOString():null}).eq('id',id);if(!cur)toast('✅ Tamamlandı!');await loadWBS();}catch(e){toast('Hata: '+e.message);}
-}
-
-// ── KPI ──
-async function loadKPI(){
-  try{
-    const{data}=await sb.from('weekly_kpi').select('*').eq('week_start',getMonday()).maybeSingle();
-    if(!data){document.getElementById('kpi-view').innerHTML='<div class="empty"><div class="empty-icon">📊</div>Bu hafta henüz KPI girilmedi.</div>';return;}
-    const s=data.microtask_completion_pct||0;
-    document.getElementById('kpi-view').innerHTML=
-      (s>=70?'<div class="celebrate" style="margin-bottom:12px"><div class="cel-icon">🎉</div><div class="cel-title">Başarılı Hafta!</div><div class="cel-txt">%'+s+' tamamlandı</div></div>':'')
-      +'<div class="kpi-grid">'
-      +'<div class="kpi-card"><div class="kpi-val">%'+s+'</div><div class="kpi-lbl">Task Tamamlama</div><div class="kpi-tgt">≥%70</div></div>'
-      +'<div class="kpi-card"><div class="kpi-val">'+(data.water_days||0)+'/7</div><div class="kpi-lbl">Su 2.5L</div><div class="kpi-tgt">7/7</div></div>'
-      +'<div class="kpi-card"><div class="kpi-val">%'+(data.supplement_pct||0)+'</div><div class="kpi-lbl">Supplement</div><div class="kpi-tgt">≥%80</div></div>'
-      +'<div class="kpi-card"><div class="kpi-val">'+(data.reels_published||0)+'</div><div class="kpi-lbl">Reels</div><div class="kpi-tgt">3/hafta</div></div>'
-      +'<div class="kpi-card"><div class="kpi-val">'+(data.ig_reach_change||0)+'%</div><div class="kpi-lbl">IG Reach</div><div class="kpi-tgt">>%20</div></div>'
-      +'<div class="kpi-card"><div class="kpi-val">'+(data.ig_saves||0)+'</div><div class="kpi-lbl">IG Saves</div><div class="kpi-tgt">↑</div></div>'
-      +'<div class="kpi-card"><div class="kpi-val">'+(data.energy_avg||0)+'</div><div class="kpi-lbl">Enerji Ort.</div><div class="kpi-tgt">≥6</div></div>'
-      +'<div class="kpi-card"><div class="kpi-val">%'+(data.habit_compliance_pct||0)+'</div><div class="kpi-lbl">Rutin Uyum</div><div class="kpi-tgt">≥%70</div></div>'
-      +'</div>';
-  }catch(e){document.getElementById('kpi-view').innerHTML='<div class="empty">Yüklenemedi</div>';}
-}
-function renderKPIForm(){
-  const fields=[{id:'kf-task',l:'Task Tamamlama %'},{id:'kf-water',l:'Su 2.5L Günleri'},{id:'kf-suppl',l:'Supplement Uyum %'},{id:'kf-reels',l:'Reels Sayısı'},{id:'kf-reach',l:'IG Reach Artışı %'},{id:'kf-saves',l:'IG Saves'},{id:'kf-energy',l:'Enerji Ortalaması'},{id:'kf-habit',l:'Rutin Uyum %'}];
-  document.getElementById('kpi-form').innerHTML=fields.map(f=>'<div style="margin-bottom:8px"><div style="font-size:12px;color:var(--gray);font-weight:600;margin-bottom:3px">'+f.l+'</div><input type="number" id="'+f.id+'" class="ifield"></div>').join('');
-}
-async function saveKPI(){
-  const g=id=>+(document.getElementById(id).value||0);
-  try{
-    await sb.from('weekly_kpi').upsert({week_start:getMonday(),microtask_completion_pct:g('kf-task'),water_days:g('kf-water'),supplement_pct:g('kf-suppl'),reels_published:g('kf-reels'),ig_reach_change:g('kf-reach'),ig_saves:g('kf-saves'),energy_avg:g('kf-energy'),habit_compliance_pct:g('kf-habit')},{onConflict:'week_start'});
-    toast('📊 KPI kaydedildi!');await loadKPI();
-  }catch(e){toast('Hata: '+e.message);}
-}
-
-// ── STREAK ──
-async function calcStreak(){
-  try{
-    const{data}=await sb.from('daily_checkins').select('date').eq('type','morning').order('date',{ascending:false}).limit(60);
-    if(!data||!data.length)return;
-    let streak=0;const base=new Date();base.setHours(0,0,0,0);
-    for(let i=0;i<data.length;i++){const exp=new Date(base);exp.setDate(base.getDate()-i);if(data[i].date===exp.toISOString().split('T')[0])streak++;else break;}
-    document.getElementById('hdr-streak').textContent='🔥 '+streak+' gün';
-  }catch(e){}
-}
-
-// ── TELEGRAM ──
-async function loadTGSettings(){
-  updateCountdownDisplay();
-  try{const{data}=await sb.from('notification_settings').select('*').limit(1).maybeSingle();if(data){if(data.telegram_bot_token)document.getElementById('tg-token').value=data.telegram_bot_token;if(data.telegram_chat_id)document.getElementById('tg-chatid').value=data.telegram_chat_id;}}catch(e){}
-}
-async function saveTG(){
-  const token=document.getElementById('tg-token').value.trim(),chatId=document.getElementById('tg-chatid').value.trim();
-  if(!token||!chatId){toast('Token ve Chat ID gerekli!');return;}
-  try{const{data:ex}=await sb.from('notification_settings').select('id').limit(1).maybeSingle();if(ex)await sb.from('notification_settings').update({telegram_bot_token:token,telegram_chat_id:chatId}).eq('id',ex.id);else await sb.from('notification_settings').insert({telegram_bot_token:token,telegram_chat_id:chatId});toast('✅ Telegram kaydedildi!');}catch(e){toast('Hata: '+e.message);}
-}
-async function testTG(){
-  const token=document.getElementById('tg-token').value.trim(),chatId=document.getElementById('tg-chatid').value.trim();
-  if(!token||!chatId){toast('Önce token ve Chat ID gir!');return;}
-  try{const r=await fetch('https://api.telegram.org/bot'+token+'/sendMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:chatId,text:'Lock-In 2025 bağlantısı kuruldu!'})});const d=await r.json();toast(d.ok?'✅ Test gönderildi!':'Hata: '+d.description);}catch(e){toast('Bağlantı hatası');}
-}
-async function sendTG(text){
-  try{const{data}=await sb.from('notification_settings').select('*').limit(1).maybeSingle();if(!data||!data.telegram_bot_token)return;await fetch('https://api.telegram.org/bot'+data.telegram_bot_token+'/sendMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:data.telegram_chat_id,text})});}catch(e){}
-}
-
-// ── EĞİTİM ──
-let editEgitimId = null;
-
-async function loadEgitim() {
-  const el = document.getElementById('egitim-list');
+async function loadHeaderProgress() {
   try {
-    const {data: courses} = await sb.from('egitim_courses').select('*, egitim_logs(*)').order('created_at', {ascending: false});
-    if (!courses || !courses.length) {
-      el.innerHTML = '<div class="empty"><div class="empty-icon">🎓</div>Henüz eğitim eklenmedi.</div>';
-      return;
-    }
-    let h = '';
-    courses.forEach(course => {
-      const logs = course.egitim_logs || [];
-      const lastLog = logs.sort((a,b) => new Date(b.logged_date) - new Date(a.logged_date))[0];
-      const pct = lastLog ? (lastLog.progress_pct || 0) : 0;
-      const totalMins = logs.reduce((s, l) => s + (l.duration_mins || 0), 0);
-      const hrs = Math.floor(totalMins / 60);
-      const mins = totalMins % 60;
-      h += '<div class="card" style="margin-bottom:12px">'
-        + '<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">'
-        + '<div><div style="font-size:16px;font-weight:600">🎓 ' + course.name + '</div>'
-        + '<div style="font-size:12px;color:var(--gray);margin-top:2px">' + (course.platform || '') + (course.total_scope ? ' · ' + course.total_scope : '') + '</div></div>'
-        + '<div style="display:flex;gap:6px">'
-        + '<button class="btn btn-gold btn-sm" onclick="openEgitimLog(\'' + course.id + '\')">+ Log</button>'
-        + '<button class="edit-btn" onclick="deleteEgitim(\'' + course.id + '\')">🗑️</button>'
-        + '</div></div>'
-        + '<div class="pbw"><div class="pbf" style="width:' + pct + '%"></div></div>'
-        + '<div class="plbl" style="margin-bottom:10px"><span>İlerleme</span><span>%' + pct + (course.deadline ? ' · Hedef: ' + course.deadline : '') + '</span></div>'
-        + '<div style="display:flex;gap:10px;font-size:12px;color:var(--gray)">'
-        + '<span>⏱️ ' + (hrs > 0 ? hrs + 's ' : '') + mins + 'dk çalışıldı</span>'
-        + '<span>📅 ' + logs.length + ' oturum</span>'
-        + (lastLog ? '<span>🗓️ Son: ' + lastLog.logged_date + '</span>' : '') + '</div>';
-      if (logs.length > 0) {
-        h += '<div style="margin-top:10px;border-top:1px solid var(--gray-l);padding-top:10px">'
-          + '<div style="font-size:11px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Son Loglar</div>';
-        logs.slice(0,3).forEach(log => {
-          h += '<div style="font-size:13px;padding:5px 0;border-bottom:1px solid var(--gray-l);display:flex;gap:8px">'
-            + '<span style="color:var(--gold);font-weight:600;min-width:80px">' + log.logged_date + '</span>'
-            + '<span style="flex:1;color:var(--gray)">' + (log.note || '') + '</span>'
-            + (log.duration_mins ? '<span style="color:var(--navy);font-weight:500">' + log.duration_mins + 'dk</span>' : '')
-            + '</div>';
-        });
-        h += '</div>';
-      }
-      h += '</div>';
-    });
-    el.innerHTML = h;
-  } catch(e) {
-    el.innerHTML = '<div class="empty">Yüklenemedi: ' + e.message + '</div>';
-  }
-}
-
-function openAddEgitim() {
-  editEgitimId = null;
-  document.getElementById('egitim-modal-title').textContent = 'Yeni Eğitim';
-  document.getElementById('eg-name').value = '';
-  document.getElementById('eg-platform').value = '';
-  document.getElementById('eg-total').value = '';
-  document.getElementById('eg-deadline').value = '';
-  document.getElementById('egitim-modal').style.display = 'flex';
-}
-
-async function saveEgitim() {
-  const name = document.getElementById('eg-name').value.trim();
-  if (!name) { toast('Eğitim adı gir!'); return; }
-  try {
-    await sb.from('egitim_courses').insert({
-      name,
-      platform: document.getElementById('eg-platform').value.trim(),
-      total_scope: document.getElementById('eg-total').value.trim(),
-      deadline: document.getElementById('eg-deadline').value || null,
-    });
-    closeModal('egitim-modal');
-    toast('✅ Eğitim eklendi!');
-    await loadEgitim();
-  } catch(e) { toast('Hata: ' + e.message); }
-}
-
-function openEgitimLog(courseId) {
-  document.getElementById('eg-log-course-id').value = courseId;
-  document.getElementById('eg-log-note').value = '';
-  document.getElementById('eg-log-mins').value = '';
-  document.getElementById('eg-log-pct').value = '';
-  document.getElementById('egitim-log-modal').style.display = 'flex';
-}
-
-async function saveEgitimLog() {
-  const courseId = document.getElementById('eg-log-course-id').value;
-  const note = document.getElementById('eg-log-note').value.trim();
-  const mins = parseInt(document.getElementById('eg-log-mins').value) || 0;
-  const pct = parseInt(document.getElementById('eg-log-pct').value) || 0;
-  try {
-    await sb.from('egitim_logs').insert({
-      course_id: courseId,
-      note,
-      duration_mins: mins,
-      progress_pct: pct,
-      logged_date: TODAY,
-    });
-    closeModal('egitim-log-modal');
-    toast('✅ İlerleme kaydedildi!');
-    await loadEgitim();
-  } catch(e) { toast('Hata: ' + e.message); }
-}
-
-async function deleteEgitim(id) {
-  if (!confirm('Eğitimi ve tüm logları silmek istiyor musun?')) return;
-  try {
-    await sb.from('egitim_logs').delete().eq('course_id', id);
-    await sb.from('egitim_courses').delete().eq('id', id);
-    toast('Silindi');
-    await loadEgitim();
-  } catch(e) { toast('Hata: ' + e.message); }
-}
-
-// ── SAĞLIK ──
-async function loadSaglik() {
-  document.getElementById('saglik-date').value = TODAY;
-  try {
-    // Load today's existing entry
-    const {data} = await sb.from('health_logs').select('*').eq('log_date', TODAY).maybeSingle();
-    if (data) {
-      document.getElementById('saglik-sleep-h').value = data.sleep_hours || '';
-      document.getElementById('saglik-sleep-q').value = data.sleep_quality || '';
-      document.getElementById('saglik-exercise').value = data.exercise || '';
-      document.getElementById('saglik-food').value = data.food || '';
-      document.getElementById('saglik-water').value = data.water_liters || '';
-      document.getElementById('saglik-note').value = data.note || '';
-    }
-    await loadSaglikHistory();
+    const {data:cats} = await sb.from('wbs_categories').select('wbs_tasks(wbs_microtasks(is_completed))');
+    if (!cats) return;
+    let total = 0, done = 0;
+    cats.forEach(c => (c.wbs_tasks||[]).forEach(t => (t.wbs_microtasks||[]).forEach(m => {
+      total++; if (m.is_completed) done++;
+    })));
+    const pct = total ? Math.round(done/total*100) : 0;
+    document.getElementById('hdr-prog-fill').style.width = pct + '%';
+    document.getElementById('hdr-prog-pct').textContent = '%' + pct;
   } catch(e) {}
 }
 
+// TAB
+function showTab(name) {
+  TABS.forEach(t => {
+    const el = document.getElementById('tab-' + t);
+    if (el) el.style.display = t === name ? 'block' : 'none';
+  });
+  document.querySelectorAll('.nb').forEach((b, i) => b.classList.toggle('act', TABS[i] === name));
+  if (name === 'zincir') loadZincir();
+  if (name === 'habits') loadHabitsDaily();
+  if (name === 'wbs') loadWBS();
+  if (name === 'supplement') renderSupplements();
+  if (name === 'kpi') loadKPI();
+  if (name === 'ayarlar') loadAyarlar();
+  if (name === 'minddump') loadMindDump();
+  if (name === 'log') loadLog();
+  if (name === 'saglik') initSaglik();
+  if (name === 'optimaized') loadOpt();
+  if (name === 'visionboard') loadVisionBoard();
+}
+
+// ENERGY BTNS
+function renderEnergyBtns() {
+  const w = document.getElementById('energy-btns');
+  w.innerHTML = '';
+  for (let i = 1; i <= 10; i++) {
+    const b = document.createElement('button');
+    b.className = 'ebtn' + (i === energy ? ' act' : '');
+    b.textContent = i;
+    const val = i;
+    b.onclick = () => { energy = val; renderEnergyBtns(); };
+    if (morningDone) b.disabled = true;
+    w.appendChild(b);
+  }
+}
+function renderDayScoreBtns() {
+  const w = document.getElementById('day-score-btns');
+  if (!w) return;
+  w.innerHTML = '';
+  for (let i = 0; i <= 10; i++) {
+    const b = document.createElement('button');
+    b.className = 'ebtn' + (i === dayScore ? ' act' : '');
+    b.textContent = i;
+    const val = i;
+    b.onclick = () => { dayScore = val; renderDayScoreBtns(); };
+    if (eveningDone) b.disabled = true;
+    w.appendChild(b);
+  }
+}
+
+// CHECK-IN LISTS
+function renderMorningList() {
+  const el = document.getElementById('morning-list');
+  if (!el) return;
+  el.innerHTML = morningItems.map((item, i) => {
+    const done = morningChecks[item.key] || false;
+    const ro = morningDone ? ' ro' : '';
+    return '<div class="ci' + ro + '" onclick="toggleMorning(' + i + ')">'
+      + '<div class="cb' + (done ? ' done' : '') + '">' + (done ? '✓' : '') + '</div>'
+      + '<span class="cl' + (done ? ' done' : '') + '">' + item.label + '</span>'
+      + '</div>';
+  }).join('');
+}
+function toggleMorning(i) {
+  if (morningDone) return;
+  const key = morningItems[i].key;
+  morningChecks[key] = !morningChecks[key];
+  localStorage.setItem('mc_' + TODAY, JSON.stringify(morningChecks));
+  renderMorningList();
+}
+
+function renderEveningList() {
+  const el = document.getElementById('evening-list');
+  if (!el) return;
+  el.innerHTML = eveningItems.map((item, i) => {
+    const done = eveningChecks[item.key] || false;
+    const ro = eveningDone ? ' ro' : '';
+    return '<div class="ci' + ro + '" onclick="toggleEvening(' + i + ')">'
+      + '<div class="cb' + (done ? ' done' : '') + '">' + (done ? '✓' : '') + '</div>'
+      + '<span class="cl' + (done ? ' done' : '') + '">' + item.label + '</span>'
+      + '</div>';
+  }).join('');
+}
+function toggleEvening(i) {
+  if (eveningDone) return;
+  const key = eveningItems[i].key;
+  eveningChecks[key] = !eveningChecks[key];
+  localStorage.setItem('ec_' + TODAY, JSON.stringify(eveningChecks));
+  renderEveningList();
+}
+
+// CHECK-IN EDIT
+function openCheckinEdit(type) {
+  editCIType = type;
+  document.getElementById('ci-modal-title').textContent = type === 'morning' ? 'Sabah Rutini Düzenle' : 'Akşam Rutini Düzenle';
+  renderCIEditList();
+  document.getElementById('ci-modal').style.display = 'flex';
+}
+function renderCIEditList() {
+  const items = editCIType === 'morning' ? morningItems : eveningItems;
+  document.getElementById('ci-edit-list').innerHTML = items.map((item, i) =>
+    '<div class="ci-edit-item" data-i="' + i + '">'
+    + '<span style="font-size:16px">☰</span>'
+    + '<input type="text" value="' + item.label.replace(/"/g,'&quot;') + '" oninput="updateCILabel(' + i + ',this.value)">'
+    + '<button class="del-btn" onclick="removeCIItem(' + i + ')">✕</button>'
+    + '</div>'
+  ).join('');
+}
+function updateCILabel(i, val) {
+  if (editCIType === 'morning') morningItems[i].label = val;
+  else eveningItems[i].label = val;
+}
+function addCIItem() {
+  const newItem = {key:'item_'+Date.now(), label:'Yeni madde'};
+  if (editCIType === 'morning') morningItems.push(newItem);
+  else eveningItems.push(newItem);
+  renderCIEditList();
+}
+function removeCIItem(i) {
+  if (editCIType === 'morning') morningItems.splice(i, 1);
+  else eveningItems.splice(i, 1);
+  renderCIEditList();
+}
+function saveCIItems() {
+  if (editCIType === 'morning') {
+    localStorage.setItem('ci_morning', JSON.stringify(morningItems));
+    renderMorningList();
+  } else {
+    localStorage.setItem('ci_evening', JSON.stringify(eveningItems));
+    renderEveningList();
+  }
+  closeModal('ci-modal');
+  toast('Rutin güncellendi!');
+}
+
+// SAVE MORNING
+async function saveMorning() {
+  if (!energy) { toast('Enerji skorunu seç!'); return; }
+  const top3 = document.getElementById('top3-input').value.trim();
+  try {
+    await sb.from('daily_checkins').upsert({
+      date: TODAY, type: 'morning', energy_score: energy,
+      water_done: morningChecks['water'] || false,
+      affirmations_done: morningChecks['affirmations'] || false,
+      journaling_done: morningChecks['journaling'] || false,
+      reading_done: morningChecks['reading'] || false,
+      supplement_done: morningChecks['supplement'] || false,
+      top3: top3,
+    }, {onConflict: 'date,type'});
+    morningDone = true;
+    document.getElementById('card-morning').style.display = 'none';
+    document.getElementById('cel-morning').style.display = 'block';
+    if (top3) {
+      document.getElementById('cel-top3').textContent = top3;
+      document.getElementById('cel-top3-wrap').style.display = 'block';
+    }
+    renderEnergyBtns();
+    toast('✅ Sabah check-in kaydedildi!');
+    await loadTodayTasks();
+    await calcStreak();
+    sendTG('☀️ Sabah check-in tamam! Enerji: ' + energy + '/10');
+  } catch(e) { toast('Hata: ' + e.message); }
+}
+
+// SAVE EVENING
+async function saveEvening() {
+  const win = document.getElementById('win-input').value.trim();
+  try {
+    await sb.from('daily_checkins').upsert({
+      date: TODAY, type: 'evening',
+      teeth_done: eveningChecks['teeth'] || false,
+      shower_done: eveningChecks['shower'] || false,
+      win_of_day: win,
+      day_score: dayScore || null,
+    }, {onConflict: 'date,type'});
+    eveningDone = true;
+    renderEveningList();
+    renderDayScoreBtns();
+    const winEl = document.getElementById('win-input');
+    winEl.readOnly = true; winEl.style.opacity = '.65';
+    document.querySelector('button[onclick="saveEvening()"]').disabled = true;
+    document.querySelector('button[onclick="saveEvening()"]').style.opacity = '.5';
+    toast('🌙 Akşam check-in kaydedildi!');
+    sendTG('🌙 Akşam check-in tamam! Puan: ' + dayScore + '/10');
+  } catch(e) { toast('Hata: ' + e.message); }
+}
+
+// LOAD CHECKIN
+async function loadTodayCheckin() {
+  const savedMC = localStorage.getItem('mc_' + TODAY);
+  if (savedMC) morningChecks = JSON.parse(savedMC);
+  const savedEC = localStorage.getItem('ec_' + TODAY);
+  if (savedEC) eveningChecks = JSON.parse(savedEC);
+  try {
+    const {data} = await sb.from('daily_checkins').select('*').eq('date', TODAY);
+    if (!data || !data.length) return;
+    const m = data.find(d => d.type === 'morning');
+    if (m) {
+      morningDone = true;
+      energy = m.energy_score || 0;
+      document.getElementById('card-morning').style.display = 'none';
+      document.getElementById('cel-morning').style.display = 'block';
+      if (m.top3) {
+        document.getElementById('cel-top3').textContent = m.top3;
+        document.getElementById('cel-top3-wrap').style.display = 'block';
+      }
+    }
+    const ev = data.find(d => d.type === 'evening');
+    if (ev) {
+      eveningDone = true;
+      if (ev.win_of_day) {
+        const winEl = document.getElementById('win-input');
+        winEl.value = ev.win_of_day;
+        winEl.readOnly = true; winEl.style.opacity = '.65';
+      }
+      if (ev.day_score != null) dayScore = ev.day_score;
+      setTimeout(() => {
+        const btn = document.querySelector('button[onclick="saveEvening()"]');
+        if (btn) { btn.disabled = true; btn.style.opacity = '.5'; }
+      }, 100);
+    }
+  } catch(e) {}
+  renderMorningList();
+  renderEveningList();
+  renderEnergyBtns();
+  renderDayScoreBtns();
+}
+
+// TASKS
+async function loadTodayTasks() {
+  const el = document.getElementById('today-tasks');
+  el.innerHTML = '<div class="loading"><div class="spin"></div><span>Yükleniyor...</span></div>';
+  try {
+    const {data:existing} = await sb.from('daily_tasks')
+      .select('id,status,source,microtask_id,mind_dump_id,wbs_microtasks(title,wbs_tasks(title,wbs_categories(label)))')
+      .eq('date', TODAY);
+    if (existing && existing.length) {
+      await renderTasksWithMD(existing);
+      return;
+    }
+    // Generate
+    const count = (energy <= 4 && energy > 0) ? 1 : 2;
+    const {data:mts} = await sb.from('wbs_microtasks')
+      .select('id,title,wbs_tasks(title,wbs_categories(label))')
+      .eq('is_completed', false)
+      .limit(10);
+    const inserts = [];
+    if (mts && mts.length > 0) inserts.push({date:TODAY, microtask_id:mts[0].id, status:'pending', source:'wbs'});
+    if (count >= 2) {
+      let added = false;
+      try {
+        const {data:mdI} = await sb.from('mind_dump_items').select('id').eq('is_done', false).limit(5);
+        if (mdI && mdI.length) {
+          inserts.push({date:TODAY, mind_dump_id:mdI[Math.floor(Math.random()*mdI.length)].id, status:'pending', source:'minddump'});
+          added = true;
+        }
+      } catch(e) {}
+      if (!added && mts && mts.length > 1) inserts.push({date:TODAY, microtask_id:mts[1].id, status:'pending', source:'wbs'});
+    }
+    for (const ins of inserts) { try { await sb.from('daily_tasks').insert(ins); } catch(e) {} }
+    const {data:newT} = await sb.from('daily_tasks')
+      .select('id,status,source,microtask_id,mind_dump_id,wbs_microtasks(title,wbs_tasks(title,wbs_categories(label)))')
+      .eq('date', TODAY);
+    await renderTasksWithMD(newT || []);
+  } catch(e) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div>' + e.message + '</div>';
+  }
+}
+async function renderTasksWithMD(tasks) {
+  let mdTexts = {};
+  const mdIds = tasks.filter(t => t.mind_dump_id).map(t => t.mind_dump_id);
+  if (mdIds.length) {
+    try {
+      const {data:md} = await sb.from('mind_dump_items').select('id,text').in('id', mdIds);
+      if (md) md.forEach(m => mdTexts[m.id] = m.text);
+    } catch(e) {}
+  }
+  const el = document.getElementById('today-tasks');
+  if (!tasks.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">📌</div>Önce enerji skorunu gir</div>'; return; }
+  el.innerHTML = tasks.map(t => {
+    const done = t.status === 'done', part = t.status === 'partial', isMD = t.source === 'minddump';
+    const title = isMD ? (mdTexts[t.mind_dump_id] || 'Mind Dump Task') : ((t.wbs_microtasks && t.wbs_microtasks.title) || '—');
+    const cat = isMD ? '🧠 Mind Dump' : ((t.wbs_microtasks && t.wbs_microtasks.wbs_tasks && t.wbs_microtasks.wbs_tasks.wbs_categories && t.wbs_microtasks.wbs_tasks.wbs_categories.label) || '');
+    const mid = t.microtask_id || '', mdid = t.mind_dump_id || '';
+    return '<div class="task-item' + (done ? ' done' : '') + '" data-id="' + t.id + '" data-status="' + t.status + '" data-source="' + t.source + '" data-mid="' + mid + '" data-mdid="' + mdid + '" onclick="cycleTask(this)">'
+      + '<div class="task-check' + (done ? ' done' : '') + '">' + (done ? '✓' : '') + '</div>'
+      + '<div class="task-info"><div class="task-title">' + title + '</div><div class="task-cat">' + cat + '</div></div>'
+      + '<span class="badge ' + (done ? 'b-done' : part ? 'b-part' : 'b-pend') + '">' + (done ? '✓ Bitti' : part ? '~ Kısmen' : 'Bekliyor') + '</span>'
+      + '</div>';
+  }).join('');
+}
+async function cycleTask(el) {
+  const id = el.dataset.id, status = el.dataset.status, source = el.dataset.source;
+  const mid = el.dataset.mid, mdid = el.dataset.mdid;
+  const next = status === 'pending' ? 'done' : status === 'done' ? 'partial' : 'pending';
+  try {
+    await sb.from('daily_tasks').update({status: next}).eq('id', id);
+    if (next === 'done') {
+      if (source === 'wbs' && mid && mid !== 'null' && mid !== '') {
+        await sb.from('wbs_microtasks').update({is_completed: true, completed_at: new Date().toISOString()}).eq('id', mid);
+        loadHeaderProgress();
+      }
+      if (source === 'minddump' && mdid && mdid !== 'null' && mdid !== '') {
+        try { await sb.from('mind_dump_items').update({is_done: true}).eq('id', mdid); } catch(e) {}
+      }
+      toast('✅ Tamamlandı!');
+    }
+    await loadTodayTasks();
+  } catch(e) { toast('Hata: ' + e.message); }
+}
+async function refreshTasks() {
+  try { await sb.from('daily_tasks').delete().eq('date', TODAY); } catch(e) {}
+  await loadTodayTasks();
+}
+
+// SUPPLEMENT
+function renderSupplements() {
+  const day = new Date().getDay();
+  const items = SUPPL[day] || SUPPL[1];
+  const names = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+  document.getElementById('suppl-day-lbl').textContent = names[day];
+  const saved = JSON.parse(localStorage.getItem('suppl_' + TODAY) || '{}');
+  document.getElementById('suppl-list').innerHTML = items.map((item, i) => {
+    const done = saved[i] || false;
+    return '<div class="suppl-item" data-i="' + i + '" onclick="toggleSuppl(' + i + ',' + items.length + ')">'
+      + '<div class="suppl-cb' + (done ? ' done' : '') + '">' + (done ? '✓' : '') + '</div>'
+      + '<div class="suppl-info">'
+      + '<div class="suppl-name">' + item.n + '</div>'
+      + '<div class="suppl-note">' + item.t + (item.note ? ' · ' + item.note : '') + '</div>'
+      + '</div></div>';
+  }).join('');
+  const doneCount = Object.values(saved).filter(Boolean).length;
+  document.getElementById('suppl-done-msg').style.display = doneCount >= items.length ? 'block' : 'none';
+}
+async function toggleSuppl(i, total) {
+  const saved = JSON.parse(localStorage.getItem('suppl_' + TODAY) || '{}');
+  saved[i] = !saved[i];
+  localStorage.setItem('suppl_' + TODAY, JSON.stringify(saved));
+  const day = new Date().getDay();
+  const items = SUPPL[day] || SUPPL[1];
+  renderSupplements();
+  const doneCount = Object.values(saved).filter(Boolean).length;
+  if (doneCount >= items.length) {
+    try {
+      const {data:h} = await sb.from('habits').select('id').ilike('name','%supplement%').limit(1);
+      if (h && h.length) await sb.from('habit_logs').upsert({habit_id:h[0].id,date:TODAY},{onConflict:'habit_id,date'});
+    } catch(e) {}
+    toast('💊 Tüm supplementler tamam! 🎉');
+  }
+}
+
+// MIND DUMP
+function setPrio(p) {
+  mdPrio = p;
+  document.getElementById('pb-hi').className = 'prio-btn' + (p === 'high' ? ' sel-hi' : '');
+  document.getElementById('pb-md').className = 'prio-btn' + (p === 'med' ? ' sel-md' : '');
+  document.getElementById('pb-lo').className = 'prio-btn' + (p === 'low' ? ' sel-lo' : '');
+}
+async function addMD() {
+  const text = document.getElementById('md-input').value.trim();
+  if (!text) { toast('Bir şeyler yaz!'); return; }
+  try {
+    await sb.from('mind_dump_items').insert({text, priority: mdPrio, is_done: false});
+    document.getElementById('md-input').value = '';
+    toast('Eklendi!');
+    await loadMindDump();
+  } catch(e) { toast('Hata: ' + e.message); }
+}
+async function addMDAsTask() {
+  const text = document.getElementById('md-input').value.trim();
+  if (!text) { toast('Bir şeyler yaz!'); return; }
+  try {
+    const {data:item} = await sb.from('mind_dump_items').insert({text, priority: mdPrio, is_done: false}).select().single();
+    if (item) {
+      await sb.from('daily_tasks').insert({date: TODAY, mind_dump_id: item.id, status: 'pending', source: 'minddump'});
+      document.getElementById('md-input').value = '';
+      toast('Task olarak eklendi!');
+      await loadMindDump();
+      await loadTodayTasks();
+    }
+  } catch(e) { toast('Hata: ' + e.message); }
+}
+function setMDFilter(f) {
+  mdFilter = f;
+  ['all','open','done'].forEach(x => {
+    document.getElementById('mdf-' + x).className = 'btn btn-' + (x === f ? 'navy' : 'ghost') + ' btn-sm';
+  });
+  loadMindDump();
+}
+async function loadMindDump() {
+  try {
+    const {data} = await sb.from('mind_dump_items').select('*').order('created_at', {ascending: false});
+    let items = data || [];
+    if (mdFilter === 'open') items = items.filter(d => !d.is_done);
+    if (mdFilter === 'done') items = items.filter(d => d.is_done);
+    const el = document.getElementById('md-list');
+    if (!items.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">🧠</div>Henüz hiçbir şey yok.</div>'; return; }
+    const pM = {high:'🔴 Yüksek', med:'🟡 Orta', low:'🟢 Düşük'};
+    const pC = {high:'md-prio p-hi', med:'md-prio p-md', low:'md-prio p-lo'};
+    el.innerHTML = items.map(item =>
+      '<div class="md-item' + (item.is_done ? ' done' : '') + '">'
+      + '<div class="md-text' + (item.is_done ? ' done' : '') + '">' + item.text + '</div>'
+      + '<div style="display:flex;align-items:center;gap:5px;flex-shrink:0">'
+      + (item.priority ? '<span class="' + (pC[item.priority]||'md-prio') + '">' + (pM[item.priority]||'') + '</span>' : '')
+      + '<button class="md-btn" onclick="toggleMD(\'' + item.id + '\',' + item.is_done + ')">' + (item.is_done ? '↩' : '✓') + '</button>'
+      + '<button class="md-btn" onclick="deleteMD(\'' + item.id + '\')">✕</button>'
+      + '</div></div>'
+    ).join('');
+  } catch(e) { document.getElementById('md-list').innerHTML = '<div class="empty">Yüklenemedi</div>'; }
+}
+async function toggleMD(id, isDone) {
+  await sb.from('mind_dump_items').update({is_done: !isDone}).eq('id', id);
+  await loadMindDump();
+}
+async function deleteMD(id) {
+  await sb.from('mind_dump_items').delete().eq('id', id);
+  toast('Silindi');
+  await loadMindDump();
+}
+
+// HABITS DAILY
+async function loadHabitsDaily() {
+  const el = document.getElementById('habits-daily');
+  el.innerHTML = '<div class="loading"><div class="spin"></div></div>';
+  try {
+    await ensureDefaultHabits();
+    const {data:habits} = await sb.from('habits').select('*').order('sort_order');
+    if (!habits || !habits.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">🌱</div>Zincir sekmesinden alışkanlık ekle!</div>'; return; }
+    const {data:logs} = await sb.from('habit_logs').select('habit_id').eq('date', TODAY);
+    const doneIds = new Set((logs||[]).map(l => l.habit_id));
+    const total = habits.length, doneCount = habits.filter(h => doneIds.has(h.id)).length;
+    const pct = total ? Math.round(doneCount/total*100) : 0;
+    let h = '<div class="pbw"><div class="pbf" style="width:' + pct + '%"></div></div>'
+      + '<div class="plbl" style="margin-bottom:16px"><span>Bugün</span><span>' + doneCount + '/' + total + ' (%' + pct + ')</span></div>';
+    habits.forEach(habit => {
+      const done = doneIds.has(habit.id);
+      const hasNum = habit.target_value != null && habit.target_value > 0;
+      if (hasNum) {
+        const curVal = parseFloat(localStorage.getItem('hv_' + TODAY + '_' + habit.id) || '0');
+        h += '<div style="padding:10px 0;border-bottom:1px solid var(--gray-l)">'
+          + '<div style="font-size:14px;font-weight:600">' + habit.icon + ' ' + habit.name + '</div>'
+          + '<div class="counter-row">'
+          + '<button class="cnt-btn" onclick="habitCounter(\'' + habit.id + '\',' + habit.target_value + ',' + (habit.target_step||0.5) + ',-1)">−</button>'
+          + '<div class="cnt-val" id="hcv-' + habit.id + '">' + curVal + '</div>'
+          + '<span class="cnt-unit">/ ' + habit.target_value + ' ' + (habit.target_unit||'') + '</span>'
+          + '<button class="cnt-btn" style="background:var(--gold);border-color:var(--gold);color:var(--navy)" onclick="habitCounter(\'' + habit.id + '\',' + habit.target_value + ',' + (habit.target_step||0.5) + ',1)">+</button>'
+          + '</div></div>';
+      } else {
+        h += '<div class="ci" data-hid="' + habit.id + '" data-done="' + done + '" onclick="tickHabitEl(this)">'
+          + '<div class="cb' + (done ? ' done' : '') + '">' + (done ? '✓' : '') + '</div>'
+          + '<div style="flex:1"><span class="cl' + (done ? ' done' : '') + '">' + habit.icon + ' ' + habit.name + '</span>'
+          + (habit.description ? '<div style="font-size:11px;color:var(--gray);margin-top:1px">' + habit.description + '</div>' : '')
+          + '</div></div>';
+      }
+    });
+    if (doneCount === total && total > 0) {
+      h += '<div style="background:var(--green-l);border-radius:var(--rs);padding:12px;text-align:center;font-size:14px;font-weight:600;color:var(--green);margin-top:12px">🎉 Bugün tüm alışkanlıklar tamam!</div>';
+    }
+    el.innerHTML = h;
+  } catch(e) { el.innerHTML = '<div class="empty">Yüklenemedi: ' + e.message + '</div>'; }
+}
+function tickHabitEl(el) {
+  const hid = el.dataset.hid, isDone = el.dataset.done === 'true';
+  tickHabit(hid, isDone);
+}
+async function tickHabit(hid, isDone) {
+  try {
+    if (isDone) await sb.from('habit_logs').delete().eq('habit_id', hid).eq('date', TODAY);
+    else { await sb.from('habit_logs').upsert({habit_id: hid, date: TODAY}, {onConflict: 'habit_id,date'}); toast('✓ Yapıldı!'); }
+    await loadHabitsDaily();
+  } catch(e) { toast('Hata: ' + e.message); }
+}
+async function habitCounter(hid, target, step, dir) {
+  const key = 'hv_' + TODAY + '_' + hid;
+  let val = parseFloat(localStorage.getItem(key) || '0');
+  val = Math.max(0, Math.round((val + dir * step) * 100) / 100);
+  localStorage.setItem(key, val);
+  const valEl = document.getElementById('hcv-' + hid);
+  if (valEl) valEl.textContent = val;
+  if (val >= target) {
+    try { await sb.from('habit_logs').upsert({habit_id: hid, date: TODAY}, {onConflict: 'habit_id,date'}); toast('🎯 Hedef tamamlandı!'); }
+    catch(e) {}
+  }
+}
+
+// ZINCIR
+async function loadZincir() {
+  document.getElementById('zincir-list').innerHTML = '<div class="loading"><div class="spin"></div></div>';
+  try {
+    await ensureDefaultHabits();
+    const {data:habits} = await sb.from('habits').select('*').order('sort_order');
+    if (!habits || !habits.length) { document.getElementById('zincir-list').innerHTML = '<div class="empty"><div class="empty-icon">🌱</div>Henüz alışkanlık yok.</div>'; return; }
+    const start = new Date(); start.setDate(start.getDate() - 27);
+    const {data:logs} = await sb.from('habit_logs').select('habit_id,date').gte('date', start.toISOString().split('T')[0]);
+    let totalStreak = 0, longestAll = 0;
+    let html = '';
+    for (const h of habits) {
+      const hLogs = (logs||[]).filter(l => l.habit_id === h.id);
+      const {streak, longest, days} = calcHabitStats(hLogs);
+      totalStreak += streak;
+      if (longest > longestAll) longestAll = longest;
+      html += buildHabitCard(h, streak, longest, days);
+    }
+    document.getElementById('zincir-list').innerHTML = html;
+    const avg = habits.length > 0 ? Math.round(totalStreak/habits.length) : 0;
+    document.getElementById('z-num').textContent = avg;
+    document.getElementById('z-rec').textContent = 'En uzun: ' + longestAll + ' gün';
+    document.getElementById('hdr-streak').textContent = '🔥 ' + avg + ' gün';
+  } catch(e) { document.getElementById('zincir-list').innerHTML = '<div class="empty">Yüklenemedi</div>'; }
+}
+async function ensureDefaultHabits() {
+  const {data} = await sb.from('habits').select('id').limit(1);
+  if (data && data.length) return;
+  const defs = [
+    {icon:'💧',name:'Su — 2.5L',description:'Günlük hedef',sort_order:1,target_value:2.5,target_unit:'litre',target_step:0.5},
+    {icon:'💊',name:'Supplement',description:'Sabah protokolü',sort_order:2},
+    {icon:'✨',name:'Affirmations',description:'Sesli okuma',sort_order:3},
+    {icon:'📓',name:'Journaling',description:'3 şükran + niyet',sort_order:4},
+    {icon:'📖',name:'Hollandaca Okuma',description:'15 dk',sort_order:5},
+    {icon:'🦷',name:'Diş Fırçalama',description:'Sabah + akşam',sort_order:6},
+    {icon:'🚿',name:'Duş',description:'Haftada min 3',sort_order:7},
+  ];
+  for (const d of defs) try { await sb.from('habits').insert(d); } catch(e) {}
+}
+function calcHabitStats(logs) {
+  const days = {};
+  logs.forEach(l => days[l.date] = true);
+  let streak = 0;
+  const d = new Date();
+  for (let i = 0; i < 365; i++) {
+    const ds = d.toISOString().split('T')[0];
+    if (days[ds]) { streak++; d.setDate(d.getDate()-1); } else break;
+  }
+  const sorted = Object.keys(days).sort();
+  let longest = 0, cur = 0, prev = null;
+  sorted.forEach(ds => {
+    if (prev) { const diff = Math.round((new Date(ds)-new Date(prev))/86400000); cur = diff===1 ? cur+1 : 1; }
+    else cur = 1;
+    if (cur > longest) longest = cur;
+    prev = ds;
+  });
+  return {streak, longest, days};
+}
+function buildHabitCard(h, streak, longest, days) {
+  const todayDone = days[TODAY] || false;
+  let cal = '';
+  for (let i = 27; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate()-i);
+    const ds = d.toISOString().split('T')[0];
+    const isT = ds === TODAY, isFut = ds > TODAY, hit = days[ds] || false;
+    cal += '<div class="cal-day"><div class="cal-box' + (hit?' hit':'') + (isT?' today':'') + (isFut?' fut':'') + '">' + (hit?'✓':'') + '</div>'
+      + '<div class="cal-lbl' + (isT?' today':'') + '">' + DS[d.getDay()] + '</div></div>';
+  }
+  const eid = h.id;
+  const hasNum = h.target_value != null && h.target_value > 0;
+  let action = '';
+  if (hasNum) {
+    action = '<span style="font-size:12px;color:var(--gold);font-weight:600">' + (h.target_value) + ' ' + (h.target_unit||'') + '</span>';
+  } else {
+    action = '<button class="tick-btn' + (todayDone?' done':'') + '" onclick="tickHabit(\'' + eid + '\',' + todayDone + ')">' + (todayDone?'✓':'○') + '</button>';
+  }
+  return '<div class="h-card"><div class="h-top">'
+    + '<div class="h-icon">' + h.icon + '</div>'
+    + '<div class="h-info"><div class="h-name">' + h.name + '</div><div class="h-sub">' + (h.description||'') + '</div></div>'
+    + '<div class="h-streak"><div class="h-s-num">' + streak + '</div><div class="h-s-lbl">streak</div></div>'
+    + action
+    + '<button class="edit-btn" onclick="openEditHabit(\'' + eid + '\')">✏️</button>'
+    + '</div><div class="cal-wrap"><div class="cal-row">' + cal + '</div></div>'
+    + '<div class="h-best">🏆 En uzun streak: ' + longest + ' gün</div></div>';
+}
+function openAddHabit() {
+  editHabitId = null; selEmoji = EMOJIS[0];
+  document.getElementById('hm-title').textContent = 'Yeni Alışkanlık';
+  document.getElementById('h-name').value = '';
+  document.getElementById('h-desc').value = '';
+  document.getElementById('h-target').value = '';
+  document.getElementById('h-unit').value = '';
+  document.getElementById('h-step').value = '';
+  document.getElementById('h-del-btn').style.display = 'none';
+  document.getElementById('h-save-btn').textContent = 'Kaydet';
+  renderEmojiGrid();
+  document.getElementById('habit-modal').style.display = 'flex';
+}
+async function openEditHabit(id) {
+  const {data:h} = await sb.from('habits').select('*').eq('id', id).single();
+  editHabitId = id; selEmoji = h.icon || EMOJIS[0];
+  document.getElementById('hm-title').textContent = 'Düzenle';
+  document.getElementById('h-name').value = h.name;
+  document.getElementById('h-desc').value = h.description || '';
+  document.getElementById('h-target').value = h.target_value || '';
+  document.getElementById('h-unit').value = h.target_unit || '';
+  document.getElementById('h-step').value = h.target_step || '';
+  document.getElementById('h-del-btn').style.display = 'block';
+  document.getElementById('h-save-btn').textContent = 'Güncelle';
+  renderEmojiGrid();
+  document.getElementById('habit-modal').style.display = 'flex';
+}
+function renderEmojiGrid() {
+  document.getElementById('emoji-grid').innerHTML = EMOJIS.map(e =>
+    '<button class="eg-btn' + (e === selEmoji ? ' act' : '') + '" onclick="selEmojiClick(\'' + e + '\')">' + e + '</button>'
+  ).join('');
+}
+function selEmojiClick(e) { selEmoji = e; renderEmojiGrid(); }
+async function saveHabit() {
+  const name = document.getElementById('h-name').value.trim();
+  if (!name) { toast('Ad gir!'); return; }
+  const payload = {
+    icon: selEmoji, name,
+    description: document.getElementById('h-desc').value.trim(),
+    target_value: parseFloat(document.getElementById('h-target').value) || null,
+    target_unit: document.getElementById('h-unit').value.trim() || null,
+    target_step: parseFloat(document.getElementById('h-step').value) || null,
+  };
+  try {
+    if (editHabitId) { await sb.from('habits').update(payload).eq('id', editHabitId); toast('Güncellendi!'); }
+    else {
+      const {data:ex} = await sb.from('habits').select('sort_order').order('sort_order',{ascending:false}).limit(1);
+      payload.sort_order = (ex && ex.length ? ex[0].sort_order : 0) + 1;
+      await sb.from('habits').insert(payload); toast('Eklendi!');
+    }
+    closeModal('habit-modal'); loadZincir();
+  } catch(e) { toast('Hata: ' + e.message); }
+}
+async function deleteHabit() {
+  if (!editHabitId || !confirm('Silmek istediğine emin misin?')) return;
+  try {
+    await sb.from('habit_logs').delete().eq('habit_id', editHabitId);
+    await sb.from('habits').delete().eq('id', editHabitId);
+    closeModal('habit-modal'); toast('Silindi'); loadZincir();
+  } catch(e) { toast('Hata: ' + e.message); }
+}
+
+// WBS
+async function loadWBS() {
+  try {
+    const {data:cats} = await sb.from('wbs_categories').select('*, wbs_tasks(*, wbs_microtasks(*))').order('sort_order');
+    if (!cats) return;
+    let total = 0, done = 0;
+    cats.forEach(c => (c.wbs_tasks||[]).forEach(t => (t.wbs_microtasks||[]).forEach(m => { total++; if(m.is_completed) done++; })));
+    const pct = total ? Math.round(done/total*100) : 0;
+    document.getElementById('wbs-overall').innerHTML =
+      '<div class="pbw"><div class="pbf" style="width:' + pct + '%"></div></div>'
+      + '<div class="plbl"><span>Genel ilerleme</span><span>' + done + '/' + total + ' (%' + pct + ')</span></div>';
+    document.getElementById('hdr-prog-fill').style.width = pct + '%';
+    document.getElementById('hdr-prog-pct').textContent = '%' + pct;
+    let html = '';
+    cats.forEach(cat => {
+      const tasks = cat.wbs_tasks || [];
+      let ct = 0, cd = 0;
+      tasks.forEach(t => (t.wbs_microtasks||[]).forEach(m => { ct++; if(m.is_completed) cd++; }));
+      const cp = ct ? Math.round(cd/ct*100) : 0;
+      let th = '';
+      tasks.forEach(task => {
+        const ms = task.wbs_microtasks || [];
+        const allDone = ms.length > 0 && ms.every(m => m.is_completed);
+        let mh = ms.map(m =>
+          '<div class="mt-row" data-mid="' + m.id + '" data-done="' + m.is_completed + '" onclick="toggleMicro(this)">'
+          + '<div class="mt-check' + (m.is_completed?' done':'') + '">' + (m.is_completed?'✓':'') + '</div>'
+          + '<span class="mt-lbl' + (m.is_completed?' done':'') + '">' + m.title + '</span>'
+          + '</div>'
+        ).join('');
+        th += '<div class="task-group">'
+          + '<div class="wbs-task' + (allDone?' done':'') + '"><span>' + (allDone?'✅':'○') + '</span>' + task.title + '</div>'
+          + mh + '</div>';
+      });
+      html += '<div class="card"><div class="cat-hdr" onclick="toggleCat(\'wc-' + cat.id + '\')">'
+        + '<div class="cat-name">' + cat.label + '</div>'
+        + '<div class="cat-prog">' + cd + '/' + ct + ' · %' + cp + '</div></div>'
+        + '<div class="pbw"><div class="pbf" style="width:' + cp + '%"></div></div>'
+        + '<div id="wc-' + cat.id + '" style="margin-top:8px">' + th + '</div></div>';
+    });
+    document.getElementById('wbs-list').innerHTML = html;
+  } catch(e) { document.getElementById('wbs-list').innerHTML = '<div class="empty">Yüklenemedi</div>'; }
+}
+function toggleCat(id) { const el = document.getElementById(id); el.style.display = el.style.display==='none'?'block':'none'; }
+async function toggleMicro(el) {
+  const id = el.dataset.mid, cur = el.dataset.done === 'true';
+  try {
+    await sb.from('wbs_microtasks').update({is_completed: !cur, completed_at: !cur ? new Date().toISOString() : null}).eq('id', id);
+    if (!cur) toast('✅ Tamamlandı!');
+    await loadWBS();
+  } catch(e) { toast('Hata: ' + e.message); }
+}
+
+// LOG
+function setNewLogType(t, btn) {
+  newLogType = t;
+  document.querySelectorAll('#log-type-tabs .type-tab').forEach(b => b.classList.remove('act'));
+  btn.classList.add('act');
+}
+function setLogStatus(s, btn) {
+  logStatus = s;
+  document.querySelectorAll('#log-status-tabs .type-tab').forEach(b => b.classList.remove('act'));
+  btn.classList.add('act');
+}
+function setLogFilter(f, btn) {
+  document.querySelectorAll('#tab-log .type-tabs .type-tab').forEach(b => b.classList.remove('act'));
+  btn.classList.add('act');
+  loadLog(f);
+}
+function renderLogRating() {
+  const row = document.getElementById('log-rating-row');
+  if (!row) return;
+  row.innerHTML = '';
+  for (let i = 1; i <= 5; i++) {
+    const b = document.createElement('button');
+    b.className = 'rating-btn' + (i <= logRating ? ' act' : '');
+    b.textContent = i + '★';
+    const val = i;
+    b.onclick = () => { logRating = val; renderLogRating(); };
+    row.appendChild(b);
+  }
+}
+function openAddLog() {
+  logRating = 0; newLogType = 'book'; logStatus = 'reading';
+  document.getElementById('log-title-in').value = '';
+  document.getElementById('log-author-in').value = '';
+  document.getElementById('log-note-in').value = '';
+  renderLogRating();
+  document.querySelectorAll('#log-type-tabs .type-tab').forEach((b,i) => b.classList.toggle('act', i===0));
+  document.querySelectorAll('#log-status-tabs .type-tab').forEach((b,i) => b.classList.toggle('act', i===0));
+  document.getElementById('log-modal').style.display = 'flex';
+}
+async function saveLog() {
+  const title = document.getElementById('log-title-in').value.trim();
+  if (!title) { toast('Başlık gir!'); return; }
+  try {
+    await sb.from('content_logs').insert({
+      title, author: document.getElementById('log-author-in').value.trim(),
+      type: newLogType, rating: logRating || null,
+      note: document.getElementById('log-note-in').value.trim(),
+      status: logStatus, logged_date: TODAY,
+    });
+    closeModal('log-modal'); toast('✅ Kaydedildi!'); loadLog();
+  } catch(e) { toast('Hata: ' + e.message); }
+}
+async function loadLog(filterType) {
+  const ft = filterType || 'all';
+  try {
+    let q = sb.from('content_logs').select('*').order('logged_date', {ascending: false});
+    if (ft !== 'all') q = q.eq('type', ft);
+    const {data} = await q;
+    const el = document.getElementById('log-list');
+    if (!data || !data.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">📚</div>Henüz içerik eklenmedi.</div>'; return; }
+    el.innerHTML = data.map(item => {
+      const stars = item.rating ? '★'.repeat(item.rating) + '☆'.repeat(5-item.rating) : '';
+      return '<div class="log-item">'
+        + '<div style="font-size:18px;width:36px;text-align:center">' + (LOG_ICONS[item.type]||'📄') + '</div>'
+        + '<div class="log-info">'
+        + '<div class="log-title-txt">' + item.title + '</div>'
+        + '<div class="log-meta">' + (item.author?item.author+' · ':'') + (STATUS_LBL[item.status]||item.status) + (stars?' · <span style="color:var(--gold)">'+stars+'</span>':'') + '</div>'
+        + (item.note ? '<div style="font-size:12px;color:var(--gray);margin-top:3px">' + item.note + '</div>' : '')
+        + '</div>'
+        + '<button class="log-del" onclick="deleteLog(\'' + item.id + '\')">✕</button></div>';
+    }).join('');
+  } catch(e) { document.getElementById('log-list').innerHTML = '<div class="empty">Yüklenemedi: ' + e.message + '</div>'; }
+}
+async function deleteLog(id) { await sb.from('content_logs').delete().eq('id', id); toast('Silindi'); loadLog(); }
+
+// SAĞLIK
+function initSaglik() {
+  document.getElementById('saglik-date').value = TODAY;
+  loadSaglikHistory();
+}
 async function saveSaglik() {
   const date = document.getElementById('saglik-date').value || TODAY;
   try {
@@ -1663,205 +1547,277 @@ async function saveSaglik() {
       water_liters: parseFloat(document.getElementById('saglik-water').value) || null,
       note: document.getElementById('saglik-note').value.trim(),
     }, {onConflict: 'log_date'});
-    toast('✅ Sağlık logu kaydedildi!');
+    toast('✅ Kaydedildi!');
     await loadSaglikHistory();
   } catch(e) { toast('Hata: ' + e.message); }
 }
-
 async function loadSaglikHistory() {
   try {
     const {data} = await sb.from('health_logs').select('*').order('log_date', {ascending: false}).limit(14);
     const el = document.getElementById('saglik-history');
     if (!data || !data.length) { el.innerHTML = '<div class="empty">Henüz log yok.</div>'; return; }
-    let h = '';
-    data.forEach(d => {
-      h += '<div style="padding:11px 0;border-bottom:1px solid var(--gray-l)">'
-        + '<div style="display:flex;justify-content:space-between;margin-bottom:4px">'
-        + '<span style="font-size:13px;font-weight:600">' + d.log_date + '</span>'
-        + '<div style="display:flex;gap:8px;font-size:12px;color:var(--gray)">'
-        + (d.sleep_hours ? '😴 ' + d.sleep_hours + 's' : '')
-        + (d.water_liters ? ' 💧 ' + d.water_liters + 'L' : '')
-        + '</div></div>'
-        + (d.exercise ? '<div style="font-size:12px;color:var(--green)">🏋️ ' + d.exercise + '</div>' : '')
-        + (d.food ? '<div style="font-size:12px;color:var(--gray)">🥗 ' + d.food + '</div>' : '')
-        + (d.note ? '<div style="font-size:12px;color:var(--navy);margin-top:2px">📝 ' + d.note + '</div>' : '')
-        + '</div>';
-    });
-    el.innerHTML = h;
+    el.innerHTML = data.map(d =>
+      '<div class="health-entry">'
+      + '<div style="display:flex;justify-content:space-between;margin-bottom:4px">'
+      + '<span style="font-size:13px;font-weight:600">' + d.log_date + '</span>'
+      + '<span style="font-size:12px;color:var(--gray)">' + (d.sleep_hours?'😴 '+d.sleep_hours+'s ':''  ) + (d.water_liters?'💧 '+d.water_liters+'L':'') + '</span>'
+      + '</div>'
+      + (d.exercise ? '<div style="font-size:12px;color:var(--green)">🏋️ ' + d.exercise + '</div>' : '')
+      + (d.food ? '<div style="font-size:12px;color:var(--gray)">🥗 ' + d.food + '</div>' : '')
+      + (d.note ? '<div style="font-size:12px;color:var(--navy);margin-top:2px">📝 ' + d.note + '</div>' : '')
+      + '</div>'
+    ).join('');
   } catch(e) { document.getElementById('saglik-history').innerHTML = '<div class="empty">Yüklenemedi</div>'; }
 }
 
-// ── OPTİMAİZED ──
-async function loadOptimAIzed() {
+// OPTİMAİZED
+async function loadOpt() {
   try {
     const {data} = await sb.from('optimaized_metrics').select('*').eq('week_start', getMonday()).maybeSingle();
-    const el = document.getElementById('opt-metrics-view');
+    const el = document.getElementById('opt-view');
     if (!data) { el.innerHTML = '<div class="empty"><div class="empty-icon">⚡</div>Bu hafta henüz metrik girilmedi.</div>'; }
     else {
       el.innerHTML = '<div class="kpi-grid">'
-        + '<div class="kpi-card"><div class="kpi-val">' + (data.content_prepared||0) + '</div><div class="kpi-lbl">Hazırlanan İçerik</div></div>'
-        + '<div class="kpi-card"><div class="kpi-val">' + (data.content_published||0) + '</div><div class="kpi-lbl">Paylaşılan İçerik</div></div>'
-        + '<div class="kpi-card"><div class="kpi-val">' + (data.followers||0) + '</div><div class="kpi-lbl">Takipçi</div><div class="kpi-tgt">+' + (data.follower_gain||0) + ' bu hafta</div></div>'
+        + '<div class="kpi-card"><div class="kpi-val">' + (data.content_prepared||0) + '</div><div class="kpi-lbl">Hazırlanan</div></div>'
+        + '<div class="kpi-card"><div class="kpi-val">' + (data.content_published||0) + '</div><div class="kpi-lbl">Paylaşılan</div></div>'
+        + '<div class="kpi-card"><div class="kpi-val">' + (data.followers||0) + '</div><div class="kpi-lbl">Takipçi</div><div class="kpi-tgt">+' + (data.follower_gain||0) + '</div></div>'
         + '<div class="kpi-card"><div class="kpi-val">' + (data.views||0) + '</div><div class="kpi-lbl">İzlenme</div></div>'
         + '<div class="kpi-card"><div class="kpi-val">' + (data.likes||0) + '</div><div class="kpi-lbl">Beğeni</div></div>'
         + '<div class="kpi-card"><div class="kpi-val">' + (data.saves||0) + '</div><div class="kpi-lbl">Kaydetme</div></div>'
         + '<div class="kpi-card"><div class="kpi-val">' + (data.reach||0) + '</div><div class="kpi-lbl">Reach</div></div>'
         + '<div class="kpi-card"><div class="kpi-val">' + (data.sales||0) + '</div><div class="kpi-lbl">Satış</div><div class="kpi-tgt">€' + (data.revenue||0) + '</div></div>'
         + '</div>';
-      // Pre-fill form
-      const fMap = {prepared:'opt-prepared',published:'opt-published',reels:'opt-reels',stories:'opt-stories',followers:'opt-followers',follower_gain:'opt-follower-gain',views:'opt-views',likes:'opt-likes',saves:'opt-saves',reach:'opt-reach',sales:'opt-sales',revenue:'opt-revenue'};
-      const dMap = {prepared:data.content_prepared,published:data.content_published,reels:data.reels,stories:data.stories,followers:data.followers,follower_gain:data.follower_gain,views:data.views,likes:data.likes,saves:data.saves,reach:data.reach,sales:data.sales,revenue:data.revenue};
-      Object.entries(fMap).forEach(([k,id])=>{ const el2=document.getElementById(id); if(el2&&dMap[k]!=null) el2.value=dMap[k]; });
+      const map = {prepared:'opt-prepared',published:'opt-published',reels:'opt-reels',stories:'opt-stories',followers:'opt-followers',follower_gain:'opt-fgain',views:'opt-views',likes:'opt-likes',saves:'opt-saves',reach:'opt-reach',sales:'opt-sales',revenue:'opt-revenue'};
+      const dmap = {prepared:data.content_prepared,published:data.content_published,reels:data.reels,stories:data.stories,followers:data.followers,follower_gain:data.follower_gain,views:data.views,likes:data.likes,saves:data.saves,reach:data.reach,sales:data.sales,revenue:data.revenue};
+      Object.entries(map).forEach(([k,id]) => { const e2=document.getElementById(id); if(e2&&dmap[k]!=null) e2.value=dmap[k]; });
     }
-    await loadOptHistory();
-  } catch(e) { document.getElementById('opt-metrics-view').innerHTML = '<div class="empty">Yüklenemedi</div>'; }
+    loadOptHistory();
+  } catch(e) { document.getElementById('opt-view').innerHTML = '<div class="empty">Yüklenemedi</div>'; }
 }
-
-async function saveOptimAIzed() {
+async function saveOpt() {
   const g = id => parseFloat(document.getElementById(id)?.value) || 0;
   try {
     await sb.from('optimaized_metrics').upsert({
       week_start: getMonday(),
       content_prepared: g('opt-prepared'), content_published: g('opt-published'),
       reels: g('opt-reels'), stories: g('opt-stories'),
-      followers: g('opt-followers'), follower_gain: g('opt-follower-gain'),
+      followers: g('opt-followers'), follower_gain: g('opt-fgain'),
       views: g('opt-views'), likes: g('opt-likes'), saves: g('opt-saves'),
       reach: g('opt-reach'), sales: g('opt-sales'), revenue: g('opt-revenue'),
     }, {onConflict: 'week_start'});
-    toast('✅ Metrikler kaydedildi!');
-    await loadOptimAIzed();
+    toast('✅ Kaydedildi!'); loadOpt();
   } catch(e) { toast('Hata: ' + e.message); }
 }
-
 async function loadOptHistory() {
   try {
     const {data} = await sb.from('optimaized_metrics').select('*').order('week_start', {ascending: false}).limit(8);
     const el = document.getElementById('opt-history');
     if (!data || !data.length) { el.innerHTML = '<div class="empty">Henüz veri yok.</div>'; return; }
-    let h = '';
-    data.forEach(d => {
-      h += '<div style="padding:10px 0;border-bottom:1px solid var(--gray-l)">'
-        + '<div style="font-size:12px;font-weight:600;color:var(--gold);margin-bottom:4px">Hafta: ' + d.week_start + '</div>'
-        + '<div style="display:flex;flex-wrap:wrap;gap:8px;font-size:12px;color:var(--gray)">'
-        + '<span>📤 ' + (d.content_published||0) + ' paylaşım</span>'
-        + '<span>👥 ' + (d.followers||0) + ' takipçi (+' + (d.follower_gain||0) + ')</span>'
-        + '<span>👁️ ' + (d.views||0) + ' izlenme</span>'
-        + '<span>💰 €' + (d.revenue||0) + '</span>'
-        + '</div></div>';
-    });
-    el.innerHTML = h;
+    el.innerHTML = data.map(d =>
+      '<div class="opt-entry">'
+      + '<div style="font-size:12px;font-weight:600;color:var(--gold);margin-bottom:4px">Hafta: ' + d.week_start + '</div>'
+      + '<div style="display:flex;flex-wrap:wrap;gap:8px;font-size:12px;color:var(--gray)">'
+      + '<span>📤 ' + (d.content_published||0) + ' paylaşım</span>'
+      + '<span>👥 ' + (d.followers||0) + ' (+' + (d.follower_gain||0) + ')</span>'
+      + '<span>👁️ ' + (d.views||0) + '</span>'
+      + '<span>💰 €' + (d.revenue||0) + '</span>'
+      + '</div></div>'
+    ).join('');
   } catch(e) {}
 }
 
-// ── VİSİON BOARD ──
-let vbColor = '#F5EDD6';
+// KPI
+async function loadKPI() {
+  try {
+    const {data} = await sb.from('weekly_kpi').select('*').eq('week_start', getMonday()).maybeSingle();
+    const el = document.getElementById('kpi-view');
+    if (!data) { el.innerHTML = '<div class="empty"><div class="empty-icon">📊</div>Bu hafta henüz KPI girilmedi.</div>'; return; }
+    const s = data.microtask_completion_pct || 0;
+    el.innerHTML = (s >= 70 ? '<div class="celebrate" style="margin-bottom:12px"><div class="cel-icon">🎉</div><div class="cel-title">Başarılı Hafta!</div><div class="cel-txt">%' + s + ' tamamlandı</div></div>' : '')
+      + '<div class="kpi-grid">'
+      + '<div class="kpi-card"><div class="kpi-val">%' + s + '</div><div class="kpi-lbl">Task Tamamlama</div><div class="kpi-tgt">≥%70</div></div>'
+      + '<div class="kpi-card"><div class="kpi-val">' + (data.water_days||0) + '/7</div><div class="kpi-lbl">Su 2.5L</div></div>'
+      + '<div class="kpi-card"><div class="kpi-val">%' + (data.supplement_pct||0) + '</div><div class="kpi-lbl">Supplement</div><div class="kpi-tgt">≥%80</div></div>'
+      + '<div class="kpi-card"><div class="kpi-val">' + (data.reels_published||0) + '</div><div class="kpi-lbl">Reels</div><div class="kpi-tgt">3/hafta</div></div>'
+      + '<div class="kpi-card"><div class="kpi-val">' + (data.energy_avg||0) + '</div><div class="kpi-lbl">Enerji Ort.</div><div class="kpi-tgt">≥6</div></div>'
+      + '<div class="kpi-card"><div class="kpi-val">%' + (data.habit_compliance_pct||0) + '</div><div class="kpi-lbl">Rutin Uyum</div><div class="kpi-tgt">≥%70</div></div>'
+      + '</div>';
+  } catch(e) { document.getElementById('kpi-view').innerHTML = '<div class="empty">Yüklenemedi</div>'; }
+}
+function renderKPIForm() {
+  const fields = [
+    {id:'kf-task',l:'Task Tamamlama %'},{id:'kf-water',l:'Su 2.5L Günleri'},
+    {id:'kf-suppl',l:'Supplement Uyum %'},{id:'kf-reels',l:'Reels Sayısı'},
+    {id:'kf-energy',l:'Enerji Ortalaması'},{id:'kf-habit',l:'Rutin Uyum %'},
+  ];
+  document.getElementById('kpi-form').innerHTML = fields.map(f =>
+    '<div style="margin-bottom:8px"><div style="font-size:12px;color:var(--gray);font-weight:600;margin-bottom:3px">' + f.l + '</div>'
+    + '<input type="number" id="' + f.id + '" class="ifield"></div>'
+  ).join('');
+}
+async function saveKPI() {
+  const g = id => +(document.getElementById(id).value||0);
+  try {
+    await sb.from('weekly_kpi').upsert({
+      week_start: getMonday(),
+      microtask_completion_pct: g('kf-task'), water_days: g('kf-water'),
+      supplement_pct: g('kf-suppl'), reels_published: g('kf-reels'),
+      energy_avg: g('kf-energy'), habit_compliance_pct: g('kf-habit'),
+    }, {onConflict: 'week_start'});
+    toast('📊 KPI kaydedildi!'); loadKPI();
+  } catch(e) { toast('Hata: ' + e.message); }
+}
 
+// VISION BOARD
 async function loadVisionBoard() {
   try {
     const {data} = await sb.from('vision_board_items').select('*').order('created_at', {ascending: false});
     const el = document.getElementById('vb-grid');
-    if (!data || !data.length) {
-      el.innerHTML = '<div style="grid-column:1/-1" class="empty"><div class="empty-icon">🌟</div>Henüz hiçbir şey yok.<br>Görsel veya not ekle!</div>';
-      return;
-    }
-    let h = '';
-    data.forEach(item => {
+    if (!data || !data.length) { el.innerHTML = '<div style="grid-column:1/-1" class="empty"><div class="empty-icon">🌟</div>Görsel veya not ekle!</div>'; return; }
+    el.innerHTML = data.map(item => {
       if (item.type === 'image') {
-        h += '<div style="position:relative;border-radius:12px;overflow:hidden;aspect-ratio:1;background:var(--gray-l)">'
-          + '<img src="' + item.content + '" style="width:100%;height:100%;object-fit:cover">'
-          + '<button onclick="deleteVBItem(\'' + item.id + '\')" style="position:absolute;top:6px;right:6px;width:24px;height:24px;border-radius:50%;border:none;background:rgba(0,0,0,.5);color:#fff;cursor:pointer;font-size:11px">✕</button>'
-          + '</div>';
+        return '<div class="vb-img"><img src="' + item.content + '"><button class="vb-del" onclick="deleteVB(\'' + item.id + '\')">✕</button></div>';
       } else {
         const textColor = item.bg_color === '#1B2A4A' ? '#fff' : 'var(--navy)';
-        h += '<div style="position:relative;border-radius:12px;padding:14px;background:' + (item.bg_color||'#F5EDD6') + ';aspect-ratio:1;display:flex;align-items:center;justify-content:center">'
+        return '<div class="vb-note" style="background:' + (item.bg_color||'#F5EDD6') + '">'
           + '<div style="font-size:13px;font-weight:500;text-align:center;color:' + textColor + ';line-height:1.5">' + item.content + '</div>'
-          + '<button onclick="deleteVBItem(\'' + item.id + '\')" style="position:absolute;top:6px;right:6px;width:24px;height:24px;border-radius:50%;border:none;background:rgba(0,0,0,.2);color:#fff;cursor:pointer;font-size:11px">✕</button>'
-          + '</div>';
+          + '<button class="vb-del" onclick="deleteVB(\'' + item.id + '\')">✕</button></div>';
       }
-    });
-    el.innerHTML = h;
-  } catch(e) {
-    document.getElementById('vb-grid').innerHTML = '<div style="grid-column:1/-1" class="empty">Yüklenemedi: ' + e.message + '</div>';
-  }
+    }).join('');
+  } catch(e) { document.getElementById('vb-grid').innerHTML = '<div style="grid-column:1/-1" class="empty">Yüklenemedi</div>'; }
 }
-
-function openAddVBNote() {
+function openVBNote() {
   vbColor = '#F5EDD6';
   document.getElementById('vb-note-text').value = '';
-  // Reset color picker borders
-  document.querySelectorAll('#vb-color-picker div').forEach(d => d.style.border = '2px solid transparent');
-  document.querySelector('#vb-color-picker div').style.border = '2px solid var(--gold)';
-  document.getElementById('vb-note-modal').style.display = 'flex';
+  document.querySelectorAll('.color-swatch').forEach((s,i) => s.classList.toggle('act', i===0));
+  document.getElementById('vb-modal').style.display = 'flex';
 }
-
-function selVBColor(color) {
+function setVBColor(color, el) {
   vbColor = color;
-  document.querySelectorAll('#vb-color-picker div').forEach(d => {
-    d.style.border = d.style.background === color || d.getAttribute('style').includes(color) ? '2px solid var(--gold)' : '2px solid transparent';
-  });
+  document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('act'));
+  el.classList.add('act');
 }
-
 async function saveVBNote() {
   const text = document.getElementById('vb-note-text').value.trim();
   if (!text) { toast('Bir şeyler yaz!'); return; }
   try {
     await sb.from('vision_board_items').insert({type: 'note', content: text, bg_color: vbColor});
-    closeModal('vb-note-modal');
-    toast('✅ Eklendi!');
-    await loadVisionBoard();
+    closeModal('vb-modal'); toast('✅ Eklendi!'); loadVisionBoard();
   } catch(e) { toast('Hata: ' + e.message); }
 }
-
-async function uploadVBImage(event) {
+async function uploadVBImg(event) {
   const file = event.target.files[0];
   if (!file) return;
-  toast('Görsel yükleniyor...');
+  toast('Yükleniyor...');
   const reader = new FileReader();
   reader.onload = async (e) => {
     try {
       await sb.from('vision_board_items').insert({type: 'image', content: e.target.result});
-      toast('✅ Görsel eklendi!');
-      await loadVisionBoard();
+      toast('✅ Eklendi!'); loadVisionBoard();
     } catch(err) { toast('Hata: ' + err.message); }
   };
   reader.readAsDataURL(file);
   event.target.value = '';
 }
-
-async function deleteVBItem(id) {
+async function deleteVB(id) {
   await sb.from('vision_board_items').delete().eq('id', id);
-  toast('Silindi');
-  await loadVisionBoard();
+  toast('Silindi'); loadVisionBoard();
 }
 
-function saveCountdownDate() {
-  const val = document.getElementById('countdown-new-date').value;
+// AYARLAR
+function loadAyarlar() {
+  const d = getDeadline();
+  const diff = Math.ceil((d - new Date()) / (1000*60*60*24));
+  document.getElementById('cd-current').textContent = d.getDate() + ' ' + MN[d.getMonth()] + ' ' + d.getFullYear();
+  document.getElementById('cd-left').textContent = diff > 0 ? diff + ' gün kaldı' : 'Süre doldu';
+  loadTGSettings();
+}
+function saveDeadline() {
+  const val = document.getElementById('cd-new-date').value;
   if (!val) { toast('Bir tarih seç!'); return; }
   localStorage.setItem(DEADLINE_KEY, val + 'T00:00:00');
-  updateCountdown();
-  updateCountdownDisplay();
-  toast('✅ Hedef tarih güncellendi!');
+  updateCountdown(); loadAyarlar();
+  toast('✅ Tarih güncellendi!');
+}
+async function loadTGSettings() {
+  try {
+    const {data} = await sb.from('notification_settings').select('*').limit(1).maybeSingle();
+    if (data) {
+      if (data.telegram_bot_token) document.getElementById('tg-token').value = data.telegram_bot_token;
+      if (data.telegram_chat_id) document.getElementById('tg-chatid').value = data.telegram_chat_id;
+    }
+  } catch(e) {}
+}
+async function saveTG() {
+  const token = document.getElementById('tg-token').value.trim(), chatId = document.getElementById('tg-chatid').value.trim();
+  if (!token || !chatId) { toast('Token ve Chat ID gerekli!'); return; }
+  try {
+    const {data:ex} = await sb.from('notification_settings').select('id').limit(1).maybeSingle();
+    if (ex) await sb.from('notification_settings').update({telegram_bot_token:token,telegram_chat_id:chatId}).eq('id',ex.id);
+    else await sb.from('notification_settings').insert({telegram_bot_token:token,telegram_chat_id:chatId});
+    toast('✅ Telegram kaydedildi!');
+  } catch(e) { toast('Hata: ' + e.message); }
+}
+async function testTG() {
+  const token = document.getElementById('tg-token').value.trim(), chatId = document.getElementById('tg-chatid').value.trim();
+  if (!token || !chatId) { toast('Önce token ve Chat ID gir!'); return; }
+  try {
+    const r = await fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({chat_id: chatId, text: 'Lock-In 2025 bağlantısı kuruldu! 🚀'})
+    });
+    const d = await r.json();
+    toast(d.ok ? '✅ Test gönderildi!' : 'Hata: ' + d.description);
+  } catch(e) { toast('Bağlantı hatası'); }
+}
+async function sendTG(text) {
+  try {
+    const {data} = await sb.from('notification_settings').select('*').limit(1).maybeSingle();
+    if (!data || !data.telegram_bot_token) return;
+    await fetch('https://api.telegram.org/bot' + data.telegram_bot_token + '/sendMessage', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({chat_id: data.telegram_chat_id, text})
+    });
+  } catch(e) {}
 }
 
-function updateCountdownDisplay() {
-  const d = getDeadline();
-  const diff = Math.ceil((d - new Date()) / (1000 * 60 * 60 * 24));
-  const MN2 = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
-  const el1 = document.getElementById('countdown-current-date');
-  const el2 = document.getElementById('countdown-days-left');
-  if (el1) el1.textContent = d.getDate() + ' ' + MN2[d.getMonth()] + ' ' + d.getFullYear();
-  if (el2) el2.textContent = diff > 0 ? diff + ' gün kaldı' : 'Süre doldu';
+// STREAK
+async function calcStreak() {
+  try {
+    const {data} = await sb.from('daily_checkins').select('date').eq('type','morning').order('date',{ascending:false}).limit(60);
+    if (!data || !data.length) return;
+    let streak = 0;
+    const base = new Date(); base.setHours(0,0,0,0);
+    for (let i = 0; i < data.length; i++) {
+      const exp = new Date(base); exp.setDate(base.getDate()-i);
+      if (data[i].date === exp.toISOString().split('T')[0]) streak++;
+      else break;
+    }
+    document.getElementById('hdr-streak').textContent = '🔥 ' + streak + ' gün';
+  } catch(e) {}
 }
 
-// ── UTILS ──
-function getMonday(){const d=new Date();const day=d.getDay();const diff=d.getDate()-day+(day===0?-6:1);d.setDate(diff);return d.toISOString().split('T')[0];}
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
-function closeModal(id){document.getElementById(id).style.display='none';}
-function closeMBg(ev,id){if(ev.target===document.getElementById(id))closeModal(id);}
-
-// Init
-setPrio('med');
-setSize('medium');
+// INIT
+window.addEventListener('DOMContentLoaded', async () => {
+  initHeader();
+  renderEnergyBtns();
+  renderDayScoreBtns();
+  renderKPIForm();
+  renderLogRating();
+  setPrio('med');
+  // Restore persisted checks from localStorage
+  const savedMC = localStorage.getItem('mc_' + TODAY);
+  if (savedMC) morningChecks = JSON.parse(savedMC);
+  const savedEC = localStorage.getItem('ec_' + TODAY);
+  if (savedEC) eveningChecks = JSON.parse(savedEC);
+  // Render lists immediately so they're visible
+  renderMorningList();
+  renderEveningList();
+  await loadTodayCheckin();
+  await loadTodayTasks();
+  await calcStreak();
+  await loadHeaderProgress();
+});
 </script>
 </body>
 </html>
