@@ -178,6 +178,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
 .rating-btn{width:36px;height:36px;border-radius:50%;border:2px solid var(--gray-l);background:var(--white);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;color:var(--gray)}
 .rating-btn.active{background:var(--gold);border-color:var(--gold);color:var(--navy)}
 .wbox{background:var(--warn);border-left:4px solid var(--gold);border-radius:var(--rs);padding:10px 13px;margin-bottom:13px;font-size:13px;color:var(--warn-fg)}
+.counter-row{display:flex;align-items:center;gap:8px;margin-top:8px}
+.cnt-btn{width:32px;height:32px;border-radius:50%;border:2px solid var(--gray-l);background:var(--white);font-size:18px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;color:var(--navy)}
+.cnt-btn:active{background:var(--gold);border-color:var(--gold)}
+.cnt-val{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--navy);min-width:50px;text-align:center}
+.cnt-unit{font-size:12px;color:var(--gray)}
 .kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .kpi-card{background:var(--cream);border-radius:var(--rs);padding:13px;border:1px solid rgba(27,42,74,.08)}
 .kpi-val{font-family:'Playfair Display',serif;font-size:24px;font-weight:700}
@@ -233,6 +238,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
     <div class="cel-icon">☀️</div>
     <div class="cel-title">Sabah check-in tamam!</div>
     <div class="cel-txt">Harika bir gün olsun.</div>
+    <div id="cel-top3-wrap" style="display:none;margin-top:10px;text-align:left;background:rgba(255,255,255,.1);border-radius:8px;padding:10px">
+      <div style="font-size:11px;font-weight:600;color:var(--gold);margin-bottom:4px">🎯 BUGÜNÜN TOP 3</div>
+      <div id="cel-top3" style="font-size:13px;color:#fff;white-space:pre-wrap;line-height:1.6"></div>
+    </div>
   </div>
   <div class="card" id="card-morning">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
@@ -243,6 +252,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
     <div class="energy-row" id="energy-btns"></div>
     <div class="slbl">Rutin</div>
     <div id="morning-checklist"></div>
+    <div class="slbl">Günün TOP 3 Önceliği</div>
+    <textarea class="ifield" id="top3-input" rows="3" placeholder="1. &#10;2. &#10;3. "></textarea>
     <div style="margin-top:14px"><button class="btn btn-gold" onclick="saveMorning()">Sabah Check-In Kaydet</button></div>
   </div>
   <div class="card">
@@ -261,6 +272,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
     <div style="margin-top:12px">
       <div class="slbl">Bugünün En İyi Şeyi</div>
       <textarea class="ifield" id="win-of-day" rows="2" placeholder="Bugün iyi giden 1 şey..."></textarea>
+    </div>
+    <div style="margin-top:12px">
+      <div class="slbl">Güne Puan Ver (0-10)</div>
+      <div class="energy-row" id="day-score-btns"></div>
     </div>
     <div style="margin-top:10px"><button class="btn btn-navy" onclick="saveEvening()">Akşam Check-In Kaydet</button></div>
   </div>
@@ -524,6 +539,22 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);
     <input class="ifield" id="h-name" placeholder="örn: Meditasyon">
     <div class="slbl">Açıklama</div>
     <input class="ifield" id="h-desc" placeholder="örn: 10 dk sabah meditasyonu" style="margin-top:6px">
+    <div class="slbl">Numerik Hedef (opsiyonel)</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:6px">
+      <div>
+        <div style="font-size:11px;color:var(--gray);margin-bottom:3px">Hedef Değer</div>
+        <input class="ifield" id="h-target" type="number" placeholder="2.5" step="0.5" min="0">
+      </div>
+      <div>
+        <div style="font-size:11px;color:var(--gray);margin-bottom:3px">Birim</div>
+        <input class="ifield" id="h-unit" placeholder="litre / dk">
+      </div>
+      <div>
+        <div style="font-size:11px;color:var(--gray);margin-bottom:3px">Adım</div>
+        <input class="ifield" id="h-step" type="number" placeholder="0.5" step="0.1" min="0.1">
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--gray);margin-top:4px">Boş bırakırsan normal tick alışkanlığı olur.</div>
     <div style="display:flex;gap:8px;margin-top:16px">
       <button class="btn btn-gold" onclick="saveHabit()" id="h-save-btn" style="flex:1">Kaydet</button>
       <button class="btn btn-ghost btn-sm" onclick="closeModal('habit-modal')" style="flex:0.4">İptal</button>
@@ -624,7 +655,7 @@ function getToday(){const d=new Date();return d.getFullYear()+'-'+String(d.getMo
 let TODAY=getToday();
 let energy=0;
 let editHabitId=null,selEmoji=EMOJIS[0];
-let mdPrio='med',mdFilter='all',mdSize='medium';
+let mdPrio='med',mdFilter='all',mdSize='medium',dayScore=0;
 let newLogType='book',logStatus='reading',logRating=0;
 let editCheckinType=null;
 
@@ -660,6 +691,12 @@ const SUPPL_PLANS={
 window.addEventListener('DOMContentLoaded',async()=>{
   initHeader();
   renderEnergyBtns();
+  renderDayScoreBtns();
+  // Restore persisted checks
+  const savedMC=localStorage.getItem('morningChecks_'+TODAY);
+  if(savedMC)morningChecks=JSON.parse(savedMC);
+  const savedEC=localStorage.getItem('eveningChecks_'+TODAY);
+  if(savedEC)eveningChecks=JSON.parse(savedEC);
   renderMorningChecklist();
   renderEveningChecklist();
   renderSupplementChecklist();
@@ -732,6 +769,19 @@ function renderEnergyBtns(){
   }
 }
 
+function renderDayScoreBtns(){
+  const w=document.getElementById('day-score-btns');
+  if(!w)return;
+  w.innerHTML='';
+  for(let i=0;i<=10;i++){
+    const b=document.createElement('button');
+    b.className='ebtn'+(i===dayScore?' active':'');
+    b.textContent=i;
+    b.onclick=()=>{dayScore=i;renderDayScoreBtns();};
+    w.appendChild(b);
+  }
+}
+
 // ── DYNAMIC CHECK-IN LISTS ──
 function renderMorningChecklist(){
   const el=document.getElementById('morning-checklist');
@@ -744,6 +794,7 @@ function renderMorningChecklist(){
 function toggleMorning(i){
   const key=morningItems[i].key;
   morningChecks[key]=!morningChecks[key];
+  localStorage.setItem('morningChecks_'+TODAY, JSON.stringify(morningChecks));
   renderMorningChecklist();
 }
 
@@ -758,6 +809,7 @@ function renderEveningChecklist(){
 function toggleEvening(i){
   const key=eveningItems[i].key;
   eveningChecks[key]=!eveningChecks[key];
+  localStorage.setItem('eveningChecks_'+TODAY, JSON.stringify(eveningChecks));
   renderEveningChecklist();
 }
 
@@ -875,7 +927,21 @@ async function loadTodayCheckin(){
       energy=m.energy_score||0;
     }
     const e=data.find(d=>d.type==='evening');
-    if(e&&e.win_of_day)document.getElementById('win-of-day').value=e.win_of_day;
+    if(e){
+      if(e.win_of_day)document.getElementById('win-of-day').value=e.win_of_day;
+      if(e.day_score!=null){dayScore=e.day_score;renderDayScoreBtns();}
+      // Make evening readonly since already submitted
+      setTimeout(()=>{
+        document.querySelectorAll('#evening-checklist .ci').forEach(el=>{el.style.pointerEvents='none';el.style.opacity='.7';});
+        const wod=document.getElementById('win-of-day');if(wod){wod.readOnly=true;wod.style.opacity='.7';}
+        document.querySelectorAll('#day-score-btns .ebtn').forEach(b=>b.disabled=true);
+      },300);
+    }
+    if(m&&m.top3){
+      document.getElementById('top3-input').value=m.top3;
+      const t3el=document.getElementById('cel-top3');
+      if(t3el){t3el.textContent=m.top3;document.getElementById('cel-top3-wrap').style.display='block';}
+    }
   }catch(e){}
 }
 
@@ -884,6 +950,7 @@ async function saveMorning(){
   const checks={};
   morningItems.forEach(item=>{checks[item.key+'_done']=morningChecks[item.key]||false;});
   try{
+    const top3=document.getElementById('top3-input').value.trim();
     await sb.from('daily_checkins').upsert({
       date:TODAY,type:'morning',energy_score:energy,
       water_done:morningChecks['water']||false,
@@ -891,10 +958,17 @@ async function saveMorning(){
       journaling_done:morningChecks['journaling']||false,
       reading_done:morningChecks['reading']||false,
       supplement_done:morningChecks['supplement']||false,
+      top3,
     },{onConflict:'date,type'});
     toast('✅ Sabah check-in kaydedildi!');
     document.getElementById('card-morning').style.display='none';
     document.getElementById('cel-morning').style.display='block';
+    // Show saved top3 in celebrate card
+    const top3val=document.getElementById('top3-input').value.trim();
+    if(top3val){
+      const t3el=document.getElementById('cel-top3');
+      if(t3el){t3el.textContent=top3val;document.getElementById('cel-top3-wrap').style.display='block';}
+    }
     await loadTodayTasks(energy);
     await calcStreak();
     sendTG('☀️ Sabah check-in tamam! Enerji: '+energy+'/10');
@@ -908,9 +982,17 @@ async function saveEvening(){
       date:TODAY,type:'evening',
       teeth_done:eveningChecks['teeth']||false,
       shower_done:eveningChecks['shower']||false,
-      win_of_day:win
+      win_of_day:win,
+      day_score:dayScore||null,
     },{onConflict:'date,type'});
     toast('🌙 Akşam check-in kaydedildi!');
+    // Make evening checklist read-only
+    document.querySelectorAll('#evening-checklist .ci').forEach(el=>{
+      el.style.pointerEvents='none';el.style.opacity='.7';
+    });
+    document.getElementById('win-of-day').readOnly=true;
+    document.getElementById('win-of-day').style.opacity='.7';
+    document.querySelectorAll('#day-score-btns .ebtn').forEach(b=>b.disabled=true);
     sendTG('🌙 Akşam check-in tamam! En iyi şey: '+(win||'—'));
   }catch(e){toast('Hata: '+e.message);}
 }
@@ -1238,22 +1320,34 @@ function buildHabitCard(h,streak,longest,days){
     cal+='<div class="cal-day"><div class="'+cls+'">'+(hit?'✓':'')+'</div><div class="cal-lbl'+(isT?' today':'')+'">'+DS[d.getDay()]+'</div></div>';
   }
   const eid=h.id,en=h.name.replace(/'/g,'&apos;'),ed=(h.description||'').replace(/'/g,'&apos;');
+  // Detect numeric habit: target_value set OR description contains a number with unit
+  const hasNumeric = h.target_value != null && h.target_value > 0;
+  const unit = h.target_unit || '';
+  const currentVal = parseFloat(localStorage.getItem('habit_val_'+TODAY+'_'+eid)||'0');
+
+  let actionHtml='';
+  if(hasNumeric){
+    actionHtml='<div class="counter-row">'
+      +'<button class="cnt-btn" onclick="habitCounterAdj(''+eid+'','+h.target_value+','+h.target_step+',-1)" style="font-size:20px">−</button>'
+      +'<div class="cnt-val" id="hcv-'+eid+'">'+currentVal+'</div>'
+      +'<span class="cnt-unit">/ '+h.target_value+' '+unit+'</span>'
+      +'<button class="cnt-btn" onclick="habitCounterAdj(''+eid+'','+h.target_value+','+h.target_step+',1)" style="background:var(--gold);border-color:var(--gold);color:var(--navy)">+</button>'
+      +'</div>';
+  } else {
+    actionHtml='<button class="tick-btn'+(todayDone?' done':'')+'" onclick="tickHabit(''+eid+'','+todayDone+')">'+(todayDone?'✓':'○')+'</button>';
+  }
+
   return '<div class="h-card"><div class="h-top">'
     +'<div class="h-icon">'+h.icon+'</div>'
     +'<div class="h-info"><div class="h-name">'+h.name+'</div><div class="h-sub">'+(h.description||'')+'</div></div>'
     +'<div class="h-streak"><div class="h-s-num">'+streak+'</div><div class="h-s-lbl">streak</div></div>'
-    +'<button class="tick-btn'+(todayDone?' done':'')+'" onclick="tickHabit(\''+eid+'\','+todayDone+')">'+(todayDone?'✓':'○')+'</button>'
-    +'<button class="edit-btn" onclick="openEditHabit(\''+eid+'\',\''+h.icon+'\',\''+en+'\',\''+ed+'\')">✏️</button>'
+    +actionHtml
+    +'<button class="edit-btn" onclick="openEditHabit(''+eid+'',''+h.icon+'',''+en+'',''+ed+'','+( h.target_value||'null')+',''+unit+'','+( h.target_step||'null')+')">✏️</button>'
     +'</div><div class="cal-wrap"><div class="cal-row">'+cal+'</div></div>'
     +'<div class="h-best">🏆 En uzun streak: '+longest+' gün</div></div>';
 }
-async function tickHabit(hid,isDone){
-  try{
-    if(isDone){await sb.from('habit_logs').delete().eq('habit_id',hid).eq('date',TODAY);toast('Gün iptal edildi');}
-    else{await sb.from('habit_logs').upsert({habit_id:hid,date:TODAY},{onConflict:'habit_id,date'});toast('Harika! 🔥');}
-    await loadHabits();
-  }catch(e){toast('Hata: '+e.message);}
-}
+
+
 function renderEmojiGrid(){
   document.getElementById('emoji-grid').innerHTML=EMOJIS.map(e=>'<button class="eg-btn'+(e===selEmoji?' active':'')+'" onclick="selEmojiClick(\''+e+'\')">'+e+'</button>').join('');
 }
@@ -1261,26 +1355,64 @@ function selEmojiClick(e){selEmoji=e;renderEmojiGrid();}
 function openAddHabit(){
   editHabitId=null;selEmoji=EMOJIS[0];
   document.getElementById('hm-title').textContent='Yeni Alışkanlık';
-  document.getElementById('h-name').value='';document.getElementById('h-desc').value='';
+  document.getElementById('h-name').value='';
+  document.getElementById('h-desc').value='';
+  document.getElementById('h-target').value='';
+  document.getElementById('h-unit').value='';
+  document.getElementById('h-step').value='';
   document.getElementById('h-del-btn').style.display='none';
   document.getElementById('h-save-btn').textContent='Kaydet';
   renderEmojiGrid();document.getElementById('habit-modal').style.display='flex';
 }
-function openEditHabit(id,icon,name,desc){
+function openEditHabit(id,icon,name,desc,targetVal,unit,step){
   editHabitId=id;selEmoji=icon;
   document.getElementById('hm-title').textContent='Düzenle';
-  document.getElementById('h-name').value=name;document.getElementById('h-desc').value=desc;
+  document.getElementById('h-name').value=name;
+  document.getElementById('h-desc').value=desc;
+  document.getElementById('h-target').value=targetVal&&targetVal!='null'?targetVal:'';
+  document.getElementById('h-unit').value=unit&&unit!='null'?unit:'';
+  document.getElementById('h-step').value=step&&step!='null'?step:'';
   document.getElementById('h-del-btn').style.display='block';
   document.getElementById('h-save-btn').textContent='Güncelle';
   renderEmojiGrid();document.getElementById('habit-modal').style.display='flex';
 }
+function habitCounterAdj(hid, target, step, dir){
+  const stepVal = parseFloat(step) || 0.5;
+  const key = 'habit_val_'+TODAY+'_'+hid;
+  let val = parseFloat(localStorage.getItem(key)||'0');
+  val = Math.max(0, Math.round((val + dir * stepVal) * 100) / 100); // no negatives
+  localStorage.setItem(key, val);
+  const el = document.getElementById('hcv-'+hid);
+  if(el) el.textContent = val;
+  // If reached target, auto-tick
+  if(val >= target){
+    sb.from('habit_logs').upsert({habit_id:hid,date:TODAY},{onConflict:'habit_id,date'})
+      .then(()=>{ loadHabits(); toast('🎯 Hedef tamamlandı!'); });
+  } else {
+    // Remove tick if went below target
+    sb.from('habit_logs').delete().eq('habit_id',hid).eq('date',TODAY).then(()=>{
+      const card = document.getElementById('hcv-'+hid);
+      if(card){ const h=card.closest('.h-card'); if(h){ const num=h.querySelector('.h-s-num'); } }
+    });
+  }
+}
+
 async function saveHabit(){
   const name=document.getElementById('h-name').value.trim();
   if(!name){toast('Ad gir!');return;}
   const desc=document.getElementById('h-desc').value.trim();
   try{
-    if(editHabitId){await sb.from('habits').update({icon:selEmoji,name,description:desc}).eq('id',editHabitId);toast('Güncellendi!');}
-    else{const{data:ex}=await sb.from('habits').select('sort_order').order('sort_order',{ascending:false}).limit(1);await sb.from('habits').insert({icon:selEmoji,name,description:desc,sort_order:((ex&&ex.length?ex[0].sort_order:0)+1)});toast('Eklendi!');}
+    const targetVal=parseFloat(document.getElementById('h-target').value)||null;
+    const unitVal=document.getElementById('h-unit').value.trim();
+    const stepVal=parseFloat(document.getElementById('h-step').value)||null;
+    if(editHabitId){
+      await sb.from('habits').update({icon:selEmoji,name,description:desc,target_value:targetVal,target_unit:unitVal,target_step:stepVal}).eq('id',editHabitId);
+      toast('Güncellendi!');
+    } else {
+      const{data:ex}=await sb.from('habits').select('sort_order').order('sort_order',{ascending:false}).limit(1);
+      await sb.from('habits').insert({icon:selEmoji,name,description:desc,sort_order:((ex&&ex.length?ex[0].sort_order:0)+1),target_value:targetVal,target_unit:unitVal,target_step:stepVal});
+      toast('Eklendi!');
+    }
     closeModal('habit-modal');await loadHabits();
   }catch(e){toast('Hata: '+e.message);}
 }
